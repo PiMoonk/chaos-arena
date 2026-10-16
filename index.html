@@ -3,603 +3,506 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#080b16">
-<title>CHAOS ARENA — Circular Knockout</title>
+<meta name="theme-color" content="#121a12">
+<title>TÚLÉLD, HA TUDOD! – Három tárgy, egy lehetetlen helyzet</title>
 <style>
-:root{--bg:#080b16;--panel:rgba(16,22,43,.88);--line:rgba(151,173,255,.18);--muted:#99a5c6;--text:#f4f7ff;--cyan:#52f4ff;--pink:#ff4eb8;--violet:#9b78ff;--lime:#c7ff5e}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;touch-action:manipulation}button{font:inherit;color:inherit;border:0;cursor:pointer;touch-action:manipulation}button:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}#app{height:100dvh;width:100vw;position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 45%,#17203b 0%,#0c1022 45%,#070912 100%)}
-.noise{position:absolute;inset:0;pointer-events:none;opacity:.16;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:36px 36px;mask-image:linear-gradient(transparent,#000 12%,#000 88%,transparent)}
+:root{
+  --bg:#0d1210;--bg2:#171f16;--paper:#f6ecd2;--paper2:#fff6dd;--ink:#1d231b;--ink2:#3a4535;
+  --orange:#ff7a18;--orange2:#ff9d4d;--yellow:#ffe55a;--green:#8aff6a;--line:rgba(255,255,255,.11);
+  --tape:rgba(255,229,90,.9);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:#e8efe5;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+button{font:inherit;cursor:pointer;border:0;touch-action:manipulation}button:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+#app{height:100dvh;width:100vw;position:relative;overflow:hidden;background:radial-gradient(ellipse at 20% 10%,#1c2a18 0%,#121a12 45%,#080b08 100%)}
 .screen{position:absolute;inset:0;display:none}.screen.active{display:flex}
-#menu{align-items:center;justify-content:center;padding:clamp(18px,4vw,46px);overflow:auto}.menu-inner{width:min(1100px,100%);display:grid;grid-template-columns:1.05fr.95fr;gap:clamp(24px,6vw,76px);align-items:center;margin:auto}.eyebrow{font-size:11px;font-weight:850;letter-spacing:.28em;color:var(--cyan);text-transform:uppercase;display:flex;align-items:center;gap:10px}.eyebrow:before{content:"";width:25px;height:2px;background:var(--cyan);box-shadow:0 0 14px var(--cyan)}h1{font-size:clamp(46px,8.6vw,100px);letter-spacing:-.075em;line-height:.86;margin:19px 0 18px;font-weight:1000;text-transform:uppercase;font-style:italic}h1 span{display:block;color:transparent;-webkit-text-stroke:1.4px var(--cyan);text-shadow:0 0 30px rgba(82,244,255,.08)}.intro{max-width:470px;color:#aab5d4;font-size:clamp(13px,1.6vw,16px);line-height:1.75;margin:0 0 26px}.actions{display:flex;flex-wrap:wrap;gap:10px}.primary,.secondary{min-height:52px;padding:0 22px;border-radius:12px;font-size:12px;font-weight:900;letter-spacing:.09em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:10px;transition:transform.16s,filter.16s}.primary{color:#071019;background:linear-gradient(105deg,var(--cyan),#91ffcf);box-shadow:0 8px 32px rgba(82,244,255,.17)}.secondary{background:rgba(255,255,255,.055);border:1px solid var(--line);color:#e3e9ff}.primary:active,.secondary:active{transform:scale(.97)}.primary:hover,.secondary:hover{filter:brightness(1.08)}.small-note{margin-top:17px;color:#6f7b9d;font-size:11px;line-height:1.6}.preview{position:relative;min-height:min(490px,65vh);border:1px solid rgba(105,225,255,.2);border-radius:28px;overflow:hidden;background:radial-gradient(ellipse at 55% 46%,rgba(39,71,119,.55),rgba(9,14,30,.85) 64%);box-shadow:0 25px 90px rgba(0,0,0,.35),inset 0 0 55px rgba(82,244,255,.035)}.preview:before,.preview:after{content:"";position:absolute;border:1px solid rgba(82,244,255,.13);border-radius:50%;width:68%;aspect-ratio:1;left:16%;top:15%;box-shadow:0 0 0 22px rgba(82,244,255,.025),0 0 0 55px rgba(82,244,255,.018)}.preview:after{width:43%;left:28.5%;top:28%;box-shadow:0 0 30px rgba(82,244,255,.08)}.preview-label{position:absolute;left:22px;right:22px;top:20px;display:flex;justify-content:space-between;z-index:2;color:#7d8db5;font-size:10px;font-weight:900;letter-spacing:.16em}.preview-tag{border:1px solid rgba(82,244,255,.25);padding:6px 8px;border-radius:5px;color:var(--cyan)}.hero-arena{position:absolute;inset:0;width:100%;height:100%;z-index:1}.feature-row{position:absolute;bottom:20px;left:20px;right:20px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;z-index:3}.feature{padding:11px 10px;border-radius:10px;background:rgba(10,14,28,.77);border:1px solid rgba(150,175,255,.12);backdrop-filter:blur(8px)}.feature strong{display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}.feature small{display:block;font-size:10px;color:#8390b2;line-height:1.4}
-#game{flex-direction:column;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);background:radial-gradient(ellipse at 50% 45%,#101a32,#080b16 77%)}.topbar{height:62px;flex:0 0 62px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;padding:0 clamp(12px,3vw,28px);border-bottom:1px solid rgba(123,154,255,.12);background:rgba(8,11,22,.72);z-index:5}.brand-mini{font-size:13px;font-weight:1000;font-style:italic;letter-spacing:-.04em}.brand-mini span{color:var(--cyan)}.round-info{text-align:center}.round-label{display:block;color:#8290b4;font-size:9px;font-weight:850;letter-spacing:.2em}.timer{font-variant-numeric:tabular-nums;font-size:21px;font-weight:950;line-height:1.2;letter-spacing:.04em}.right-top{display:flex;justify-content:flex-end;align-items:center;gap:12px}.score-pill{border:1px solid rgba(82,244,255,.2);background:rgba(82,244,255,.055);border-radius:10px;padding:7px 10px;min-width:72px;text-align:center}.score-pill small{display:block;color:#8290b4;font-size:8px;letter-spacing:.13em;font-weight:900}.score-pill strong{font-size:16px;color:var(--cyan)}.icon-button{width:36px;height:36px;border:1px solid var(--line);background:rgba(255,255,255,.04);border-radius:10px;font-size:17px}.stage{position:relative;flex:1;min-height:0;overflow:hidden}.stage canvas{width:100%;height:100%;display:block;touch-action:none}.event-banner{position:absolute;left:50%;top:14px;transform:translateX(-50%);z-index:3;padding:8px 13px;border-radius:7px;border:1px solid rgba(255,78,184,.38);background:rgba(25,10,31,.86);font-size:10px;font-weight:950;letter-spacing:.16em;color:#ff8ed2;white-space:nowrap;opacity:0;transition:opacity.2s;pointer-events:none}.event-banner.visible{opacity:1}.help-hint{position:absolute;left:12px;top:12px;color:rgba(192,207,245,.63);font-size:10px;letter-spacing:.06em;pointer-events:none;text-shadow:0 2px 6px #000}.controls{flex:0 0 122px;display:flex;align-items:center;justify-content:space-between;padding:8px clamp(15px,5vw,55px) max(10px,env(safe-area-inset-bottom));gap:14px;background:linear-gradient(0deg,rgba(6,8,17,.98),rgba(6,8,17,.7));border-top:1px solid rgba(123,154,255,.1);z-index:5}.joy-zone{height:100px;width:150px;display:flex;align-items:center;justify-content:flex-start;position:relative;touch-action:none}.joystick{width:94px;height:94px;border:1px solid rgba(82,244,255,.34);border-radius:50%;position:relative;background:radial-gradient(circle,rgba(82,244,255,.09),rgba(82,244,255,.025) 64%,rgba(255,255,255,.025));box-shadow:inset 0 0 22px rgba(82,244,255,.045);touch-action:none}.joystick:before{content:"";position:absolute;inset:20px;border:1px dashed rgba(140,176,220,.23);border-radius:50%}.joy-knob{position:absolute;width:36px;height:36px;left:50%;top:50%;margin:-18px 0 0 -18px;background:linear-gradient(135deg,#a4ffff,#47bacc);border:2px solid rgba(255,255,255,.8);border-radius:50%;box-shadow:0 0 22px rgba(82,244,255,.28);pointer-events:none}.control-actions{display:flex;align-items:center;gap:13px}.ability{width:78px;height:78px;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:radial-gradient(circle at 36% 24%,rgba(255,255,255,.16),rgba(255,255,255,.025) 55%),#191b34;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;box-shadow:0 5px 20px #0004;touch-action:none;user-select:none}.ability.glyph{font-size:25px;font-weight:800;line-height:1}.ability small{font-size:8px;letter-spacing:.15em;font-weight:950}.ability.dash{border-color:rgba(82,244,255,.52);color:var(--cyan)}.ability.pulse{border-color:rgba(255,78,184,.46);color:#ff8ed2}.ability:active{transform:scale(.95)}.cooldown{position:absolute;inset:0;border-radius:50%;background:conic-gradient(var(--cd-color,rgba(6,9,20,.82)) var(--cd,0%),transparent 0);pointer-events:none}#dashCd{--cd-color:rgba(106,246,255,.38)}#pulseCd{--cd-color:rgba(255,78,169,.42)}.controls-center{font-size:9px;color:#647292;text-align:center;line-height:1.6;letter-spacing:.08em}.controls-center b{color:#9ba9cb;display:block;font-size:10px}
-.modal-wrap{position:absolute;inset:0;z-index:10;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(4,6,14,.73);backdrop-filter:blur(10px)}.modal-wrap.show{display:flex}.modal{width:min(420px,100%);border:1px solid rgba(82,244,255,.22);background:linear-gradient(145deg,rgba(25,32,59,.98),rgba(10,14,29,.98));border-radius:20px;padding:25px;box-shadow:0 25px 90px #0009}.modal h2{margin:6px 0 8px;font-size:27px;letter-spacing:-.05em;font-weight:1000;font-style:italic;text-transform:uppercase}.modal p{font-size:13px;line-height:1.65;color:#9da9c9}.modal.primary,.modal.secondary{width:100%;margin-top:9px}.modal.tiny{font-size:10px;color:#6f7d9f}.tagline{font-size:10px;letter-spacing:.2em;font-weight:900;color:var(--cyan);text-transform:uppercase}
-#roomWrap{z-index:20}
-.room-input{display:block;width:100%;margin:8px 0 14px;padding:14px 13px;border-radius:10px;border:1px solid rgba(151,173,255,.25);background:rgba(3,7,18,.72);color:var(--text);font:inherit;font-size:15px;outline:none}
-.room-input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(82,244,255,.08)}
-.room-label{display:block;color:#9da9c9;font-size:10px;font-weight:850;letter-spacing:.14em;text-transform:uppercase;margin-top:12px}
-.room-code-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid rgba(82,244,255,.22);background:rgba(82,244,255,.055);border-radius:12px;padding:12px 13px;margin:15px 0}
-.room-code{font-size:26px;font-weight:1000;letter-spacing:.18em;color:var(--cyan);font-variant-numeric:tabular-nums}
-.room-code-row.secondary{min-height:38px;padding:0 12px;font-size:10px}
-.room-players{display:grid;gap:7px;max-height:190px;overflow:auto;margin:14px 0}
-.room-player{display:flex;align-items:center;gap:10px;border:1px solid rgba(151,173,255,.12);background:rgba(255,255,255,.035);border-radius:9px;padding:9px 11px;font-size:12px}
-.room-dot{width:10px;height:10px;border-radius:50%;box-shadow:0 0 12px currentColor;flex:0 0 auto}
-.room-player small{margin-left:auto;color:#7f8db0;font-size:9px;letter-spacing:.08em}
-.room-status{min-height:20px;color:#a7b4d4;font-size:12px;line-height:1.5}
-.room-error{color:#ff8cae;font-size:11px;line-height:1.5;min-height:16px;margin:6px 0}
-.room-actions{display:grid;gap:8px}
-.room-actions.primary,.room-actions.secondary{width:100%}
-.room-divider{height:1px;background:var(--line);margin:12px 0}
-.toast{position:absolute;z-index:8;left:50%;top:50%;transform:translate(-50%,-50%) scale(.96);opacity:0;pointer-events:none;text-align:center;background:rgba(9,14,30,.9);border:1px solid rgba(82,244,255,.27);border-radius:18px;padding:22px 32px;min-width:min(300px,80vw);box-shadow:0 20px 70px #0007;transition:opacity.22s,transform.22s}.toast.show{opacity:1;transform:translate(-50%,-50%) scale(1)}.toast small{display:block;color:var(--cyan);font-size:10px;letter-spacing:.2em;font-weight:950}.toast strong{display:block;font-size:26px;font-weight:1000;font-style:italic;letter-spacing:-.05em;margin-top:5px}.toast p{margin:6px 0 0;color:#9eacca;font-size:12px}
-@media(max-width:720px){.menu-inner{grid-template-columns:1fr;gap:22px;max-width:520px}.menu-copy{text-align:center}.eyebrow{justify-content:center}.intro{margin-left:auto;margin-right:auto}.actions{justify-content:center}.preview{min-height:240px;max-height:31vh}.feature-row{bottom:12px;left:12px;right:12px;gap:6px}.feature{padding:8px}.feature small{font-size:9px}.feature strong{font-size:9px}.preview-label{top:12px;left:13px;right:13px}.small-note{max-width:390px;margin-left:auto;margin-right:auto}.topbar{height:56px;flex-basis:56px}.controls{flex-basis:112px;padding-left:14px;padding-right:14px}.joy-zone{width:104px;height:92px}.joystick{width:84px;height:84px}.ability{width:67px;height:67px}.ability.glyph{font-size:22px}.control-actions{gap:9px}.controls-center{display:none}.score-pill{min-width:59px;padding:5px 7px}.score-pill small{font-size:7px}.score-pill strong{font-size:14px}.brand-mini{font-size:11px}.icon-button{width:32px;height:32px}.timer{font-size:19px}}
-@media(max-width:390px){.controls{flex-basis:104px}.ability{width:60px;height:60px}.joystick{width:76px;height:76px}.joy-zone{width:85px}.control-actions{gap:7px}.topbar{padding:0 9px}.score-pill{min-width:53px}.round-label{font-size:8px}h1{font-size:48px}}
-@media(max-height:520px) and (orientation:landscape){.topbar{height:48px;flex-basis:48px}.controls{flex-basis:88px;padding-top:3px;padding-bottom:3px}.joystick{width:70px;height:70px}.joy-zone{height:76px}.ability{height:62px;width:62px}.preview{min-height:260px}.menu-inner{grid-template-columns:1fr 1fr}}
-</style>
-<style id="chaos-premium-polish">
-:root{--bg:#050711;--panel:rgba(11,16,34,.88);--line:rgba(136,170,255,.2);--muted:#9ba9cd;--text:#f5f8ff;--cyan:#6af6ff;--pink:#ff4ea9;--violet:#9d86ff;--lime:#d8ff70}
-html,body{background:#050711}body{letter-spacing:.005em}#app{isolation:isolate;background:radial-gradient(ellipse at 50% 16%,#172744 0%,#0b1124 37%,#050711 78%)}#app:before{content:"";position:absolute;inset:-20%;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 12% 28%,rgba(46,117,255,.13),transparent 32%),radial-gradient(ellipse at 88% 68%,rgba(255,46,166,.09),transparent 30%);animation:ambientDrift 16s ease-in-out infinite alternate}
-@keyframes ambientDrift{from{transform:translate3d(-1%,0,0) scale(1)}to{transform:translate3d(1%,1%,0) scale(1.035)}}
-.noise{opacity:.22;background-size:42px 42px;mask-image:linear-gradient(transparent,#000 6%,#000 92%,transparent)}
-#menu{padding:clamp(22px,4vw,54px)}.menu-inner{width:min(1180px,100%);gap:clamp(28px,5.5vw,84px)}.eyebrow{width:max-content;max-width:100%;padding:8px 12px;border:1px solid rgba(106,246,255,.2);border-radius:999px;background:rgba(15,32,55,.58);box-shadow:inset 0 0 20px rgba(106,246,255,.035);font-size:10px;letter-spacing:.22em}.eyebrow:before{width:7px;height:7px;border-radius:50%;box-shadow:0 0 12px var(--cyan)}h1{font-size:clamp(52px,8.2vw,108px);letter-spacing:-.085em;line-height:.8;margin:25px 0 24px;text-shadow:0 12px 42px rgba(0,0,0,.35)}h1 span{-webkit-text-stroke:1.5px var(--cyan);filter:drop-shadow(0 0 18px rgba(106,246,255,.15))}.intro{max-width:500px;font-size:clamp(14px,1.45vw,17px);line-height:1.8;color:#b9c6e5}.actions{gap:11px}.primary,.secondary{min-height:54px;padding:0 20px;border-radius:14px;letter-spacing:.075em;font-size:11px}.primary{background:linear-gradient(115deg,#71f8ff 0%,#9bffe0 55%,#c8fff2 100%);box-shadow:0 9px 28px rgba(82,244,255,.16),inset 0 1px 0 rgba(255,255,255,.65)}.secondary{background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.025));border:1px solid rgba(163,187,255,.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.045)}.actions.primary{min-width:220px}.actions.secondary{min-width:190px}.primary:hover{box-shadow:0 11px 34px rgba(82,244,255,.24),inset 0 1px 0 rgba(255,255,255,.65);transform:translateY(-1px)}.secondary:hover{border-color:rgba(106,246,255,.42);background:rgba(106,246,255,.075);transform:translateY(-1px)}.small-note{font-size:10px;letter-spacing:.09em;line-height:1.9;color:#8190b3}.preview{min-height:min(540px,68vh);border-radius:30px;border-color:rgba(106,246,255,.24);background:radial-gradient(ellipse at 52% 45%,rgba(30,68,112,.36),rgba(5,9,22,.94) 69%);box-shadow:0 34px 100px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.06),inset 0 0 70px rgba(82,244,255,.055)}.preview:before,.preview:after{border-color:rgba(106,246,255,.11);box-shadow:0 0 0 24px rgba(106,246,255,.025),0 0 0 58px rgba(106,246,255,.018)}.preview-label{top:19px;left:20px;right:20px;font-size:9px;letter-spacing:.19em;color:#a1b0d2}.preview-tag{border-radius:999px;background:rgba(106,246,255,.07);box-shadow:0 0 18px rgba(106,246,255,.05);padding:7px 10px}.feature-row{bottom:18px;left:18px;right:18px;gap:9px}.feature{padding:13px 12px;border-radius:13px;border-color:rgba(155,180,255,.14);background:linear-gradient(145deg,rgba(14,23,44,.91),rgba(7,12,27,.9));box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 8px 24px rgba(0,0,0,.2)}.feature strong{font-size:9px;letter-spacing:.12em;color:#e9f4ff}.feature small{font-size:10px;color:#91a3c8}
-#game{background:radial-gradient(ellipse at 50% 35%,#111d36,#070a15 75%)}.topbar{height:66px;flex-basis:66px;background:linear-gradient(180deg,rgba(10,15,31,.97),rgba(7,10,22,.88));border-bottom-color:rgba(106,246,255,.15);box-shadow:0 8px 25px rgba(0,0,0,.12)}.brand-mini{letter-spacing:.015em;font-size:14px}.brand-mini span{color:var(--cyan);text-shadow:0 0 16px rgba(106,246,255,.35)}.round-label{font-size:9px;color:#91a2c9;letter-spacing:.23em}.timer{font-size:23px;text-shadow:0 0 18px rgba(106,246,255,.11)}.score-pill{border-color:rgba(106,246,255,.23);background:linear-gradient(145deg,rgba(106,246,255,.085),rgba(106,246,255,.025));box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}.score-pill small{color:#9badd0}.score-pill strong{color:var(--cyan);text-shadow:0 0 16px rgba(106,246,255,.28)}.icon-button{border-radius:12px;background:rgba(255,255,255,.045);transition:all.15s}.icon-button:hover{border-color:rgba(106,246,255,.4);background:rgba(106,246,255,.08)}.stage{background:radial-gradient(ellipse at 50% 45%,rgba(35,54,94,.16),transparent 65%)}.event-banner{border-radius:999px;padding:10px 17px;box-shadow:0 8px 28px rgba(255,46,166,.14);backdrop-filter:blur(12px)}.help-hint{top:15px;left:16px;padding:7px 10px;border:1px solid rgba(145,166,218,.12);border-radius:8px;background:rgba(7,12,25,.5);backdrop-filter:blur(8px);font-size:9px;letter-spacing:.12em}.controls{flex-basis:130px;background:linear-gradient(180deg,rgba(9,13,27,.9),rgba(4,6,14,.99));border-top-color:rgba(106,246,255,.14)}.joystick{border-color:rgba(106,246,255,.35);background:radial-gradient(circle,rgba(106,246,255,.14),rgba(106,246,255,.025) 68%,rgba(255,255,255,.02));box-shadow:inset 0 0 28px rgba(106,246,255,.075),0 8px 24px rgba(0,0,0,.2)}.joy-knob{background:radial-gradient(circle at 32% 25%,#fff,#8afcff 42%,#35a8cb 100%);box-shadow:0 0 22px rgba(106,246,255,.38),inset 0 1px 0 #fff}.ability{background:radial-gradient(circle at 32% 23%,rgba(255,255,255,.19),rgba(255,255,255,.025) 52%),linear-gradient(145deg,#202743,#0f1429);box-shadow:0 9px 25px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.1)}.ability.dash{border-color:rgba(106,246,255,.56);box-shadow:0 0 24px rgba(106,246,255,.07),inset 0 1px 0 rgba(255,255,255,.1)}.ability.pulse{border-color:rgba(255,78,169,.5);box-shadow:0 0 24px rgba(255,78,169,.06),inset 0 1px 0 rgba(255,255,255,.1)}.ability.glyph{filter:drop-shadow(0 0 8px currentColor)}.modal-wrap{background:rgba(2,4,12,.78);backdrop-filter:blur(14px)}.modal{border-radius:23px;border-color:rgba(106,246,255,.25);background:radial-gradient(ellipse at 0% 0%,rgba(106,246,255,.09),transparent 40%),linear-gradient(145deg,rgba(19,28,53,.99),rgba(7,11,24,.99));box-shadow:0 30px 110px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.05)}.modal h2{font-size:clamp(26px,6vw,32px);text-shadow:0 6px 25px rgba(0,0,0,.25)}.tagline{letter-spacing:.23em}.room-input{border-radius:12px;background:rgba(1,4,13,.68)}.room-player{border-radius:12px;background:linear-gradient(110deg,rgba(255,255,255,.055),rgba(255,255,255,.018));border-color:rgba(151,173,255,.15)}.room-code-row{border-radius:14px;box-shadow:inset 0 0 25px rgba(106,246,255,.035)}.toast{border-radius:22px;background:radial-gradient(ellipse at 50% 0%,rgba(106,246,255,.1),transparent 65%),rgba(6,10,24,.96);border-color:rgba(106,246,255,.3);backdrop-filter:blur(12px);box-shadow:0 28px 90px rgba(0,0,0,.58),0 0 45px rgba(106,246,255,.05)}.toast strong{font-size:clamp(24px,5vw,32px);text-shadow:0 0 24px rgba(106,246,255,.12)}
-@media(max-width:720px){.menu-inner{gap:21px}.menu-copy{text-align:center}.eyebrow{margin-inline:auto}.actions.primary,.actions.secondary{min-width:0;flex:1 1 42%;padding-inline:12px}.preview{min-height:240px;border-radius:22px}.feature-row{left:11px;right:11px;bottom:11px;gap:6px}.feature{padding:9px 8px;border-radius:10px}.feature strong{font-size:8px}.feature small{font-size:9px}.preview-label{font-size:8px}.topbar{height:57px;flex-basis:57px}.controls{flex-basis:114px}.help-hint{font-size:8px}}
-@media(max-width:390px){.controls{flex-basis:106px}.menu-inner{gap:17px}.intro{font-size:13px}.small-note{font-size:9px}h1{font-size:48px}.modal{padding:21px}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
-</style>
-<style id="adaptive-touch-layout">
-#game{--game-topbar-height:58px;padding-top:env(safe-area-inset-top);padding-bottom:0;overflow:hidden}
-#game.topbar{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);height:58px;flex-basis:58px;padding-inline:clamp(8px,2vw,20px);gap:6px}
-#game.right-top{gap:6px}
-#game.score-pill{min-width:48px;padding:5px 6px}
-#game.icon-button{width:32px;height:32px}
-#game.controls{position:absolute;inset:0;z-index:6;flex:none;width:100%;height:100%;padding:0;border:0;background:transparent;pointer-events:none}
-#game.joy-zone{position:absolute;left:0;top:calc(var(--game-topbar-height) + env(safe-area-inset-top));bottom:0;width:50%;height:auto;justify-content:flex-start;pointer-events:auto;touch-action:none}
-#game.joystick{position:absolute;left:calc(12px + env(safe-area-inset-left));bottom:calc(12px + env(safe-area-inset-bottom));width:clamp(74px,16vw,100px);height:clamp(74px,16vw,100px)}
-#game.control-actions{position:absolute;right:calc(16px + env(safe-area-inset-right));bottom:calc(42px + env(safe-area-inset-bottom));display:flex;flex-direction:column;align-items:center;gap:clamp(8px,1.5vh,14px);pointer-events:auto}
-#game.ability{width:clamp(58px,11vw,76px);height:clamp(58px,11vw,76px)}
-#game.controls-center{display:none}
-#game.help-hint{left:calc(12px + env(safe-area-inset-left))}
-#game.stage{flex:1;min-height:0}
-#app:fullscreen,#app:-webkit-full-screen{width:100vw;height:100dvh}
-@media(max-width:380px){
-  #game.topbar{padding-inline:7px;gap:3px}
-  #game.brand-mini{font-size:10px}
-  #game.right-top{gap:4px}
-  #game.score-pill{min-width:43px;padding:4px}
-  #game.icon-button{width:28px;height:28px;font-size:15px}
-  #game.timer{font-size:18px}
-  #game.round-label{font-size:8px;letter-spacing:.12em}
-}
-@media(max-height:500px) and (orientation:landscape){
-  #game{--game-topbar-height:48px}
-  #game.topbar{height:48px;flex-basis:48px}
-  #game.joy-zone{top:calc(var(--game-topbar-height) + env(safe-area-inset-top));left:0;bottom:0;width:50%;height:auto}
-  #game.joystick{left:calc(8px + env(safe-area-inset-left));bottom:calc(8px + env(safe-area-inset-bottom));width:66px;height:66px}
-  #game.control-actions{right:calc(16px + env(safe-area-inset-right));bottom:calc(32px + env(safe-area-inset-bottom));gap:6px}
-  #game.ability{width:52px;height:52px}
-  #game.ability.glyph{font-size:19px}
-  #game.ability small{font-size:7px}
-}
-</style></head>
-<body>
-<div id="app">
-  <div class="noise"></div>
-  <section id="menu" class="screen active">
-    <div class="menu-inner">
-      <div class="menu-copy">
-        <div class="eyebrow">Real-time party brawler</div>
-        <h1>CHAOS<span>ARENA</span></h1>
-        <p class="intro">Egy kerek aréna. Egyetlen életed van. Lökd ki a többieket, láncold össze a Dash-találatokat robbanássá, és maradj utolsónak talpon.</p>
-        <div class="actions">
-          <button id="createRoomBtn" class="primary">＋ &nbsp; Szoba létrehozása</button>
-          <button id="joinRoomBtn" class="secondary">↗ &nbsp; Csatlakozás kóddal</button>
-          <button id="howBtn" class="secondary">? &nbsp; Irányítás</button>
-        </div>
-        <p class="small-note">ONLINE PARTY · 2–8 JÁTÉKOS · 3 KÖR · ~5 PERC<br>A host is játszik. Hívd meg a barátaidat a szobakóddal, és küzdjetek meg a kör alakú arénában.</p>
-      </div>
-      <div class="preview">
-        <div class="preview-label"><span>SECTOR 01 / REACTOR RING</span><span class="preview-tag">ONLINE ARENA</span></div>
-        <canvas id="heroCanvas" class="hero-arena" aria-label="Az aréna előnézete"></canvas>
-        <div class="feature-row"><div class="feature"><strong>01 / DASH</strong><small>Villámgyors kitérés</small></div><div class="feature"><strong>02 / CHAIN BLAST</strong><small>Több Dash-találat = robbanás</small></div><div class="feature"><strong>03 / LAST ALIVE</strong><small>Nincs újraéledés</small></div></div>
-      </div>
-    </div>
-  </section>
-  <section id="game" class="screen">
-    <header class="topbar">
-      <div class="brand-mini">CHAOS<span>ARENA</span></div>
-      <div class="round-info"><span id="roundLabel" class="round-label">ROUND 1 / 3</span><div id="timer" class="timer">1:00</div></div>
-      <div class="right-top"><div class="score-pill"><small>ÖSSZPONT</small><strong id="myScore">00</strong></div><button id="fullscreenBtn" class="icon-button" type="button" aria-label="Teljes képernyő" title="Teljes képernyő">⛶</button><button id="menuBtn" class="icon-button" type="button" aria-label="Menü">Ⅱ</button></div>
-    </header>
-    <div id="stage" class="stage">
-      <canvas id="gameCanvas" aria-label="Chaos Arena játéktér"></canvas>
-      <div id="eventBanner" class="event-banner">⚠ CHAOS WAVE</div>
-      <div class="help-hint">BAL OLDAL: MOZGÁS · JOBB OLDAL: KÉPESSÉGEK</div>
-      <div id="toast" class="toast"><small id="toastEyebrow">ROUND 1 COMPLETE</small><strong id="toastTitle">CHAOS!</strong><p id="toastText">Készülj a következő körre.</p></div>
-    </div>
-    <div class="controls">
-      <div id="joyZone" class="joy-zone"><div id="joystick" class="joystick"><div id="joyKnob" class="joy-knob"></div></div></div>
-      <div class="controls-center"><b>WASD / JOYSTICK</b>MOZGÁS · DASH · PULSE</div>
-      <div class="control-actions">
-        <button id="dashBtn" class="ability dash" aria-label="Dash"><span class="glyph">ϟ</span><small>DASH</small><span id="dashCd" class="cooldown" style="--cd:0%"></span></button>
-        <button id="pulseBtn" class="ability pulse" aria-label="Pulse"><span class="glyph">✳</span><small>PULSE</small><span id="pulseCd" class="cooldown" style="--cd:0%"></span></button>
-      </div>
-    </div>
-    <div id="modalWrap" class="modal-wrap">
-      <div class="modal"><div class="tagline" id="modalTag">PAUSE MENU</div><h2 id="modalTitle">Szünet?</h2><p id="modalText">A mérkőzés szünetel. Folytasd, vagy kezdd újra a káoszt.</p><button id="resumeBtn" class="primary">▶ &nbsp; Folytatás</button><button id="restartBtn" class="secondary">↻ &nbsp; Új meccs</button><button id="homeBtn" class="secondary">⌂ &nbsp; Főmenü</button><p class="tiny">Tipp: a Dash kitérésre, a Pulse pedig a közelben álló ellenfelek ellökésére való.</p></div>
-    </div>
-  </section>
-  <div id="roomWrap" class="modal-wrap">
-    <div class="modal">
-      <div id="roomSetup">
-        <div class="tagline" id="roomSetupTag">ONLINE PARTY</div>
-        <h2 id="roomSetupTitle">Szoba létrehozása</h2>
-        <p id="roomSetupText">Adj meg egy nevet, majd hozz létre egy szobát. A szobakódot oszd meg a többiekkel.</p>
-        <label class="room-label" for="roomNameInput">Játékosnév</label>
-        <input id="roomNameInput" class="room-input" maxlength="16" autocomplete="nickname" value="Player" placeholder="Pl. Alex">
-        <div id="roomCodeField" style="display:none">
-          <label class="room-label" for="roomCodeInput">Szobakód</label>
-          <input id="roomCodeInput" class="room-input" maxlength="8" autocapitalize="characters" autocomplete="off" placeholder="PL. A7K9Q2">
-        </div>
-        <div id="roomError" class="room-error" role="status" aria-live="polite"></div>
-        <div class="room-actions">
-          <button id="roomConfirmBtn" class="primary">＋ &nbsp; Szoba létrehozása</button>
-          <button id="roomCancelBtn" class="secondary">Vissza</button>
-        </div>
-      </div>
-      <div id="roomLobby" style="display:none">
-        <div class="tagline">ONLINE PARTY / LOBBY</div>
-        <h2 id="roomLobbyTitle">Várakozás a játékosokra</h2>
-        <p id="roomStatus" class="room-status">A szoba elindult.</p>
-        <div class="room-code-row"><div><div class="room-label" style="margin:0 0 3px">SZOBAKÓD</div><div id="roomCodeDisplay" class="room-code">------</div></div><button id="copyRoomCodeBtn" class="secondary">Másolás</button></div>
-        <div id="roomPlayers" class="room-players"></div>
-        <div id="roomLobbyError" class="room-error" role="status" aria-live="polite"></div>
-        <div class="room-actions">
-          <button id="startOnlineBtn" class="primary" disabled>▶ &nbsp; Meccs indítása (legalább 2 fő)</button>
-          <button id="leaveRoomBtn" class="secondary">Kilépés a szobából</button>
-        </div>
-        <p class="tiny">3 kör · körönként legfeljebb 90 mp (+ hirtelen halál) · kiesés után nincs újraéledés. A következő kört mindig a host indítja.</p>
-      </div>
-    </div>
-  </div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.5/dist/peerjs.min.js"></script>
-<script>
-(()=>{'use strict';
-const $=id=>document.getElementById(id);
-const COLORS=['#52f4ff','#ff4eb8','#c7ff5e','#ffb454','#9b78ff','#ff6d62','#69a3ff','#e8f1ff'];
-const W=1000, ROUND_SECONDS=90, ROUND_COUNT=3, OVERTIME_SECONDS=20;
-const PEER_CONFIG={
-  debug:0,
-  secure:true,
-  config:{
-    iceServers:[
-      {urls:'stun:stun.l.google.com:19302'},
-      {urls:'stun:stun1.l.google.com:19302'},
-      {urls:'stun:stun2.l.google.com:19302'},
-      {urls:'stun:stun3.l.google.com:19302'},
-      {urls:'stun:stun4.l.google.com:19302'},
-      {urls:'stun:global.stun.twilio.com:3478'}
-    ],
-    sdpSemantics:'unified-plan'
-  }
-};
-let canvas,ctx,stage,raf=0,heroRaf=0,lastTime=0,gameState='menu',paused=false,hostPaused=false,transitioning=false,round=1,timeLeft=ROUND_SECONDS,overtimeTime=0,players=[],orbs=[],particles=[],hazards=[],roundScores=[],eventTimer=0,orbTimer=0,shake=0,globalClock=0,toastTimer=0,heroCtx,heroCanvas,sharedWorldH=null,localPlayerId='you',roomMode='create',lastInputSend=0,lastStateSend=0,networkLost=false,wakeLock=null;
-const net={mode:'offline',peer:null,conn:null,connections:new Map(),code:'',name:'Player',isHost:false,playerId:null,joinTimer:null,closing:false};
-const input={x:0,y:0,dash:false,pulse:false};
-let joyPointer=null;
-function clamp(v,a,b){return Math.max(a,Math.min(b,v))}function rand(a,b){return a+Math.random()*(b-a)}function dist(a,b){return Math.hypot(a.x-b.x,a.y-b.y)}function norm(x,y){let m=Math.hypot(x,y)||1;return{x:x/m,y:y/m}}function fmt(n){return String(Math.max(0,Math.floor(n))).padStart(2,'0')}
-function resize(){canvas=$('gameCanvas');stage=$('stage');const dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=Math.max(1,Math.floor(stage.clientWidth*dpr));canvas.height=Math.max(1,Math.floor(stage.clientHeight*dpr));ctx=canvas.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);heroCanvas=$('heroCanvas');const r=heroCanvas.getBoundingClientRect();heroCanvas.width=Math.max(1,Math.floor(r.width*dpr));heroCanvas.height=Math.max(1,Math.floor(r.height*dpr));heroCtx=heroCanvas.getContext('2d');heroCtx.setTransform(dpr,0,0,dpr,0,0);}
-function world(){const cw=canvas?canvas.clientWidth:W,ch=canvas?canvas.clientHeight:W;return{w:W,h:sharedWorldH||clamp(W*ch/Math.max(1,cw),620,2600),cw,ch,scale:Math.min(cw/W,ch/620)}}
-function localPlayer(){return players.find(p=>p.id===localPlayerId)||null}
-function isOnline(){return net.mode==='host'||net.mode==='guest'}
-function newPlayer(id,name,color,human,x,y){return{id,name,color,human,x,y,vx:0,vy:0,r:human?19:18,score:0,roundScore:0,roundWins:0,alive:true,eliminated:false,respawn:0,dashCd:0,pulseCd:0,dashTime:0,dashWindow:0,dashHits:[],dashExploded:false,knockbackTime:0,invuln:0.7,faceX:1,faceY:0,target:null,flash:0,knockouts:0,roundKnockouts:0,energy:0,roundSurvival:0,survivalTime:0,netInput:{x:0,y:0},disconnected:false,lastHitBy:null,lastHitAt:-999}}
-function resetRound(){timeLeft=ROUND_SECONDS;overtimeTime=0;const wd=world(),h=wd.h,R=arenaBaseRadius(wd);players.forEach((p,i)=>{const a=(Math.PI*2*i/Math.max(1,players.length))-Math.PI/2,rad=R*.48;p.x=W/2+Math.cos(a)*rad;p.y=h/2+Math.sin(a)*rad;p.vx=p.vy=0;p.alive=!p.disconnected;p.eliminated=!!p.disconnected;p.respawn=0;p.dashCd=rand(0,.45);p.pulseCd=rand(0,.8);p.dashTime=0;p.dashWindow=0;p.dashHits=[];p.dashExploded=false;p.knockbackTime=0;p.invuln=p.disconnected?0:0.85;p.roundScore=0;p.roundKnockouts=0;p.roundSurvival=0;p.energy=0;p.flash=0;p.netInput={x:0,y:0};p.lastHitBy=null;p.lastHitAt=-999});orbs=[];hazards=[];particles=[];for(let i=0;i<5;i++)spawnOrb();timeLeft=ROUND_SECONDS;overtimeTime=0;eventTimer=7;orbTimer=3;shake=0;transitioning=false;updateHud()}
-function arenaBaseRadius(wd=world()){return Math.min(W,wd.h)*.43}
-function arenaRadius(wd=world()){const base=arenaBaseRadius(wd);if(overtimeTime>0){const t=clamp(overtimeTime/OVERTIME_SECONDS,0,1);return base*(.68-.54*t)}if(timeLeft<25){const t=clamp(timeLeft/25,0,1);return base*(.68+.32*t)}return base}
-function randomPointInArena(margin=70){const wd=world(),R=Math.max(20,arenaRadius(wd)-margin),a=rand(0,Math.PI*2),r=Math.sqrt(Math.random())*R;return{x:W/2+Math.cos(a)*r,y:wd.h/2+Math.sin(a)*r}}
-function spawnOrb(){const point=randomPointInArena(65);orbs.push({x:point.x,y:point.y,r:9,phase:rand(0,6.28),life:20})}
-function spawnBurst(x,y,color,count=10,power=180){for(let i=0;i<count;i++){const a=rand(0,Math.PI*2),v=rand(power*.2,power);particles.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,life:rand(.25,.65),max:.65,color,r:rand(2,5)})}}
-function useDash(p){if(net.mode==='guest'&&p&&p.id===localPlayerId){if(p.dashCd<=0&&p.alive)sendNet({type:'action',action:'dash'});return}if(p.dashCd>0||!p.alive||p.disconnected||gameState!=='playing'||paused)return;const dir=p.id===localPlayerId?input:(p.netInput||{x:p.faceX,y:p.faceY});let dx=p.human?dir.x:p.faceX,dy=p.human?dir.y:p.faceY;if(Math.hypot(dx,dy)<.12){dx=p.faceX||1;dy=p.faceY||0}const n=norm(dx,dy);p.vx+=n.x*720;p.vy+=n.y*720;p.dashCd=4;p.dashTime=.23;p.dashWindow=.58;p.dashHits=[];p.dashExploded=false;p.knockbackTime=Math.max(p.knockbackTime,.2);p.invuln=0;p.faceX=n.x;p.faceY=n.y;spawnBurst(p.x,p.y,p.color,14,170);shake=Math.max(shake,3)}
-function usePulse(p){if(net.mode==='guest'&&p&&p.id===localPlayerId){if(p.pulseCd<=0&&p.alive)sendNet({type:'action',action:'pulse'});return}if(p.pulseCd>0||!p.alive||p.disconnected||gameState!=='playing'||paused)return;p.pulseCd=7;spawnBurst(p.x,p.y,p.color,24,250);particles.push({x:p.x,y:p.y,ring:true,life:.48,max:.48,color:p.color,r:18});for(const o of players){if(o===p||!o.alive||o.disconnected||o.invuln>.18)continue;const dx=o.x-p.x,dy=o.y-p.y,d=Math.hypot(dx,dy);if(d<145){const n=norm(dx,dy),force=(1-d/145)*620+220;o.vx+=n.x*force;o.vy+=n.y*force;o.knockbackTime=Math.max(o.knockbackTime,.42);o.lastHitBy=p.id;o.lastHitAt=globalClock;o.flash=.28;if(d<88){p.roundScore+=1;p.score+=1;showTinyScore(o.x,o.y-25,'+1')}}}shake=Math.max(shake,7)}
-function showTinyScore(x,y,t){particles.push({x,y,vx:0,vy:-38,life:.85,max:.85,text:t,color:'#c7ff5e',r:0})}
-function doKnockout(p,source){if(!p.alive)return;p.alive=false;p.eliminated=true;p.respawn=0;p.vx=p.vy=0;p.dashTime=0;p.dashWindow=0;spawnBurst(p.x,p.y,p.color,30,290);let credit=source;if(!credit&&p.lastHitBy&&globalClock-p.lastHitAt<5)credit=players.find(q=>q.id===p.lastHitBy&&q.id!==p.id&&!q.disconnected);if(credit&&credit!==p){credit.score+=2;credit.roundScore+=2;credit.knockouts++;credit.roundKnockouts++;showTinyScore(credit.x,credit.y-26,'+2')}shake=Math.max(shake,10)}
-function dashContact(attacker,target){if(!attacker||!target||!attacker.alive||!target.alive||attacker.dashWindow<=0||attacker.dashHits.includes(target.id))return false;attacker.dashHits.push(target.id);const n=norm(target.x-attacker.x,target.y-attacker.y);const force=690;target.vx+=n.x*force+attacker.vx*.16;target.vy+=n.y*force+attacker.vy*.16;target.knockbackTime=Math.max(target.knockbackTime,.52);target.lastHitBy=attacker.id;target.lastHitAt=globalClock;target.flash=.32;attacker.flash=.18;attacker.score+=1;attacker.roundScore+=1;spawnBurst(target.x,target.y,target.color,13,190);showTinyScore(attacker.x,attacker.y-26,'+1');shake=Math.max(shake,5);if(attacker.dashHits.length>=2&&!attacker.dashExploded)createDashExplosion(attacker,target.x,target.y);return true}
-function createDashExplosion(attacker,x,y){if(attacker.dashExploded)return;attacker.dashExploded=true;const radius=235;spawnBurst(x,y,attacker.color,48,420);particles.push({x,y,ring:true,life:.68,max:.68,color:attacker.color,r:22});particles.push({x,y,ring:true,life:.48,max:.48,color:'#ffffff',r:8});for(const p of players){if(!p.alive||p.disconnected||p===attacker)continue;const dx=p.x-x,dy=p.y-y,d=Math.hypot(dx,dy);if(d<radius){const n=norm(dx,dy),force=(1-d/radius)*730+240;p.vx+=n.x*force;p.vy+=n.y*force;p.knockbackTime=Math.max(p.knockbackTime,.65);p.lastHitBy=attacker.id;p.lastHitAt=globalClock;p.flash=.38;spawnBurst(p.x,p.y,p.color,8,145)}}attacker.score+=1;attacker.roundScore+=1;showTinyScore(x,y-42,'CHAIN BLAST +1');shake=Math.max(shake,19)}
-function roundTiebreak(list){return [...list].sort((a,b)=>b.roundScore-a.roundScore||b.roundKnockouts-a.roundKnockouts||b.roundSurvival-a.roundSurvival||String(a.id).localeCompare(String(b.id)))}
-function update(dt){if(gameState!=='playing'||paused)return;globalClock+=dt;const wd=world();timeLeft=Math.max(0,timeLeft-dt);if(timeLeft<=0)overtimeTime+=dt;eventTimer-=dt;orbTimer-=dt;toastTimer=Math.max(0,toastTimer-dt);if(toastTimer===0)$('toast').classList.remove('show');
-if(timeLeft>0&&eventTimer<=0){eventTimer=18;const point=randomPointInArena(150),r=rand(58,82);hazards.push({x:point.x,y:point.y,r,life:7,max:7,activeIn:1.4,pushCooldown:0});$('eventBanner').textContent='⚠ CHAOS WAVE · VESZÉLYZÓNA';$('eventBanner').classList.add('visible');setTimeout(()=>{$('eventBanner').classList.remove('visible')},2300)}
-if(timeLeft>0&&orbTimer<=0){orbTimer=rand(2.4,4);if(orbs.length<7)spawnOrb()}
-for(const hz of hazards){hz.life-=dt;hz.activeIn-=dt;hz.pushCooldown=(hz.pushCooldown||0)-dt;if(hz.activeIn<=0&&hz.pushCooldown<=0){hz.pushCooldown=.28;for(const p of players){if(!p.alive||p.disconnected)continue;const dx=p.x-hz.x,dy=p.y-hz.y,d=Math.hypot(dx,dy);if(d<hz.r+p.r){const n=norm(dx,dy);p.vx+=n.x*170;p.vy+=n.y*170;p.knockbackTime=Math.max(p.knockbackTime,.24);p.lastHitBy=null;p.lastHitAt=-999;}}}}hazards=hazards.filter(h=>h.life>0);
-for(const orb of orbs){orb.phase+=dt*2;orb.life-=dt}orbs=orbs.filter(o=>o.life>0);
-for(const p of players){if(p.disconnected||!p.alive)continue;p.roundSurvival+=dt;p.survivalTime+=dt;p.dashCd=Math.max(0,p.dashCd-dt);p.pulseCd=Math.max(0,p.pulseCd-dt);p.invuln=Math.max(0,p.invuln-dt);p.dashTime=Math.max(0,p.dashTime-dt);p.dashWindow=Math.max(0,p.dashWindow-dt);p.knockbackTime=Math.max(0,p.knockbackTime-dt);p.flash=Math.max(0,p.flash-dt);let mv;if(p.human){const raw=p.id===localPlayerId?input:(p.netInput||{x:0,y:0});mv={x:raw.x||0,y:raw.y||0}}else mv={x:0,y:0};const moving=Math.hypot(mv.x,mv.y)>.06;if(moving){const n=norm(mv.x,mv.y);p.faceX=n.x;p.faceY=n.y;const acceleration=p.knockbackTime>0?2.2:(p.dashTime>0?2:10);p.vx+=(n.x*250-p.vx)*Math.min(1,dt*acceleration);p.vy+=(n.y*250-p.vy)*Math.min(1,dt*acceleration)}else{const damping=p.knockbackTime>0?.42:.12;p.vx*=Math.pow(damping,dt);p.vy*=Math.pow(damping,dt)}const speed=Math.hypot(p.vx,p.vy),max=(p.dashTime>0?620:(p.knockbackTime>0?690:250));if(speed>max){p.vx=p.vx/speed*max;p.vy=p.vy/speed*max}p.x+=p.vx*dt;p.y+=p.vy*dt;
-const dx=p.x-W/2,dy=p.y-wd.h/2,radial=Math.hypot(dx,dy),R=arenaRadius(wd);if(radial>R-78&&radial>0){const pressure=clamp((radial-(R-78))/78,0,1)*105;p.vx-=dx/radial*pressure*dt;p.vy-=dy/radial*pressure*dt}
-for(const hz of hazards){if(hz.activeIn<=0){const hx=p.x-hz.x,hy=p.y-hz.y,d=Math.hypot(hx,hy);if(d<hz.r&&d>0&&Math.random()<.05)spawnBurst(p.x,p.y,'#ff4eb8',2,60)}}
-for(let i=orbs.length-1;i>=0;i--){const o=orbs[i];if(Math.hypot(p.x-o.x,p.y-o.y)<p.r+o.r+3){p.score+=1;p.roundScore+=1;p.energy++;p.dashCd=Math.max(0,p.dashCd-1);p.pulseCd=Math.max(0,p.pulseCd-1);spawnBurst(o.x,o.y,'#c7ff5e',9,140);showTinyScore(p.x,p.y-25,'+1 · CD −1s');orbs.splice(i,1);break}}}
-// Dash contacts
-for(let i=0;i<players.length;i++)for(let j=i+1;j<players.length;j++){const a=players[i],b=players[j];if(!a.alive||!b.alive||a.disconnected||b.disconnected)continue;let dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy),min=a.r+b.r;if(d<min&&d>.001){const n=norm(dx,dy),over=min-d;a.x-=n.x*over*.5;a.y-=n.y*over*.5;b.x+=n.x*over*.5;b.y+=n.y*over*.5;const attackA=a.dashWindow>0&&!a.dashHits.includes(b.id),attackB=b.dashWindow>0&&!b.dashHits.includes(a.id);if(attackA)dashContact(a,b);if(attackB)dashContact(b,a);if(!attackA&&!attackB){const rel=(b.vx-a.vx)*n.x+(b.vy-a.vy)*n.y,impulse=Math.max(30,115-rel*.18);a.vx-=n.x*impulse*.10;a.vy-=n.y*impulse*.10;b.vx+=n.x*impulse*.10;b.vy+=n.y*impulse*.10}}}
-const liveWd=world(),R2=arenaRadius(liveWd);for(const p of players){if(!p.alive||p.disconnected)continue;const radial=Math.hypot(p.x-W/2,p.y-liveWd.h/2);if(radial>R2+p.r*.16){let source=null;if(p.lastHitBy&&globalClock-p.lastHitAt<5)source=players.find(q=>q.id===p.lastHitBy);doKnockout(p,source)}}
-for(const pt of particles){pt.life-=dt;if(!pt.ring){pt.x+=(pt.vx||0)*dt;pt.y+=(pt.vy||0)*dt;pt.vx=(pt.vx||0)*Math.pow(.08,dt);pt.vy=(pt.vy||0)*Math.pow(.08,dt)}else pt.r+=dt*430}particles=particles.filter(p=>p.life>0);shake=Math.max(0,shake-dt*24);
-const alive=players.filter(p=>p.alive&&!p.disconnected);if(alive.length<=1){finishRound(alive[0]||null,'last-alive');return}if(overtimeTime>=OVERTIME_SECONDS){finishRound(roundTiebreak(players.filter(p=>!p.disconnected))[0]||null,'overtime');return}updateHud()}
-function finishRound(winnerOverride,reason='time'){if(transitioning||gameState!=='playing')return;transitioning=true;timeLeft=0;const eligible=players.filter(p=>!p.disconnected);const alive=eligible.filter(p=>p.alive);let winner=winnerOverride||((alive.length===1)?alive[0]:null);if(!winner&&eligible.length)winner=roundTiebreak(eligible)[0];if(winner){winner.roundWins=(winner.roundWins||0)+1;winner.score+=3;winner.roundScore+=3}const order=roundTiebreak(eligible);if(winner)order.sort((a,b)=>a===winner?-1:b===winner?1:(roundTiebreak([a,b])[0]===a?-1:1));const entry=order.map(p=>({id:p.id,name:p.name,score:p.roundScore,color:p.color,roundWins:p.roundWins||0,roundKnockouts:p.roundKnockouts||0,alive:!!p.alive}));roundScores.push({round, winnerId:winner?winner.id:null, winnerName:winner?winner.name:'', players:entry});gameState='roundEnd';paused=true;showRoundEndUI({round,winner:winner?{id:winner.id,name:winner.name,color:winner.color}:null,players:entry,reason});if(net.mode==='host')broadcast({type:'roundEnd',round,winner:winner?{id:winner.id,name:winner.name,color:winner.color}:null,players:entry,reason,state:snapshotData().state});if(round>=ROUND_COUNT){gameState='result';showFinal()}if(net.mode==='host')broadcastSnapshot(true)}
-function showFinal(){if(gameState!=='result')return;paused=true;const eligible=players.filter(p=>!p.disconnected);const order=[...eligible].sort((a,b)=>(b.roundWins||0)-(a.roundWins||0)||b.score-a.score||b.knockouts-a.knockouts||b.survivalTime-a.survivalTime||String(a.id).localeCompare(String(b.id)));const winner=order[0];$('modalTag').textContent='MATCH COMPLETE';$('modalTitle').textContent=winner?(winner.id===localPlayerId?'TE VAGY A BAJNOK!':`${escapeHtml(winner.name)} A BAJNOK!`):'NINCS GYŐZTES';$('modalText').innerHTML=(winner?`<b style="color:${winner.color}">${escapeHtml(winner.name)}</b> megnyerte a Chaos Arenát.<br><br>`:'A mérkőzés győztes nélkül zárult.<br><br>')+order.map((p,i)=>`<span style="color:${p.color};font-weight:900">${i+1}. ${escapeHtml(p.name)}</span> — ${p.roundWins||0} körgyőzelem · ${p.score} pont · ${p.knockouts} kilökés`).join('<br>');$('resumeBtn').textContent=net.mode==='guest'?'Várakozás a hostra…':'↻ Új mérkőzés indítása';$('resumeBtn').disabled=net.mode==='guest';$('restartBtn').style.display='none';$('homeBtn').textContent='⌂ Főmenü';$('modalWrap').classList.add('show');if(net.mode==='host')broadcast({type:'matchResult',players:order.map(p=>({id:p.id,name:p.name,score:p.score,color:p.color,roundWins:p.roundWins||0,knockouts:p.knockouts||0,survivalTime:p.survivalTime||0}))})}
-function showRoundEndUI(data={}){const r=data.round||round,winner=data.winner;const ranking=Array.isArray(data.players)?data.players:roundTiebreak(players.filter(p=>!p.disconnected)).map(p=>({id:p.id,name:p.name,score:p.roundScore,color:p.color,alive:p.alive,roundKnockouts:p.roundKnockouts}));$('modalTag').textContent=`ROUND ${r} / ${ROUND_COUNT} COMPLETE`;$('modalTitle').textContent=winner?`${escapeHtml(winner.name)} NYERTE A KÖRT!`:'KÖR VÉGE';$('modalText').innerHTML=(winner?`<b style="color:${winner.color||'#52f4ff'}">${escapeHtml(winner.name)}</b> megnyerte ezt a kört.<br>`:'A kör lezárult.<br>')+'<br>'+ranking.map((p,i)=>`<span style="color:${p.color||'#d5ddf7'};font-weight:900">${i+1}. ${escapeHtml(p.name||'Player')}</span> — ${p.score||0} pont ${p.alive?'· talpon maradt':'· kiesett'}`).join('<br>')+'<br><br><span style="color:#94a2c4">A kiesett játékosok ebben a körben nem élednek újra.</span>';$('resumeBtn').textContent=net.mode==='guest'?'Várakozás a hostra…':'▶ Következő kör indítása';$('resumeBtn').disabled=net.mode==='guest';$('restartBtn').style.display='none';$('homeBtn').textContent='⌂ Főmenü';$('modalWrap').classList.add('show')}
-function startNextRound(){if(gameState!=='roundEnd')return;if(net.mode==='guest')return;if(round>=ROUND_COUNT){gameState='result';showFinal();return}round++;gameState='playing';paused=false;hostPaused=false;resetRound();$('roundLabel').textContent=`ROUND ${round} / ${ROUND_COUNT}`;$('modalWrap').classList.remove('show');$('resumeBtn').disabled=false;$('resumeBtn').textContent='▶ Folytatás';$('restartBtn').style.display='';$('eventBanner').classList.remove('visible');lastTime=performance.now();if(net.mode==='host')broadcast({type:'roundStart',state:snapshotData().state});if(!raf)raf=requestAnimationFrame(loop)}
-function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function updateHud(){$('timer').textContent=overtimeTime>0?`OT ${fmt(Math.max(0,OVERTIME_SECONDS-overtimeTime))}`:`${Math.floor(Math.max(0,timeLeft)/60)}:${fmt(Math.max(0,timeLeft)%60)}`;$('roundLabel').textContent=`ROUND ${Math.min(round,ROUND_COUNT)} / ${ROUND_COUNT}`;const p=localPlayer();$('myScore').textContent=fmt(p?p.score:0);if(p){$('dashCd').style.setProperty('--cd',`${p.dashCd/4*100}%`);$('pulseCd').style.setProperty('--cd',`${p.pulseCd/7*100}%`);$('dashBtn').style.opacity=(p.dashCd>0||!p.alive)?.58:1;$('pulseBtn').style.opacity=(p.pulseCd>0||!p.alive)?.58:1;$('dashBtn').disabled=!p.alive;$('pulseBtn').disabled=!p.alive}}
-function rgba(hex,a=1){const h=String(hex||'#ffffff').replace('#','');const n=parseInt(h.length===3?h.split('').map(v=>v+v).join(''):h,16);return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${a})`}
-function drawBackground(c,w,h){
- const g=c.createLinearGradient(0,0,w,h);g.addColorStop(0,'#0b1830');g.addColorStop(.42,'#080f22');g.addColorStop(1,'#030611');c.fillStyle=g;c.fillRect(0,0,w,h);
- const glow=c.createRadialGradient(w*.5,h*.5,20,w*.5,h*.5,Math.max(w,h)*.74);glow.addColorStop(0,'rgba(41,80,137,.17)');glow.addColorStop(1,'rgba(0,0,0,.54)');c.fillStyle=glow;c.fillRect(0,0,w,h);
- c.save();for(let i=0;i<90;i++){const x=((i*137.508)%w),y=((i*83.719+19)%h),r=(i%5===0?1.45:.7),a=.15+(.5+.5*Math.sin(globalClock*.45+i*2.1))*.24;c.globalAlpha=a;c.fillStyle=i%7===0?'#70efff':'#9db7ec';c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.fill()}c.globalAlpha=1;c.strokeStyle='rgba(114,158,234,.035)';c.lineWidth=1;const grid=42;for(let x=0;x<w;x+=grid){c.beginPath();c.moveTo(x,0);c.lineTo(x,h);c.stroke()}for(let y=0;y<h;y+=grid){c.beginPath();c.moveTo(0,y);c.lineTo(w,y);c.stroke()}c.restore()
-}
-function drawArena(c,w,h){
- drawBackground(c,w,h);const cx=w/2,cy=h/2;const activeR=(w===W&&gameState!=='menu')?arenaRadius({w:W,h}):Math.min(w,h)*.43;const R=Math.max(20,activeR);
- c.save();
- c.shadowColor='rgba(0,0,0,.8)';c.shadowBlur=42;c.shadowOffsetY=14;c.fillStyle='#030713';c.beginPath();c.arc(cx,cy,R+7,0,Math.PI*2);c.fill();c.shadowBlur=0;c.shadowOffsetY=0;
- const metal=c.createRadialGradient(cx-R*.22,cy-R*.3,R*.03,cx,cy,R*1.08);metal.addColorStop(0,'#263f65');metal.addColorStop(.38,'#172b4b');metal.addColorStop(.76,'#0b1a33');metal.addColorStop(.94,'#071225');metal.addColorStop(1,'#020713');c.fillStyle=metal;c.beginPath();c.arc(cx,cy,R,0,Math.PI*2);c.fill();
- c.save();c.beginPath();c.arc(cx,cy,R-15,0,Math.PI*2);c.clip();const floor=c.createRadialGradient(cx,cy,10,cx,cy,R);floor.addColorStop(0,'rgba(29,57,93,.42)');floor.addColorStop(.7,'rgba(7,21,43,.15)');floor.addColorStop(1,'rgba(3,9,21,.84)');c.fillStyle=floor;c.fillRect(cx-R,cy-R,R*2,R*2);
- c.strokeStyle='rgba(102,169,239,.065)';c.lineWidth=1;for(let x=cx-R;x<=cx+R;x+=28){c.beginPath();c.moveTo(x,cy-R);c.lineTo(x,cy+R);c.stroke()}for(let y=cy-R;y<=cy+R;y+=28){c.beginPath();c.moveTo(cx-R,y);c.lineTo(cx+R,y);c.stroke()}
- c.strokeStyle='rgba(91,164,230,.10)';c.lineWidth=1;for(let i=0;i<12;i++){const a=i*Math.PI/6+.13;const r1=R*.48,r2=R*.86;c.beginPath();c.moveTo(cx+Math.cos(a)*r1,cy+Math.sin(a)*r1);c.lineTo(cx+Math.cos(a)*r2,cy+Math.sin(a)*r2);c.stroke()}
- for(let i=0;i<24;i++){const a=i*Math.PI/12;const r1=R*.73,r2=R*.87;c.save();c.translate(cx,cy);c.rotate(a);c.fillStyle=i%3===0?'rgba(106,246,255,.065)':'rgba(126,161,226,.035)';c.fillRect(r1,-2,r2-r1,4);c.restore()}
- c.restore();
- for(const [f,color,lw] of [[.78,'rgba(99,166,235,.10)',1],[.61,'rgba(106,246,255,.16)',1.4],[.37,'rgba(106,246,255,.11)',1]]){c.strokeStyle=color;c.lineWidth=lw;c.beginPath();c.arc(cx,cy,R*f,0,Math.PI*2);c.stroke()}
- c.strokeStyle='rgba(106,246,255,.24)';c.lineWidth=10;c.beginPath();c.arc(cx,cy,R-7,0,Math.PI*2);c.stroke();c.strokeStyle='rgba(106,246,255,.12)';c.lineWidth=5;c.beginPath();c.arc(cx,cy,R+1,0,Math.PI*2);c.stroke();c.shadowColor='#55eeff';c.shadowBlur=19;c.strokeStyle='#75f8ff';c.lineWidth=2.2;c.beginPath();c.arc(cx,cy,R,0,Math.PI*2);c.stroke();c.shadowBlur=0;
- c.save();c.translate(cx,cy);c.rotate(globalClock*.035);for(let i=0;i<72;i++){const a=i*Math.PI/36,major=i%6===0;const r1=R+(major?-12:-5),r2=R+(major?12:3);c.strokeStyle=major?'rgba(160,250,255,.9)':'rgba(111,193,229,.32)';c.lineWidth=major?2:1;c.beginPath();c.moveTo(Math.cos(a)*r1,Math.sin(a)*r1);c.lineTo(Math.cos(a)*r2,Math.sin(a)*r2);c.stroke()}c.restore();
- for(let i=0;i<4;i++){const a=i*Math.PI/2+Math.PI/4,pr=R*.91;c.save();c.translate(cx+Math.cos(a)*pr,cy+Math.sin(a)*pr);c.rotate(a);c.fillStyle='#122b48';c.strokeStyle='rgba(113,239,255,.55)';c.lineWidth=1.4;c.shadowColor='#52f4ff';c.shadowBlur=9;c.beginPath();c.moveTo(-10,-6);c.lineTo(6,-6);c.lineTo(12,0);c.lineTo(6,6);c.lineTo(-10,6);c.closePath();c.fill();c.stroke();c.restore()}
- const core=R*.205;const coreGlow=c.createRadialGradient(cx,cy,1,cx,cy,core*1.6);coreGlow.addColorStop(0,'rgba(75,218,255,.17)');coreGlow.addColorStop(1,'rgba(39,93,169,0)');c.fillStyle=coreGlow;c.beginPath();c.arc(cx,cy,core*1.6,0,Math.PI*2);c.fill();
- for(const [f,col,lw] of [[1,'rgba(106,246,255,.45)',2],[.76,'rgba(128,162,255,.28)',1.2],[.48,'rgba(106,246,255,.2)',1]]){c.strokeStyle=col;c.lineWidth=lw;c.beginPath();c.arc(cx,cy,core*f,0,Math.PI*2);c.stroke()}
- c.save();c.translate(cx,cy);c.rotate(globalClock*.3);c.strokeStyle='rgba(106,246,255,.8)';c.lineWidth=2;c.setLineDash([8,10]);c.beginPath();c.arc(0,0,core*1.15,0,Math.PI*2);c.stroke();c.setLineDash([]);c.rotate(-globalClock*.62);c.strokeStyle='rgba(255,78,169,.62)';c.lineWidth=2;c.beginPath();c.arc(0,0,core*.88,.2,Math.PI*1.25);c.stroke();c.restore();
- const reactor=c.createRadialGradient(cx-core*.25,cy-core*.28,2,cx,cy,core*.55);reactor.addColorStop(0,'#f2ffff');reactor.addColorStop(.18,'#8cffff');reactor.addColorStop(.52,'#278bba');reactor.addColorStop(1,'#101c3c');c.fillStyle=reactor;c.shadowColor='#52f4ff';c.shadowBlur=23;c.beginPath();c.arc(cx,cy,core*.48,0,Math.PI*2);c.fill();c.shadowBlur=0;c.strokeStyle='rgba(225,255,255,.83)';c.lineWidth=1.5;c.beginPath();c.arc(cx,cy,core*.48,0,Math.PI*2);c.stroke();
- for(let i=0;i<8;i++){const a=i*Math.PI/4+globalClock*.09,r1=core*.58,r2=core*.72;c.strokeStyle='rgba(117,239,255,.47)';c.lineWidth=2;c.beginPath();c.moveTo(cx+Math.cos(a)*r1,cy+Math.sin(a)*r1);c.lineTo(cx+Math.cos(a)*r2,cy+Math.sin(a)*r2);c.stroke()}
- if(timeLeft<25||overtimeTime>0){c.strokeStyle='rgba(255,78,169,.95)';c.lineWidth=3;c.setLineDash([10,8]);c.shadowColor='#ff4ea9';c.shadowBlur=12;c.beginPath();c.arc(cx,cy,R+3,0,Math.PI*2);c.stroke();c.setLineDash([]);c.shadowBlur=0}
- const vignette=c.createRadialGradient(cx,cy,R*.75,cx,cy,R*1.3);vignette.addColorStop(0,'rgba(0,0,0,0)');vignette.addColorStop(.55,'rgba(0,0,0,.12)');vignette.addColorStop(1,'rgba(0,0,0,.72)');c.fillStyle=vignette;c.fillRect(0,0,w,h);c.restore();
-}
-function drawHazards(c){for(const hz of hazards){c.save();const pulse=1+Math.sin(globalClock*5)*.045,alpha=hz.activeIn>0?.28:.45;c.globalAlpha=alpha;const grd=c.createRadialGradient(hz.x,hz.y,1,hz.x,hz.y,hz.r*pulse);grd.addColorStop(0,'rgba(255,67,151,.42)');grd.addColorStop(.72,'rgba(255,32,126,.14)');grd.addColorStop(1,'rgba(255,32,126,0)');c.fillStyle=grd;c.beginPath();c.arc(hz.x,hz.y,hz.r*pulse,0,Math.PI*2);c.fill();c.globalAlpha=.9;c.shadowColor='#ff4ea9';c.shadowBlur=12;c.strokeStyle='#ff4ea9';c.lineWidth=2.5;c.setLineDash(hz.activeIn>0?[7,7]:[3,5]);c.beginPath();c.arc(hz.x,hz.y,hz.r,0,Math.PI*2);c.stroke();c.setLineDash([]);c.shadowBlur=0;c.save();c.translate(hz.x,hz.y);c.rotate(globalClock*(hz.activeIn>0?-.55:.8));c.strokeStyle='rgba(255,125,189,.72)';c.lineWidth=1.5;for(let i=0;i<4;i++){c.rotate(Math.PI/2);c.beginPath();c.moveTo(0,-hz.r*.68);c.lineTo(0,-hz.r*.88);c.stroke()}c.restore();if(hz.activeIn>0){c.fillStyle='#ffe4f2';c.font='900 11px system-ui';c.textAlign='center';c.shadowColor='#ff4ea9';c.shadowBlur=10;c.fillText('VESZÉLY',hz.x,hz.y+4);c.shadowBlur=0}else{c.fillStyle='#ff9dc9';c.font='900 10px system-ui';c.textAlign='center';c.fillText('!',hz.x,hz.y+4)}c.restore()}}
-function drawOrb(c,o){c.save();c.translate(o.x,o.y);const bob=Math.sin(o.phase)*2.5;c.translate(0,bob);c.globalAlpha=.5;c.fillStyle='#000';c.beginPath();c.ellipse(0,13,11,4,0,0,Math.PI*2);c.fill();c.globalAlpha=1;c.rotate(o.phase*.35);c.shadowColor='#d8ff70';c.shadowBlur=24;c.strokeStyle='rgba(216,255,112,.48)';c.lineWidth=1.5;c.beginPath();c.arc(0,0,o.r+5,0,Math.PI*2);c.stroke();const g=c.createRadialGradient(-3,-4,1,0,0,o.r+2);g.addColorStop(0,'#fbffe5');g.addColorStop(.32,'#e6ff94');g.addColorStop(.72,'#a3db35');g.addColorStop(1,'#416b1c');c.fillStyle=g;c.beginPath();c.moveTo(0,-o.r-2);c.lineTo(o.r+1,0);c.lineTo(0,o.r+2);c.lineTo(-o.r-1,0);c.closePath();c.fill();c.shadowBlur=0;c.strokeStyle='#f3ffc4';c.lineWidth=1.3;c.stroke();c.strokeStyle='rgba(255,255,255,.65)';c.lineWidth=1;c.beginPath();c.moveTo(-3,-o.r*.45);c.lineTo(0,-o.r*.1);c.stroke();c.restore()}
-function drawPlayer(c,p){c.save();c.translate(p.x,p.y);const alive=p.alive&&!p.disconnected,flicker=p.invuln>0&&Math.floor(globalClock*18)%2===0;c.globalAlpha=alive?(flicker?.64:1):.2;
- c.globalAlpha*=.7;c.fillStyle='rgba(0,0,0,.58)';c.beginPath();c.ellipse(3,p.r*.72,p.r*1.15,p.r*.56,0,0,Math.PI*2);c.fill();c.globalAlpha=alive?(flicker?.64:1):.2;
- c.shadowColor=p.color;c.shadowBlur=alive?(p.id===localPlayerId?28:18):4;c.fillStyle=rgba(p.color,.12);c.beginPath();c.arc(0,0,p.r+9+Math.sin(globalClock*4+(p.id.length||1))*1.5,0,Math.PI*2);c.fill();c.shadowBlur=0;
- const body=c.createRadialGradient(-p.r*.34,-p.r*.42,1,0,0,p.r*1.22);body.addColorStop(0,'#ffffff');body.addColorStop(.13,p.color);body.addColorStop(.48,p.color);body.addColorStop(.82,'#17213c');body.addColorStop(1,'#070b18');c.fillStyle=body;c.beginPath();c.arc(0,0,p.r,0,Math.PI*2);c.fill();c.strokeStyle=alive?'rgba(241,255,255,.9)':'rgba(255,105,145,.8)';c.lineWidth=alive?1.8:1.3;c.stroke();
- if(alive){c.globalAlpha*=.75;c.fillStyle='rgba(255,255,255,.72)';c.beginPath();c.ellipse(-p.r*.28,-p.r*.47,p.r*.25,p.r*.12,-.55,0,Math.PI*2);c.fill();c.globalAlpha=alive?(flicker?.64:1):.2;c.save();c.rotate(Math.atan2(p.faceY||0,p.faceX||1));c.fillStyle='rgba(4,10,24,.82)';c.strokeStyle='rgba(255,255,255,.5)';c.lineWidth=1;c.beginPath();c.moveTo(-p.r*.48,-p.r*.21);c.quadraticCurveTo(0,-p.r*.48,p.r*.55,-p.r*.2);c.lineTo(p.r*.48,p.r*.19);c.quadraticCurveTo(0,p.r*.34,-p.r*.48,p.r*.19);c.closePath();c.fill();c.stroke();c.fillStyle='#ecffff';c.shadowColor=p.color;c.shadowBlur=7;c.beginPath();c.ellipse(-p.r*.14,-p.r*.04,2.6,3.5,0,0,Math.PI*2);c.ellipse(p.r*.2,-p.r*.04,2.6,3.5,0,0,Math.PI*2);c.fill();c.shadowBlur=0;c.restore();
- c.strokeStyle=rgba(p.color,p.id===localPlayerId?.88:.38);c.lineWidth=p.id===localPlayerId?2:1.4;c.beginPath();c.ellipse(0,0,p.r+5,p.r+3,globalClock*.22,Math.PI*1.05,Math.PI*1.94);c.stroke();
- if(p.dashTime>0||p.dashWindow>0){c.save();c.rotate(Math.atan2(p.faceY||0,p.faceX||1));c.globalAlpha=.72;c.strokeStyle=p.color;c.shadowColor=p.color;c.shadowBlur=12;c.lineCap='round';for(let i=0;i<3;i++){c.lineWidth=5-i;c.beginPath();c.moveTo(-p.r-5-i*7,(i-1)*6);c.lineTo(-p.r-21-i*13,(i-1)*7);c.stroke()}c.restore()}
- if(p.flash>0){c.globalAlpha=.95;c.strokeStyle='#fff';c.shadowColor=p.color;c.shadowBlur=14;c.lineWidth=3;c.beginPath();c.arc(0,0,p.r+5+Math.sin(globalClock*38)*2,0,Math.PI*2);c.stroke();c.shadowBlur=0}
- }else{c.globalAlpha=.9;c.strokeStyle='#ff91aa';c.lineWidth=2.5;c.beginPath();c.moveTo(-7,-7);c.lineTo(7,7);c.moveTo(7,-7);c.lineTo(-7,7);c.stroke()}
- c.globalAlpha=1;c.textAlign='center';c.font=`900 ${p.id===localPlayerId?12:10}px system-ui`;c.lineJoin='round';const label=alive?p.name:`${p.name} · KIESETT`;c.lineWidth=3;c.strokeStyle='rgba(2,5,13,.86)';c.strokeText(label,0,-p.r-12);c.fillStyle=alive?(p.id===localPlayerId?'#e7ffff':'#d2def8'):'#ff91aa';c.fillText(label,0,-p.r-12);if(p.id===localPlayerId&&alive){c.font='900 8px system-ui';c.fillStyle='rgba(106,246,255,.8)';c.fillText('TE',0,p.r+18)}c.restore()}
-function drawParticles(c){for(const p of particles){c.save();const life=clamp(p.life/p.max,0,1);c.globalAlpha=life;if(p.text){c.font='1000 13px system-ui';c.textAlign='center';c.lineWidth=3;c.strokeStyle='rgba(4,8,18,.8)';c.strokeText(p.text,p.x,p.y);c.fillStyle=p.color;c.shadowColor=p.color;c.shadowBlur=13;c.fillText(p.text,p.x,p.y)}else if(p.ring){c.strokeStyle=p.color;c.globalAlpha*=.92;c.lineWidth=Math.max(1,5*life);c.shadowColor=p.color;c.shadowBlur=14;c.setLineDash([12,7]);c.beginPath();c.arc(p.x,p.y,p.r,globalClock*.4,globalClock*.4+Math.PI*1.8);c.stroke();c.setLineDash([]);c.shadowBlur=0}else{c.fillStyle=p.color;c.shadowColor=p.color;c.shadowBlur=10;c.beginPath();c.arc(p.x,p.y,p.r*(.35+life*.65),0,Math.PI*2);c.fill();if(p.r>3){c.globalAlpha*=.6;c.strokeStyle='#fff';c.lineWidth=.7;c.beginPath();c.moveTo(p.x-p.r*1.5,p.y);c.lineTo(p.x+p.r*1.5,p.y);c.stroke()}}c.restore()}}
-function drawGame(){if(!$('game').classList.contains('active')||!ctx)return;const cw=canvas.clientWidth,ch=canvas.clientHeight,wd=world();ctx.clearRect(0,0,cw,ch);const viewH=wd.h,scale=Math.min(cw/W,ch/viewH),drawW=W*scale,drawH=viewH*scale,ox=(cw-drawW)/2,oy=(ch-drawH)/2;ctx.save();ctx.translate(ox,oy);ctx.scale(scale,scale);if(shake>0)ctx.translate(rand(-shake,shake),rand(-shake,shake));drawArena(ctx,W,viewH);drawHazards(ctx);for(const o of orbs)drawOrb(ctx,o);for(const p of players)drawPlayer(ctx,p);drawParticles(ctx);ctx.restore()}
-function loop(now){if(gameState==='menu')return;let dt=Math.min(.033,Math.max(0,(now-lastTime)/1000||0));lastTime=now;if(!paused&&gameState==='playing'&&net.mode!=='guest')update(dt);if(net.mode==='guest'&&gameState==='playing'&&now-lastInputSend>50){sendNet({type:'input',x:paused?0:input.x,y:paused?0:input.y});lastInputSend=now}if(net.mode==='host'&&['playing','roundEnd','result'].includes(gameState)&&now-lastStateSend>50){broadcastSnapshot();lastStateSend=now}drawGame();if(['playing','roundEnd','result'].includes(gameState))raf=requestAnimationFrame(loop)}
-function showPause(){if(gameState!=='playing'&&gameState!=='result')return;paused=true;if(net.mode==='host'){hostPaused=true;broadcast({type:'hostPause',paused:true})}$('modalTag').textContent=gameState==='result'?'MATCH COMPLETE':'PAUSE MENU';$('modalTitle').textContent=gameState==='result'?'Még egy meccs?':'Szünet?';$('modalText').textContent=gameState==='result'?'Indíts egy új mérkőzést.':'A host szünetelteti a mérkőzést.';$('resumeBtn').textContent=gameState==='result'?(net.mode==='guest'?'Várakozás a hostra…':'↻ Új mérkőzés indítása'):'▶ Folytatás';$('resumeBtn').disabled=gameState==='result'&&net.mode==='guest';$('restartBtn').style.display='none';$('homeBtn').textContent='⌂ Főmenü';$('modalWrap').classList.add('show')}
-function goHome(){if(heroRaf){cancelAnimationFrame(heroRaf);heroRaf=0}if(net.peer||isOnline()||net.mode==='disconnected')closeOnline(false);paused=true;gameState='menu';$('modalWrap').classList.remove('show');$('resumeBtn').disabled=false;$('restartBtn').style.display='';$('roomWrap').classList.remove('show');$('game').classList.remove('active');$('menu').classList.add('active');input.x=input.y=0;resetJoy();cancelAnimationFrame(raf);drawHero()}
-function drawHero(){const c=heroCtx,cv=heroCanvas;if(!c||!cv)return;const w=cv.clientWidth,h=cv.clientHeight;if(!w||!h)return;c.clearRect(0,0,w,h);c.save();c.scale(w/W,h/620);drawArena(c,W,620);const t=globalClock;
- const demo=[{x:500,y:255,r:19,color:COLORS[0],faceX:.9,faceY:.25,name:'HOST',human:true,alive:true,invuln:0,dashTime:.16,dashWindow:.4,flash:0,id:'host'},{x:415,y:220,r:18,color:COLORS[1],faceX:1,faceY:0,name:'PLAYER 2',human:true,alive:true,invuln:0,dashTime:0,dashWindow:0,flash:0,id:'p2'},{x:570,y:342,r:18,color:COLORS[2],faceX:-1,faceY:.3,name:'PLAYER 3',human:true,alive:true,invuln:0,dashTime:0,dashWindow:0,flash:0,id:'p3'},{x:385,y:355,r:18,color:COLORS[4],faceX:.7,faceY:-.5,name:'PLAYER 4',human:true,alive:true,invuln:0,dashTime:0,dashWindow:0,flash:0,id:'p4'}];for(const p of demo){const drift=Math.sin(t*1.4+p.y)*6;c.save();c.translate(drift,Math.cos(t*1.1+p.x)*5);drawPlayer(c,p);c.restore()}for(let i=0;i<6;i++){const a=t*.18+i*Math.PI/3,x=500+Math.cos(a)*118,y=310+Math.sin(a)*83;drawOrb(c,{x,y,r:7,phase:t+i})}c.restore();if(!heroRaf&&$('menu').classList.contains('active'))heroRaf=requestAnimationFrame(heroTick)}
-function heroTick(){heroRaf=0;if(!$('menu').classList.contains('active'))return;globalClock+=.016;drawHero()}
-function resetJoy(){input.x=input.y=0;joyPointer=null;const stick=$('joystick');stick.style.left='';stick.style.top='';stick.style.bottom='';$('joyKnob').style.transform='translate(0px,0px)'}
-function setJoy(e){const r=$('joystick').getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=e.clientX-cx,dy=e.clientY-cy,max=r.width*.33,mag=Math.hypot(dx,dy),f=mag>max?max/mag:1;const x=dx*f,y=dy*f;input.x=clamp(x/max,-1,1);input.y=clamp(y/max,-1,1);$('joyKnob').style.transform=`translate(${x}px,${y}px)`}
-function cleanName(value){const s=String(value||'').replace(/[<>\u0000-\u001f]/g,'').trim().slice(0,16);return s||'Player'}
-function makeRoomCode(){const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let out='';for(let i=0;i<6;i++)out+=chars[Math.floor(Math.random()*chars.length)];return out}
-function showRoomSetup(mode){roomMode=mode;networkLost=false;$('roomLobby').style.display='none';$('roomSetup').style.display='';$('roomCodeField').style.display=mode==='join'?'':'none';$('roomError').textContent='';$('roomSetupTag').textContent=mode==='create'?'CREATE PARTY ROOM':'JOIN PARTY ROOM';$('roomSetupTitle').textContent=mode==='create'?'Szoba létrehozása':'Csatlakozás szobához';$('roomSetupText').textContent=mode==='create'?'Hozz létre egy szobát, majd oszd meg a hatjegyű kódot a barátaiddal. Te is játszani fogsz.':'Írd be a host által megadott kódot. Mindenki a saját telefonján játszik. A szobában kizárólag valódi játékosok vannak.';$('roomConfirmBtn').textContent=mode==='create'?'＋ Szoba létrehozása':'↗ Csatlakozás';$('roomConfirmBtn').disabled=false;$('roomWrap').classList.add('show');if(mode==='join')setTimeout(()=>$('roomCodeInput').focus(),80)}
-function setRoomError(text){$('roomError').textContent=text||'';$('roomLobbyError').textContent=text||''}
-function showRoomLobby(){ $('roomSetup').style.display='none';$('roomLobby').style.display='';$('roomWrap').classList.add('show');$('roomCodeDisplay').textContent=net.code||'------';updateLobbyUI(); }
-function updateLobbyUI(remoteRoom){let people;if(remoteRoom&&Array.isArray(remoteRoom.players)){people=remoteRoom.players}else{people=players.filter(p=>p.human&&!p.disconnected).map(p=>({id:p.id,name:p.name,color:p.color,host:p.id===localPlayerId}))}const host=net.isHost;const count=people.length;$('roomPlayers').innerHTML=people.map(p=>`<div class="room-player"><span class="room-dot" style="color:${p.color||'#52f4ff'};background:${p.color||'#52f4ff'}"></span><strong>${escapeHtml(p.name||'Player')}</strong><small>${p.host?'HOST':(p.id===localPlayerId?'TE':'JÁTÉKOS')}</small></div>`).join('');if(!people.length)$('roomPlayers').innerHTML='<div class="room-player">Csatlakozás a szobához…</div>';if(host){$('roomStatus').textContent=`${count}/8 játékos · Oszd meg a kódot, és várd meg a többieket.`;$('startOnlineBtn').style.display='';$('startOnlineBtn').disabled=count<2;$('startOnlineBtn').textContent=count<2?'▶ Meccs indítása (legalább 2 fő)':`▶ Meccs indítása (${count} játékos)`;$('roomLobbyTitle').textContent='Várakozás a játékosokra'}else{$('roomStatus').textContent=`${count}/8 játékos · A host indítja a mérkőzést.`;$('startOnlineBtn').style.display='none';$('roomLobbyTitle').textContent='Sikeresen csatlakoztál'} }
-function showRoomLobbyError(text){$('roomLobbyError').textContent=text||''}
-function sendNet(message){try{if(net.mode==='guest'&&net.conn&&net.conn.open)net.conn.send(message)}catch(e){}}
-function broadcast(message){if(net.mode!=='host')return;for(const c of net.connections.values()){try{if(c.open)c.send(message)}catch(e){}}}
-function lobbyData(){return{code:net.code,players:players.filter(p=>p.human&&!p.disconnected).map(p=>({id:p.id,name:p.name,color:p.color,host:p.id===localPlayerId}))}}
-function broadcastLobby(){const data=lobbyData();broadcast({type:'lobby',room:data});updateLobbyUI(data)}
-function snapshotData(){const wd=world();return{type:'state',state:{worldH:wd.h,gameState,round,timeLeft,overtimeTime,paused:false,transitioning,globalClock,eventTimer,orbTimer,roundScores,players:players.map(p=>({id:p.id,name:p.name,color:p.color,human:p.human,x:p.x,y:p.y,vx:p.vx,vy:p.vy,r:p.r,score:p.score,roundScore:p.roundScore,roundWins:p.roundWins||0,alive:p.alive,eliminated:!!p.eliminated,respawn:0,dashCd:p.dashCd,pulseCd:p.pulseCd,dashTime:p.dashTime,dashWindow:p.dashWindow,dashHits:p.dashHits||[],dashExploded:!!p.dashExploded,knockbackTime:p.knockbackTime||0,invuln:p.invuln,faceX:p.faceX,faceY:p.faceY,flash:p.flash,knockouts:p.knockouts,roundKnockouts:p.roundKnockouts||0,roundSurvival:p.roundSurvival||0,survivalTime:p.survivalTime||0,energy:p.energy,disconnected:!!p.disconnected})),orbs:orbs.map(o=>({...o})),hazards:hazards.map(h=>({...h})),particles:particles.slice(-90).map(pt=>({...pt})),eventBanner:$('eventBanner').textContent,eventBannerVisible:$('eventBanner').classList.contains('visible')}}}
-function broadcastSnapshot(){if(net.mode!=='host')return;broadcast(snapshotData())}
-function applySnapshot(msg){const st=msg&&msg.state;if(!st)return;const previous=gameState;sharedWorldH=Number(st.worldH)||null;round=st.round||1;timeLeft=Number(st.timeLeft)||0;overtimeTime=Number(st.overtimeTime)||0;transitioning=!!st.transitioning;globalClock=Number(st.globalClock)||globalClock;eventTimer=Number(st.eventTimer)||0;orbTimer=Number(st.orbTimer)||0;roundScores=Array.isArray(st.roundScores)?st.roundScores:roundScores;players=(st.players||[]).map(p=>({...p,netInput:{x:0,y:0},isLocal:p.id===localPlayerId,aiTimer:0,target:null,dashHits:p.dashHits||[]}));orbs=st.orbs||[];hazards=st.hazards||[];particles=st.particles||[];gameState=st.gameState||'playing';$('eventBanner').textContent=st.eventBanner||'⚠ CHAOS WAVE';$('eventBanner').classList.toggle('visible',!!st.eventBannerVisible);updateHud();if(gameState==='roundEnd'&&previous!=='roundEnd'&&net.mode==='guest'){const record=roundScores.find(x=>x.round===round);showRoundEndUI(record?{round:record.round,winner:record.winnerId?players.find(p=>p.id===record.winnerId):null,players:record.players}:{});paused=true}else if(gameState==='result'&&previous!=='result'&&net.mode==='guest'){showFinal()}}
-function startNetworkVisuals(){if(heroRaf){cancelAnimationFrame(heroRaf);heroRaf=0}paused=false;transitioning=false;$('menu').classList.remove('active');$('game').classList.add('active');$('modalWrap').classList.remove('show');$('roomWrap').classList.remove('show');resize();$('eventBanner').classList.remove('visible');lastTime=performance.now();lastInputSend=0;lastStateSend=0;cancelAnimationFrame(raf);raf=requestAnimationFrame(loop);requestWakeLock()}
-async function requestWakeLock(){try{if('wakeLock' in navigator){wakeLock=await navigator.wakeLock.request('screen');wakeLock.addEventListener('release',()=>{wakeLock=null})}}catch(e){}}
-function startOnlineMatch(){if(net.mode!=='host')return;const humans=players.filter(p=>p.human&&!p.disconnected);if(humans.length<2){showRoomLobbyError('Legalább két csatlakozott játékos kell a kezdéshez.');return}players=humans;players.forEach((p,i)=>{p.score=0;p.roundScore=0;p.roundWins=0;p.knockouts=0;p.roundKnockouts=0;p.roundSurvival=0;p.survivalTime=0;p.energy=0;p.disconnected=false;p.netInput={x:0,y:0};p.color=COLORS[i%COLORS.length];p.human=true});round=1;roundScores=[];overtimeTime=0;gameState='playing';paused=false;hostPaused=false;sharedWorldH=null;startNetworkVisuals();resetRound();broadcast({type:'matchStart',state:snapshotData().state});broadcastSnapshot()}
-function showRoomLobbyForRematch(){if(net.mode!=='host')return;gameState='lobby';paused=true;$('modalWrap').classList.remove('show');showRoomLobby();$('roomStatus').textContent='Az előző mérkőzés véget ért. A host indíthatja a következő meccset.';$('startOnlineBtn').disabled=players.filter(p=>p.human&&!p.disconnected).length<2;$('startOnlineBtn').textContent='▶ Következő mérkőzés indítása';$('roomLobbyTitle').textContent='Készen álltok a visszavágóra?';broadcastLobby();}
-function closeOnline(showMenu=true){hostPaused=false;networkLost=false;net.closing=true;if(net.joinTimer){clearTimeout(net.joinTimer);net.joinTimer=null}try{if(wakeLock){wakeLock.release();wakeLock=null}}catch(e){}try{if(net.peer&&!net.peer.destroyed)net.peer.destroy()}catch(e){}net.peer=null;net.conn=null;net.connections.clear();net.mode='offline';net.isHost=false;net.code='';net.playerId=null;net.name='Player';net.closing=false;sharedWorldH=null;localPlayerId='you';if(showMenu){paused=true;gameState='menu';$('game').classList.remove('active');$('menu').classList.add('active')}else if(gameState==='lobby'){gameState='menu'}$('roomWrap').classList.remove('show')}
-function hostConnection(conn){
-  let accepted=false;
-  const id=conn.peer;
-  conn.on('data',data=>{
-    if(!data||typeof data!=='object')return;
-    if(data.type==='hello'){
-      if(accepted)return;
-      if(gameState!=='lobby'){try{conn.send({type:'error',message:'A meccs már elkezdődött.'})}catch(e){}conn.close();return}
-      const current=players.filter(p=>p.human&&!p.disconnected).length;
-      if(current>=8){try{conn.send({type:'error',message:'A szoba megtelt (8 fő max).'})}catch(e){}conn.close();return}
-      accepted=true;
-      const pid='p'+Math.random().toString(36).slice(2,9);
-      const p=newPlayer(pid,cleanName(data.name),COLORS[current%COLORS.length],true,W/2+rand(-80,80),world().h/2+rand(-80,80));
-      p.netInput={x:0,y:0};p.remote=true;p.connection=conn;
-      players.push(p);conn.playerId=pid;
-      net.connections.set(id,conn);
-      try{conn.send({type:'welcome',playerId:pid,room:lobbyData()})}catch(e){}
-      broadcastLobby();return
-    }
-    if(!accepted)return;
-    const p=players.find(q=>q.id===conn.playerId);
-    if(!p||p.disconnected)return;
-    if(data.type==='input'){p.netInput={x:clamp(Number(data.x)||0,-1,1),y:clamp(Number(data.y)||0,-1,1)}}
-    else if(data.type==='action'&&gameState==='playing'&&!paused){if(data.action==='dash')useDash(p);if(data.action==='pulse')usePulse(p)}
-    else if(data.type==='rematchRequest'){showRoomLobbyError(`${p.name} új mérkőzést szeretne.`)}
-  });
-  conn.on('close',()=>{
-    if(net.closing)return;
-    net.connections.delete(id);
-    const p=players.find(q=>q.id===conn.playerId);
-    if(p){
-      if(gameState==='playing'||gameState==='result'){p.disconnected=true;p.alive=false;p.netInput={x:0,y:0}}
-      else players=players.filter(q=>q.id!==p.id)
-    }
-    broadcastLobby()
-  });
-  conn.on('error',()=>{});
-}
-function createRoom(attempt=0){
-  if(!window.Peer){setRoomError('PeerJS nem töltődött be. Frissítsd az oldalt.');return}
-  if(attempt>6){setRoomError('Nem sikerült szabad kódot találni. Frissítsd és próbáld újra.');return}
-  const name=cleanName($('roomNameInput').value);
-  const code=makeRoomCode();
-  net.name=name;net.mode='host';net.isHost=true;net.code=code;localPlayerId='host';
-  players=[newPlayer('host',name,COLORS[0],true,W/2,world().h/2)];
-  players[0].isLocal=true;net.connections=new Map();
-  $('roomConfirmBtn').disabled=true;
-  $('roomError').textContent=`Szoba létrehozása… (${code})`;
-  let peer;
-  try{peer=new Peer('chaos-arena-'+code,PEER_CONFIG)}catch(e){net.mode='offline';$('roomConfirmBtn').disabled=false;setRoomError('Peer létrehozása sikertelen: '+(e.message||e));return}
-  net.peer=peer;
-  peer.on('open',()=>{
-    if(net.peer!==peer)return;
-    net.code=code;
-    gameState='lobby';
-    $('roomConfirmBtn').disabled=false;
-    showRoomLobby();
-    $('roomStatus').textContent='Szoba kész. Oszd meg a kódot!';
-    broadcastLobby();
-  });
-  peer.on('connection',hostConnection);
-  peer.on('disconnected',()=>{try{peer.reconnect()}catch(e){}});
-  peer.on('close',()=>{if(!net.closing&&net.mode==='host')setRoomError('A jelző szerver lezárta a kapcsolatot.')});
-  peer.on('error',err=>{
-    if(net.peer!==peer||net.closing)return;
-    if(err.type==='unavailable-id'){try{peer.destroy()}catch(e){}createRoom(attempt+1);return}
-    net.mode='offline';net.isHost=false;net.peer=null;$('roomConfirmBtn').disabled=false;
-    setRoomError(err.type==='peer-unavailable'?'Kód foglalt, próbálom újra…':`Hálózati hiba (${err.type||err.message}). Próbáld újra 4G/WiFi váltással.`);
-  });
-}
-function joinRoom(){
-  if(!window.Peer){setRoomError('PeerJS nem töltődött be. Frissítsd az oldalt.');return}
-  const code=String($('roomCodeInput').value||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
-  if(code.length!==6){setRoomError('A szobakód pontosan 6 karakter (pl. A7K9Q2).');return}
-  net.name=cleanName($('roomNameInput').value);net.code=code;net.mode='guest';net.isHost=false;localPlayerId=null;
-  $('roomConfirmBtn').disabled=true;
-  $('roomError').textContent='Kapcsolódás a hosthoz…';
-  let peer;try{peer=new Peer(PEER_CONFIG)}catch(e){$('roomConfirmBtn').disabled=false;setRoomError('Peer létrehozása sikertelen.');return}
-  net.peer=peer;let welcomed=false,rejected=false;
-  peer.on('open',()=>{
-    if(net.peer!==peer)return;
-    const conn=peer.connect('chaos-arena-'+code,{reliable:true,serialization:'json'});
-    net.conn=conn;
-    if(net.joinTimer)clearTimeout(net.joinTimer);
-    net.joinTimer=setTimeout(()=>{if(!welcomed&&!rejected){setRoomError('Nem érkezett válasz 12 mp alatt. A host telefonja elaludt, vagy más WiFi-n van. Kérd meg a hostot hogy nyissa újra a szobát.');$('roomConfirmBtn').disabled=false}},12000);
-    conn.on('open',()=>{try{conn.send({type:'hello',name:net.name})}catch(e){}});
-    conn.on('data',msg=>{
-      if(!msg||typeof msg!=='object')return;
-      if(msg.type==='welcome'){welcomed=true;if(net.joinTimer){clearTimeout(net.joinTimer);net.joinTimer=null}localPlayerId=msg.playerId;net.playerId=msg.playerId;showRoomLobby();if(msg.room)updateLobbyUI(msg.room);$('roomConfirmBtn').disabled=false}
-      else if(msg.type==='lobby'){if(msg.room){net.code=msg.room.code||code;showRoomLobby();updateLobbyUI(msg.room)}}
-      else if(msg.type==='error'){rejected=true;const m=msg.message||'Csatlakozás sikertelen.';closeOnline(false);showRoomSetup('join');setRoomError(m);$('roomConfirmBtn').disabled=false}
-      else if(msg.type==='matchStart'||msg.type==='roundStart'){if(msg.state){applySnapshot({state:msg.state});startNetworkVisuals();applySnapshot({state:msg.state});paused=false;$('modalWrap').classList.remove('show')}}
-      else if(msg.type==='state'){applySnapshot(msg)}
-      else if(msg.type==='roundEnd'){if(msg.state)applySnapshot({state:msg.state});gameState=round>=ROUND_COUNT?'result':'roundEnd';paused=true;if(round<ROUND_COUNT)showRoundEndUI(msg);else showFinal()}
-      else if(msg.type==='matchResult'){for(const u of (msg.players||[])){const p=players.find(q=>q.id===u.id);if(p){p.score=u.score;p.name=u.name||p.name;p.color=u.color||p.color;p.roundWins=u.roundWins||p.roundWins;p.knockouts=u.knockouts||p.knockouts;p.survivalTime=u.survivalTime||p.survivalTime}}gameState='result';timeLeft=0;showFinal()}
-      else if(msg.type==='roomClosed'){handleHostLost(msg.message||'A host bezárta a szobát.')}
-      else if(msg.type==='hostPause'){hostPaused=!!msg.paused;paused=hostPaused;if(paused){$('modalTag').textContent='HOST PAUSED';$('modalTitle').textContent='Szünet';$('modalText').textContent='A host szünetelteti a mérkőzést.';$('resumeBtn').textContent='Várakozás a hostra…';$('resumeBtn').disabled=true;$('restartBtn').style.display='none';$('homeBtn').textContent='Kilépés';$('modalWrap').classList.add('show')}else{$('modalWrap').classList.remove('show');$('resumeBtn').disabled=false;$('restartBtn').style.display='';paused=false}}
-    });
-    conn.on('close',()=>{if(net.closing)return;if(!welcomed){$('roomConfirmBtn').disabled=false;if(!rejected)setRoomError('Nem sikerült elérni a szobát. Ellenőrizd a kódot, és hogy a host szobája nyitva van-e.');return}handleHostLost('Megszakadt a kapcsolat a hosttal.')});
-    conn.on('error',()=>{setRoomError('Adatcsatorna hiba. Próbáld 4G-n.')});
-  });
-  peer.on('disconnected',()=>{try{peer.reconnect()}catch(e){}});
-  peer.on('error',err=>{
-    if(net.peer!==peer||net.closing)return;
-    if(err.type==='peer-unavailable')setRoomError('Nincs ilyen szoba. Ellenőrizd a kódot, és hogy a host még lobby-ban van-e.');
-    else setRoomError(`Kapcsolati hiba: ${err.type||'ismeretlen'}. Mindketten https-en vagytok?`);
-    $('roomConfirmBtn').disabled=false;
-  });
-}
-function handleHostLost(message){networkLost=true;net.mode='disconnected';paused=true;$('roomWrap').classList.remove('show');$('modalTag').textContent='CONNECTION LOST';$('modalTitle').textContent='Megszakadt a kapcsolat';$('modalText').textContent=message;$('resumeBtn').textContent='Vissza a főmenübe';$('restartBtn').style.display='none';$('homeBtn').textContent='Vissza a főmenübe';$('modalWrap').classList.add('show')}
-$('createRoomBtn').addEventListener('click',()=>showRoomSetup('create'));$('joinRoomBtn').addEventListener('click',()=>showRoomSetup('join'));$('roomConfirmBtn').addEventListener('click',()=>{if(roomMode==='create')createRoom();else joinRoom()});$('roomCancelBtn').addEventListener('click',()=>{if(net.peer||isOnline())closeOnline(false);$('roomWrap').classList.remove('show');setRoomError('')});$('startOnlineBtn').addEventListener('click',startOnlineMatch);$('leaveRoomBtn').addEventListener('click',()=>{closeOnline(true);$('roomWrap').classList.remove('show');$('modalWrap').classList.remove('show');input.x=input.y=0;resetJoy();cancelAnimationFrame(raf);drawHero()});$('copyRoomCodeBtn').addEventListener('click',A hiba a `PeerJS` miatt volt - `https`-en GitHub Pages-ről futva STUN szerver és `secure:true` nélkül a két telefon NAT-ja nem tud összekötni, ezért ragadt be a "Csatlakozás"-nál.
-
-Ez a teljes, javított `index.html` - csak cseréld le:
-
-```html
-<!doctype html>
-<html lang="hu">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#080b16">
-<title>CHAOS ARENA — Circular Knockout</title>
-<style>
-:root{--bg:#080b16;--panel:rgba(16,22,43,.88);--line:rgba(151,173,255,.18);--muted:#99a5c6;--text:#f4f7ff;--cyan:#52f4ff;--pink:#ff4eb8;--violet:#9b78ff;--lime:#c7ff5e}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;touch-action:manipulation}button{font:inherit;color:inherit;border:0;cursor:pointer;touch-action:manipulation}button:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}#app{height:100dvh;width:100vw;position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 45%,#17203b 0%,#0c1022 45%,#070912 100%)}
-.noise{position:absolute;inset:0;pointer-events:none;opacity:.16;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:36px 36px;mask-image:linear-gradient(transparent,#000 12%,#000 88%,transparent)}
-.screen{position:absolute;inset:0;display:none}.screen.active{display:flex}
-#menu{align-items:center;justify-content:center;padding:clamp(18px,4vw,46px);overflow:auto}.menu-inner{width:min(1100px,100%);display:grid;grid-template-columns:1.05fr.95fr;gap:clamp(24px,6vw,76px);align-items:center;margin:auto}.eyebrow{font-size:11px;font-weight:850;letter-spacing:.28em;color:var(--cyan);text-transform:uppercase;display:flex;align-items:center;gap:10px}.eyebrow:before{content:"";width:25px;height:2px;background:var(--cyan);box-shadow:0 0 14px var(--cyan)}h1{font-size:clamp(46px,8.6vw,100px);letter-spacing:-.075em;line-height:.86;margin:19px 0 18px;font-weight:1000;text-transform:uppercase;font-style:italic}h1 span{display:block;color:transparent;-webkit-text-stroke:1.4px var(--cyan);text-shadow:0 0 30px rgba(82,244,255,.08)}.intro{max-width:470px;color:#aab5d4;font-size:clamp(13px,1.6vw,16px);line-height:1.75;margin:0 0 26px}.actions{display:flex;flex-wrap:wrap;gap:10px}.primary,.secondary{min-height:52px;padding:0 22px;border-radius:12px;font-size:12px;font-weight:900;letter-spacing:.09em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:10px;transition:transform.16s,filter.16s}.primary{color:#071019;background:linear-gradient(105deg,var(--cyan),#91ffcf);box-shadow:0 8px 32px rgba(82,244,255,.17)}.secondary{background:rgba(255,255,255,.055);border:1px solid var(--line);color:#e3e9ff}.primary:active,.secondary:active{transform:scale(.97)}.preview{position:relative;min-height:min(490px,65vh);border:1px solid rgba(105,225,255,.2);border-radius:28px;overflow:hidden;background:radial-gradient(ellipse at 55% 46%,rgba(39,71,119,.55),rgba(9,14,30,.85) 64%)}.preview-label{position:absolute;left:22px;right:22px;top:20px;display:flex;justify-content:space-between;z-index:2;color:#7d8db5;font-size:10px;font-weight:900;letter-spacing:.16em}.preview-tag{border:1px solid rgba(82,244,255,.25);padding:6px 8px;border-radius:5px;color:var(--cyan)}.hero-arena{position:absolute;inset:0;width:100%;height:100%;z-index:1}.feature-row{position:absolute;bottom:20px;left:20px;right:20px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;z-index:3}.feature{padding:11px 10px;border-radius:10px;background:rgba(10,14,28,.77);border:1px solid rgba(150,175,255,.12);backdrop-filter:blur(8px)}.feature strong{display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}.feature small{display:block;font-size:10px;color:#8390b2;line-height:1.4}
-#game{flex-direction:column;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);background:radial-gradient(ellipse at 50% 45%,#101a32,#080b16 77%)}.topbar{height:62px;flex:0 0 62px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;padding:0 clamp(12px,3vw,28px);border-bottom:1px solid rgba(123,154,255,.12);background:rgba(8,11,22,.72);z-index:5}.brand-mini{font-size:13px;font-weight:1000;font-style:italic;letter-spacing:-.04em}.brand-mini span{color:var(--cyan)}.round-info{text-align:center}.round-label{display:block;color:#8290b4;font-size:9px;font-weight:850;letter-spacing:.2em}.timer{font-variant-numeric:tabular-nums;font-size:21px;font-weight:950;line-height:1.2}.right-top{display:flex;justify-content:flex-end;align-items:center;gap:12px}.score-pill{border:1px solid rgba(82,244,255,.2);background:rgba(82,244,255,.055);border-radius:10px;padding:7px 10px;min-width:72px;text-align:center}.score-pill small{display:block;color:#8290b4;font-size:8px;letter-spacing:.13em;font-weight:900}.score-pill strong{font-size:16px;color:var(--cyan)}.icon-button{width:36px;height:36px;border:1px solid var(--line);background:rgba(255,255,255,.04);border-radius:10px;font-size:17px}.stage{position:relative;flex:1;min-height:0;overflow:hidden}.stage canvas{width:100%;height:100%;display:block;touch-action:none}.event-banner{position:absolute;left:50%;top:14px;transform:translateX(-50%);z-index:3;padding:8px 13px;border-radius:7px;border:1px solid rgba(255,78,184,.38);background:rgba(25,10,31,.86);font-size:10px;font-weight:950;letter-spacing:.16em;color:#ff8ed2;white-space:nowrap;opacity:0;transition:opacity.2s;pointer-events:none}.event-banner.visible{opacity:1}.help-hint{position:absolute;left:12px;top:12px;color:rgba(192,207,245,.63);font-size:10px;pointer-events:none}.controls{flex:0 0 122px;display:flex;align-items:center;justify-content:space-between;padding:8px clamp(15px,5vw,55px) 10px;gap:14px;background:linear-gradient(0deg,rgba(6,8,17,.98),rgba(6,8,17,.7));border-top:1px solid rgba(123,154,255,.1);z-index:5}.joy-zone{height:100px;width:150px;display:flex;align-items:center;justify-content:flex-start;position:relative;touch-action:none}.joystick{width:94px;height:94px;border:1px solid rgba(82,244,255,.34);border-radius:50%;position:relative;background:radial-gradient(circle,rgba(82,244,255,.09),rgba(82,244,255,.025) 64%,rgba(255,255,255,.025))}.joystick:before{content:"";position:absolute;inset:20px;border:1px dashed rgba(140,176,220,.23);border-radius:50%}.joy-knob{position:absolute;width:36px;height:36px;left:50%;top:50%;margin:-18px 0 0 -18px;background:linear-gradient(135deg,#a4ffff,#47bacc);border:2px solid rgba(255,255,255,.8);border-radius:50%;box-shadow:0 0 22px rgba(82,244,255,.28);pointer-events:none}.control-actions{display:flex;align-items:center;gap:13px}.ability{width:78px;height:78px;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:radial-gradient(circle at 36% 24%,rgba(255,255,255,.16),rgba(255,255,255,.025) 55%),#191b34;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;box-shadow:0 5px 20px #0004;touch-action:none}.ability.glyph{font-size:25px;font-weight:800;line-height:1}.ability small{font-size:8px;letter-spacing:.15em;font-weight:950}.ability.dash{border-color:rgba(82,244,255,.52);color:var(--cyan)}.ability.pulse{border-color:rgba(255,78,184,.46);color:#ff8ed2}.cooldown{position:absolute;inset:0;border-radius:50%;background:conic-gradient(var(--cd-color,rgba(6,9,20,.82)) var(--cd,0%),transparent 0);pointer-events:none}.controls-center{font-size:9px;color:#647292;text-align:center;line-height:1.6;letter-spacing:.08em}.controls-center b{color:#9ba9cb;display:block;font-size:10px}
-.modal-wrap{position:absolute;inset:0;z-index:10;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(4,6,14,.73);backdrop-filter:blur(10px)}.modal-wrap.show{display:flex}.modal{width:min(420px,100%);border:1px solid rgba(82,244,255,.22);background:linear-gradient(145deg,rgba(25,32,59,.98),rgba(10,14,29,.98));border-radius:20px;padding:25px;box-shadow:0 25px 90px #0009}.modal h2{margin:6px 0 8px;font-size:27px;letter-spacing:-.05em;font-weight:1000;font-style:italic;text-transform:uppercase}.modal p{font-size:13px;line-height:1.65;color:#9da9c9}.modal.primary,.modal.secondary{width:100%;margin-top:9px}.tagline{font-size:10px;letter-spacing:.2em;font-weight:900;color:var(--cyan);text-transform:uppercase}
-#roomWrap{z-index:20}.room-input{display:block;width:100%;margin:8px 0 14px;padding:14px 13px;border-radius:10px;border:1px solid rgba(151,173,255,.25);background:rgba(3,7,18,.72);color:var(--text);font:inherit;font-size:15px;outline:none}.room-label{display:block;color:#9da9c9;font-size:10px;font-weight:850;letter-spacing:.14em;text-transform:uppercase;margin-top:12px}.room-code-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid rgba(82,244,255,.22);background:rgba(82,244,255,.055);border-radius:12px;padding:12px 13px;margin:15px 0}.room-code{font-size:26px;font-weight:1000;letter-spacing:.18em;color:var(--cyan)}.room-players{display:grid;gap:7px;max-height:190px;overflow:auto;margin:14px 0}.room-player{display:flex;align-items:center;gap:10px;border:1px solid rgba(151,173,255,.12);background:rgba(255,255,255,.035);border-radius:9px;padding:9px 11px;font-size:12px}.room-dot{width:10px;height:10px;border-radius:50%;box-shadow:0 0 12px currentColor}.room-status{min-height:20px;color:#a7b4d4;font-size:12px;line-height:1.5}.room-error{color:#ff8cae;font-size:11px;min-height:16px;margin:6px 0}.room-actions{display:grid;gap:8px}
-.toast{position:absolute;z-index:8;left:50%;top:50%;transform:translate(-50%,-50%) scale(.96);opacity:0;pointer-events:none;text-align:center;background:rgba(9,14,30,.9);border:1px solid rgba(82,244,255,.27);border-radius:18px;padding:22px 32px;min-width:min(300px,80vw);box-shadow:0 20px 70px #0007;transition:opacity.22s,transform.22s}.toast.show{opacity:1;transform:translate(-50%,-50%) scale(1)}.toast small{display:block;color:var(--cyan);font-size:10px;letter-spacing:.2em;font-weight:950}.toast strong{display:block;font-size:26px;font-weight:1000;font-style:italic;letter-spacing:-.05em;margin-top:5px}
-#game{--game-topbar-height:58px;padding-top:env(safe-area-inset-top);padding-bottom:0;overflow:hidden}
-#game.controls{position:absolute;inset:0;z-index:6;flex:none;width:100%;height:100%;padding:0;border:0;background:transparent;pointer-events:none}
-#game.joy-zone{position:absolute;left:0;top:calc(var(--game-topbar-height) + env(safe-area-inset-top));bottom:0;width:50%;height:auto;pointer-events:auto}
-#game.joystick{position:absolute;left:calc(12px + env(safe-area-inset-left));bottom:calc(12px + env(safe-area-inset-bottom));width:clamp(74px,16vw,100px);height:clamp(74px,16vw,100px)}
-#game.control-actions{position:absolute;right:calc(16px + env(safe-area-inset-right));bottom:calc(42px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:10px;pointer-events:auto}
-#game.ability{width:clamp(58px,11vw,76px);height:clamp(58px,11vw,76px)}
-#game.controls-center{display:none}
-@media(max-width:720px){.menu-inner{grid-template-columns:1fr;gap:22px}.menu-copy{text-align:center}.eyebrow{justify-content:center}.actions{justify-content:center}.preview{min-height:240px}}
+.noise{position:absolute;inset:0;pointer-events:none;opacity:.08;background-image:radial-gradient(#fff 1px,transparent 1px);background-size:22px 22px}
+/* MENU */
+#menu{align-items:center;justify-content:center;padding:20px;overflow:auto}
+.menu-inner{width:min(1080px,100%);display:grid;grid-template-columns:1.05fr .95fr;gap:32px;align-items:center;margin:auto}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;background:rgba(255,122,24,.12);border:1px solid rgba(255,122,24,.28);color:var(--orange);font-size:10px;font-weight:900;letter-spacing:.18em}
+h1{font-size:clamp(48px,8vw,86px);line-height:.85;margin:18px 0 14px;font-weight:1000;letter-spacing:-.06em;font-style:italic;text-transform:uppercase}
+h1 span{display:block;color:var(--paper);text-shadow:0 0 0 var(--ink)}
+h1 i{display:block;color:transparent;-webkit-text-stroke:1.3px var(--orange);font-style:italic}
+.intro{color:#a8b5a2;font-size:15px;line-height:1.7;max-width:480px;margin:0 0 18px}
+.actions{display:flex;flex-wrap:wrap;gap:10px}
+.btn{ min-height:54px;padding:0 18px;border-radius:14px;font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .15s,filter .15s}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:linear-gradient(105deg,var(--orange),#ffb36a);color:#1a0e03;box-shadow:0 10px 28px rgba(255,122,24,.22)}
+.btn-secondary{background:rgba(255,255,255,.06);border:1px solid var(--line);color:#e8efe5}
+.btn-paper{background:var(--paper);color:var(--ink);border:1px solid #e8dcc0;box-shadow:0 6px 18px rgba(0,0,0,.2)}
+.small{font-size:10px;color:#7e8c7a;line-height:1.6;margin-top:14px}
+.preview{position:relative;border-radius:24px;min-height:480px;background:radial-gradient(ellipse at 50% 0%,#232f1f,#111811 70%);border:1px solid var(--line);overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.4);padding:18px}
+.preview-top{display:flex;justify-content:space-between;font-size:9px;letter-spacing:.16em;color:#8a9a85;font-weight:800}
+.scenario-preview{margin-top:22px;background:var(--paper);color:var(--ink);border-radius:18px;padding:18px 16px;transform:rotate(-1deg);box-shadow:0 8px 22px rgba(0,0,0,.25);position:relative}
+.scenario-preview:before{content:"";position:absolute;top:-10px;left:24px;width:70px;height:18px;background:var(--tape);transform:rotate(-4deg);box-shadow:0 2px 6px rgba(0,0,0,.15)}
+.scenario-preview strong{display:block;font-size:11px;letter-spacing:.12em;color:#a05a12;margin-bottom:6px}
+.scenario-preview p{margin:0;font-size:14px;line-height:1.45;font-weight:800}
+.items-preview{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.mini-card{background:var(--paper2);color:var(--ink);border-radius:12px;padding:10px 8px;text-align:center;font-size:11px;font-weight:800;line-height:1.2;transform:rotate(var(--r,0deg));box-shadow:0 4px 12px rgba(0,0,0,.18)}
+.mini-card span{font-size:22px;display:block;margin-bottom:4px}
+/* GAME */
+#game{flex-direction:column;background:var(--bg)}
+.topbar{height:58px;flex:0 0 58px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;border-bottom:1px solid var(--line);background:rgba(15,20,14,.9);z-index:2}
+.brand{font-weight:1000;letter-spacing:-.04em;font-style:italic;font-size:16px}.brand span{color:var(--orange)}
+.round-info{text-align:center}.round-label{font-size:9px;letter-spacing:.18em;color:#8a9a85;font-weight:800}.round-val{font-size:18px;font-weight:900}
+.game-main{flex:1;overflow:auto;padding:14px 14px 20px;display:flex;flex-direction:column;gap:14px}
+.scenario-card{background:var(--paper);color:var(--ink);border-radius:20px;padding:18px 18px 16px;position:relative;box-shadow:0 10px 30px rgba(0,0,0,.25);transform:rotate(-.6deg)}
+.scenario-card:before{content:"";position:absolute;top:-10px;left:18px;width:84px;height:18px;background:var(--tape);transform:rotate(-3deg)}
+.scenario-card .tag{font-size:10px;font-weight:900;letter-spacing:.14em;color:#9a6a1a;margin-bottom:6px}
+.scenario-card .text{font-size:clamp(16px,4.5vw,19px);font-weight:900;line-height:1.3}
+.items-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.item-card{background:var(--paper2);color:var(--ink);border-radius:16px;padding:12px 8px;text-align:center;box-shadow:0 6px 18px rgba(0,0,0,.2);transform:rotate(var(--r,0deg));position:relative;min-height:92px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.item-card .em{font-size:28px;line-height:1}
+.item-card .nm{font-size:11px;font-weight:900;line-height:1.15}
+.item-card.secret{filter:blur(6px);pointer-events:none}
+.phase{ background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:18px;padding:14px}
+.phase h3{margin:0 0 8px;font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+.textarea{width:100%;min-height:110px;border-radius:12px;border:1px solid #d8cdb0;background:var(--paper);color:var(--ink);padding:12px;font:inherit;font-size:14px;font-weight:600;resize:none;outline:none}
+.textarea:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,122,24,.15)}
+.count{font-size:10px;color:#8a9a85;text-align:right;margin-top:6px}
+.story-card{background:var(--paper);color:var(--ink);border-radius:16px;padding:14px;margin-top:10px;box-shadow:0 6px 18px rgba(0,0,0,.18);transform:rotate(var(--r,0deg))}
+.story-card .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.story-card .name{font-weight:1000;font-size:13px}
+.story-card .items{font-size:10px;color:#6a5a3a}
+.story-card .txt{font-size:13px;line-height:1.5;font-weight:600;white-space:pre-wrap}
+.vote-btn{margin-top:8px}
+.wait{display:flex;gap:8px;flex-wrap:wrap}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green)}
+.players-list{display:grid;gap:6px;margin-top:8px}
+.p-row{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:12px}
+.p-dot{width:10px;height:10px;border-radius:50%}
+.result-winner{background:linear-gradient(105deg,var(--orange),#ffbe7a);color:#1a0e03;border-radius:16px;padding:14px;font-weight:900;text-align:center}
+/* MODALS */
+.modal-wrap{position:absolute;inset:0;z-index:20;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(5,7,5,.78);backdrop-filter:blur(10px)}
+.modal-wrap.show{display:flex}
+.modal{width:min(440px,100%);background:linear-gradient(145deg,#1d241b,#121710);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:0 24px 80px rgba(0,0,0,.6)}
+.modal h2{margin:6px 0 8px;font-size:22px;font-weight:1000;font-style:italic;text-transform:uppercase}
+.modal p{font-size:13px;line-height:1.6;color:#a8b5a2}
+.room-input{width:100%;padding:13px;border-radius:12px;border:1px solid rgba(255,255,255,.15);background:#0f1410;color:#e8efe5;font-size:15px;margin:8px 0 10px;outline:none}
+.room-input:focus{border-color:var(--orange)}
+.room-code-row{display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(255,229,90,.08);border:1px solid rgba(255,229,90,.22);border-radius:12px;padding:10px 12px;margin:12px 0}
+.room-code{font-size:22px;font-weight:1000;letter-spacing:.18em;color:var(--yellow)}
+.room-error{color:#ff8cae;font-size:11px;min-height:16px;margin:6px 0}
+@media(max-width:720px){.menu-inner{grid-template-columns:1fr;gap:18px}.preview{min-height:320px}.items-row{grid-template-columns:repeat(3,1fr)}.game-main{padding:10px 10px 18px}.topbar{height:52px;flex-basis:52px}}
 </style>
 </head>
 <body>
 <div id="app">
-  <div class="noise"></div>
-  <section id="menu" class="screen active">
-    <div class="menu-inner">
-      <div class="menu-copy">
-        <div class="eyebrow">Real-time party brawler</div>
-        <h1>CHAOS<span>ARENA</span></h1>
-        <p class="intro">Egy kerek aréna. Egyetlen életed van. Lökd ki a többieket, láncold össze a Dash-találatokat robbanássá, és maradj utolsónak talpon.</p>
-        <div class="actions">
-          <button id="createRoomBtn" class="primary">＋ &nbsp; Szoba létrehozása</button>
-          <button id="joinRoomBtn" class="secondary">↗ &nbsp; Csatlakozás kóddal</button>
-          <button id="howBtn" class="secondary">? &nbsp; Irányítás</button>
-        </div>
-        <p class="small-note">ONLINE PARTY · 2–8 JÁTÉKOS · 3 KÖR · ~5 PERC<br>A host is játszik. Hívd meg a barátaidat a szobakóddal.</p>
+<div class="noise"></div>
+
+<section id="menu" class="screen active">
+  <div class="menu-inner">
+    <div>
+      <div class="badge">● ONLINE JÁTÉK · 1–8 JÁTÉKOS</div>
+      <h1><span>TÚLÉLD</span><i>HA TUDOD</i></h1>
+      <p class="intro">Kapsz három teljesen őrült tárgyat és egy lehetetlen helyzetet. Meséld el, hogyan éled túl! A többiek megszavazzák, ki volt a legkreatívabb.</p>
+      <div class="actions">
+        <button id="createRoomBtn" class="btn btn-primary">＋ Szoba létrehozása</button>
+        <button id="joinRoomBtn" class="btn btn-secondary">↗ Csatlakozás kóddal</button>
+        <button id="soloBtn" class="btn btn-paper">☺ Egyszemélyes játék</button>
+        <button id="howBtn" class="btn btn-secondary">? Hogyan játssz</button>
       </div>
-      <div class="preview">
-        <div class="preview-label"><span>SECTOR 01 / REACTOR RING</span><span class="preview-tag">ONLINE ARENA</span></div>
-        <canvas id="heroCanvas" class="hero-arena"></canvas>
-        <div class="feature-row"><div class="feature"><strong>01 / DASH</strong><small>Villámgyors kitérés</small></div><div class="feature"><strong>02 / CHAIN BLAST</strong><small>Robbanás 2 találat után</small></div><div class="feature"><strong>03 / LAST ALIVE</strong><small>Nincs újraéledés</small></div></div>
+      <p class="small">Nincs szükség irányításra, csak beszélgetésre. A házigazda telefonja maradjon bekapcsolva. Egyedül napló módban játszhatsz, 2–8 játékossal pedig csoportosan.</p>
+    </div>
+    <div class="preview">
+      <div class="preview-top"><span>HELYZET #042 / LEHETETLEN</span><span style="color:var(--orange)">● TITKOS TÁRGYAK</span></div>
+      <div class="scenario-preview">
+        <strong>⚠ TÚLÉLÉSI HELYZET</strong>
+        <p>Éjszakára az IKEA raktárában rekedtél. –10 °C van, nincs fűtés, csak plüssjátékok vesznek körül.</p>
+      </div>
+      <div class="items-preview">
+        <div class="mini-card" style="--r:-2deg"><span>🦩</span>felfújható flamingó</div>
+        <div class="mini-card" style="--r:1.5deg"><span>📦</span>szigetelőszalag</div>
+        <div class="mini-card" style="--r:-1deg"><span>🔊</span>hangosbemondó</div>
+      </div>
+      <div style="margin-top:16px;background:rgba(255,255,255,.05);border:1px dashed var(--line);border-radius:12px;padding:10px;font-size:11px;color:#9aa896">Példatörténet: „A flamingót felfújom, és hálózsákként használom; a szigetelőszalaggal letakarom a kamerát, a hangosbemondóba pedig belesuttogom: »Ingyen húsgolyó a kijáratnál!«”</div>
+    </div>
+  </div>
+</section>
+
+<section id="game" class="screen">
+  <div class="topbar">
+    <div class="brand">TÚLÉLD<span>?</span></div>
+    <div class="round-info"><div id="roundLabel" class="round-label">1. KÖR</div><div id="roundVal" class="round-val">—</div></div>
+    <div style="display:flex;gap:6px"><button id="leaveGameBtn" class="btn btn-secondary" style="min-height:36px;padding:0 12px">Kilépés</button></div>
+  </div>
+  <div class="game-main">
+    <div id="scenarioCard" class="scenario-card" style="display:none">
+      <div class="tag">⚠ LEHETETLEN HELYZET</div>
+      <div id="scenarioText" class="text">—</div>
+    </div>
+    <div id="myItemsRow" class="items-row" style="display:none"></div>
+
+    <div id="phaseReveal" class="phase" style="display:none">
+      <h3>⏳ Gondolkodási idő</h3>
+      <p id="revealInfo" style="font-size:13px;color:#a8b5a2;margin:0 0 10px">Nézd meg a három titkos tárgyadat, és találd ki, hogyan élnéd túl a helyzetet.</p>
+      <div style="display:flex;gap:8px"><button id="goWriteBtn" class="btn btn-primary" style="flex:1">Megírom a történetemet</button><span id="revealTimer" style="min-width:52px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.06);border-radius:12px;font-weight:900">60</span></div>
+    </div>
+
+    <div id="phaseWrite" class="phase" style="display:none">
+      <h3>✍️ Hogyan éled túl?</h3>
+      <p style="font-size:11px;color:#8a9a85;margin:0 0 8px">Használd mindhárom tárgyat! Egy-két mondat is elég, de minél viccesebb, annál jobb.</p>
+      <textarea id="storyInput" class="textarea" maxlength="380" placeholder="Például: A flamingót felfújom, és hálózsákként használom. A szigetelőszalaggal..."></textarea>
+      <div class="count"><span id="charCount">0</span>/380</div>
+      <button id="submitStoryBtn" class="btn btn-primary" style="width:100%;margin-top:8px">Kész vagyok</button>
+    </div>
+
+    <div id="phaseWaiting" class="phase" style="display:none">
+      <h3>⏳ Várunk a többiekre</h3>
+      <p id="waitingText" style="font-size:13px;color:#a8b5a2">—</p>
+      <div id="waitingDots" class="wait"></div>
+    </div>
+
+    <div id="phaseStories" class="phase" style="display:none">
+      <h3>📖 Történetek</h3>
+      <div id="storiesList"></div>
+      <button id="toVoteBtn" class="btn btn-secondary" style="width:100%;margin-top:12px;display:none">Tovább a szavazáshoz</button>
+    </div>
+
+    <div id="phaseVoting" class="phase" style="display:none">
+      <h3>🗳️ Szavazás – ki volt a legkreatívabb?</h3>
+      <p style="font-size:11px;color:#8a9a85">Nem szavazhatsz magadra.</p>
+      <div id="votingList"></div>
+    </div>
+
+    <div id="phaseResult" class="phase" style="display:none">
+      <h3>🏆 Eredmény</h3>
+      <div id="resultBox"></div>
+      <div id="scoreBox" style="margin-top:12px"></div>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button id="nextRoundBtn" class="btn btn-primary" style="flex:1">Következő kör</button>
+        <button id="endGameBtn" class="btn btn-secondary" style="flex:1">Vége</button>
       </div>
     </div>
-  </section>
-  <section id="game" class="screen">
-    <header class="topbar">
-      <div class="brand-mini">CHAOS<span>ARENA</span></div>
-      <div class="round-info"><span id="roundLabel" class="round-label">ROUND 1 / 3</span><div id="timer" class="timer">1:00</div></div>
-      <div class="right-top"><div class="score-pill"><small>ÖSSZPONT</small><strong id="myScore">00</strong></div><button id="fullscreenBtn" class="icon-button">⛶</button><button id="menuBtn" class="icon-button">Ⅱ</button></div>
-    </header>
-    <div id="stage" class="stage">
-      <canvas id="gameCanvas"></canvas>
-      <div id="eventBanner" class="event-banner">⚠ CHAOS WAVE</div>
-      <div class="help-hint">BAL: MOZGÁS · JOBB: KÉPESSÉGEK</div>
-      <div id="toast" class="toast"><small id="toastEyebrow">ROUND 1 COMPLETE</small><strong id="toastTitle">CHAOS!</strong><p id="toastText">Készülj a következő körre.</p></div>
+
+    <div id="phaseSoloResult" class="phase" style="display:none">
+      <h3>📓 Elkészült a történeted</h3>
+      <p style="font-size:13px;color:#a8b5a2">Egyedül nincs szavazás. Mondd el hangosan a történetedet!</p>
+      <button id="soloNextBtn" class="btn btn-primary" style="width:100%">Új lehetetlen helyzet</button>
     </div>
-    <div class="controls">
-      <div id="joyZone" class="joy-zone"><div id="joystick" class="joystick"><div id="joyKnob" class="joy-knob"></div></div></div>
-      <div class="controls-center"><b>WASD / JOYSTICK</b>MOZGÁS · DASH · PULSE</div>
-      <div class="control-actions">
-        <button id="dashBtn" class="ability dash"><span class="glyph">ϟ</span><small>DASH</small><span id="dashCd" class="cooldown"></span></button>
-        <button id="pulseBtn" class="ability pulse"><span class="glyph">✳</span><small>PULSE</small><span id="pulseCd" class="cooldown"></span></button>
+
+  </div>
+</section>
+
+<div id="roomWrap" class="modal-wrap">
+  <div class="modal">
+    <div id="roomSetup">
+      <div style="font-size:10px;letter-spacing:.18em;font-weight:900;color:var(--orange)">ONLINE JÁTÉK</div>
+      <h2 id="roomSetupTitle">Szoba létrehozása</h2>
+      <p id="roomSetupText">Add meg a neved; a szobakódot létrehozás után kapod meg.</p>
+      <input id="roomNameInput" class="room-input" maxlength="16" value="Játékos" placeholder="Neved">
+      <div id="roomCodeField" style="display:none">
+        <input id="roomCodeInput" class="room-input" maxlength="6" placeholder="Szobakód, pl. A7K9Q2">
+      </div>
+      <div id="roomError" class="room-error"></div>
+      <div style="display:grid;gap:8px">
+        <button id="roomConfirmBtn" class="btn btn-primary">Szoba létrehozása</button>
+        <button id="roomCancelBtn" class="btn btn-secondary">Vissza</button>
       </div>
     </div>
-    <div id="modalWrap" class="modal-wrap">
-      <div class="modal"><div class="tagline" id="modalTag">PAUSE MENU</div><h2 id="modalTitle">Szünet?</h2><p id="modalText">A mérkőzés szünetel.</p><button id="resumeBtn" class="primary">▶ &nbsp; Folytatás</button><button id="restartBtn" class="secondary">↻ &nbsp; Új meccs</button><button id="homeBtn" class="secondary">⌂ &nbsp; Főmenü</button></div>
-    </div>
-  </section>
-  <div id="roomWrap" class="modal-wrap">
-    <div class="modal">
-      <div id="roomSetup">
-        <div class="tagline" id="roomSetupTag">ONLINE PARTY</div>
-        <h2 id="roomSetupTitle">Szoba létrehozása</h2>
-        <p id="roomSetupText">Adj meg egy nevet, majd hozz létre egy szobát.</p>
-        <label class="room-label">Játékosnév</label>
-        <input id="roomNameInput" class="room-input" maxlength="16" value="Player">
-        <div id="roomCodeField" style="display:none">
-          <label class="room-label">Szobakód</label>
-          <input id="roomCodeInput" class="room-input" maxlength="6" placeholder="A7K9Q2">
-        </div>
-        <div id="roomError" class="room-error"></div>
-        <div class="room-actions">
-          <button id="roomConfirmBtn" class="primary">＋ &nbsp; Szoba létrehozása</button>
-          <button id="roomCancelBtn" class="secondary">Vissza</button>
-        </div>
+    <div id="roomLobby" style="display:none">
+      <div style="font-size:10px;letter-spacing:.18em;font-weight:900;color:var(--orange)">VÁRÓSZOBA</div>
+      <h2>Várakozás</h2>
+      <p id="roomStatus" style="font-size:13px;color:#a8b5a2"></p>
+      <div class="room-code-row"><div><div style="font-size:9px;color:#b5a96a">SZOBAKÓD</div><div id="roomCodeDisplay" class="room-code">------</div></div><button id="copyCodeBtn" class="btn btn-secondary" style="min-height:36px">Másolás</button></div>
+      <div id="roomPlayers" class="players-list"></div>
+      <div id="roomLobbyError" class="room-error"></div>
+      <div style="display:grid;gap:8px;margin-top:10px">
+        <button id="startRoundBtn" class="btn btn-primary" disabled>Kör indítása</button>
+        <button id="leaveRoomBtn" class="btn btn-secondary">Kilépés</button>
       </div>
-      <div id="roomLobby" style="display:none">
-        <div class="tagline">ONLINE PARTY / LOBBY</div>
-        <h2 id="roomLobbyTitle">Várakozás</h2>
-        <p id="roomStatus" class="room-status"></p>
-        <div class="room-code-row"><div><div class="room-label" style="margin:0 0 3px">SZOBAKÓD</div><div id="roomCodeDisplay" class="room-code">------</div></div><button id="copyRoomCodeBtn" class="secondary">Másolás</button></div>
-        <div id="roomPlayers" class="room-players"></div>
-        <div id="roomLobbyError" class="room-error"></div>
-        <div class="room-actions">
-          <button id="startOnlineBtn" class="primary" disabled>▶ &nbsp; Meccs indítása (legalább 2 fő)</button>
-          <button id="leaveRoomBtn" class="secondary">Kilépés</button>
-        </div>
-      </div>
+      <p style="font-size:10px;color:#7e8c7a;margin-top:10px">A házigazda indítja a kört. Mindenki titokban kap három tárgyat, a helyzet pedig közös.</p>
     </div>
   </div>
 </div>
+
+<div id="howWrap" class="modal-wrap">
+  <div class="modal">
+    <div style="font-size:10px;letter-spacing:.18em;font-weight:900;color:var(--orange)">JÁTÉKSZABÁLYOK</div>
+    <h2>Hogyan éld túl?</h2>
+    <p><b>1. Helyzet:</b> Mindenki ugyanazt a lehetetlen helyzetet kapja.<br>
+    <b>2. Három tárgy:</b> Mindenki titokban kap három furcsa tárgyat a telefonjára.<br>
+    <b>3. Történet:</b> Hatvan másodperced van kitalálni, hogyan éled túl a helyzetet a három tárgy segítségével. Nem kell kijutnod, csak túlélned!<br>
+    <b>4. Szavazás:</b> Mindenki előadja a történetét; élőben elmesélve még viccesebb. Ezután megszavazzátok, ki volt a legkreatívabb.<br><br>
+    Egyedül napló módban játszhatsz, 2–8 játékossal pedig csoportosan. A cél a nevetés, nem a győzelem.</p>
+    <button id="howCloseBtn" class="btn btn-primary" style="width:100%;margin-top:8px">Értem</button>
+  </div>
+</div>
+
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.5/dist/peerjs.min.js"></script>
 <script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id);
-const COLORS=['#52f4ff','#ff4eb8','#c7ff5e','#ffb454','#9b78ff','#ff6d62','#69a3ff','#e8f1ff'];
-const W=1000,ROUND_SECONDS=90,ROUND_COUNT=3,OVERTIME_SECONDS=20;
-const PEER_CONFIG={debug:0,secure:true,config:{iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:stun1.l.google.com:19302'},{urls:'stun:stun2.l.google.com:19302'},{urls:'stun:stun3.l.google.com:19302'},{urls:'stun:stun4.l.google.com:19302'},{urls:'stun:global.stun.twilio.com:3478'}],sdpSemantics:'unified-plan'}};
-let canvas,ctx,stage,raf=0,heroRaf=0,lastTime=0,gameState='menu',paused=false,hostPaused=false,transitioning=false,round=1,timeLeft=ROUND_SECONDS,overtimeTime=0,players=[],orbs=[],particles=[],hazards=[],roundScores=[],eventTimer=0,orbTimer=0,shake=0,globalClock=0,heroCtx,heroCanvas,sharedWorldH=null,localPlayerId='you',roomMode='create',lastInputSend=0,lastStateSend=0,networkLost=false,wakeLock=null;
-const net={mode:'offline',peer:null,conn:null,connections:new Map(),code:'',name:'Player',isHost:false,playerId:null,joinTimer:null,closing:false};
-const input={x:0,y:0};let joyPointer=null;
-function clamp(v,a,b){return Math.max(a,Math.min(b,v))}function rand(a,b){return a+Math.random()*(b-a)}function norm(x,y){let m=Math.hypot(x,y)||1;return{x:x/m,y:y/m}}function fmt(n){return String(Math.max(0,Math.floor(n))).padStart(2,'0')}
-function resize(){canvas=$('gameCanvas');stage=$('stage');const dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.floor(stage.clientWidth*dpr);canvas.height=Math.floor(stage.clientHeight*dpr);ctx=canvas.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);heroCanvas=$('heroCanvas');const r=heroCanvas.getBoundingClientRect();heroCanvas.width=Math.floor(r.width*dpr);heroCanvas.height=Math.floor(r.height*dpr);heroCtx=heroCanvas.getContext('2d');heroCtx.setTransform(dpr,0,0,dpr,0,0);}
-function world(){const cw=canvas?canvas.clientWidth:W,ch=canvas?canvas.clientHeight:W;return{w:W,h:sharedWorldH||clamp(W*ch/Math.max(1,cw),620,2600)}}
-function localPlayer(){return players.find(p=>p.id===localPlayerId)||null}
-function newPlayer(id,name,color,human,x,y){return{id,name,color,human,x,y,vx:0,vy:0,r:19,score:0,roundScore:0,roundWins:0,alive:true,eliminated:false,dashCd:0,pulseCd:0,dashTime:0,dashWindow:0,dashHits:[],dashExploded:false,knockbackTime:0,invuln:0.7,faceX:1,faceY:0,flash:0,knockouts:0,roundKnockouts:0,roundSurvival:0,survivalTime:0,netInput:{x:0,y:0},disconnected:false,lastHitBy:null,lastHitAt:-999}}
-function resetRound(){const wd=world(),h=wd.h,R=arenaBaseRadius(wd);players.forEach((p,i)=>{const a=(Math.PI*2*i/Math.max(1,players.length))-Math.PI/2,rad=R*.48;p.x=W/2+Math.cos(a)*rad;p.y=h/2+Math.sin(a)*rad;p.vx=p.vy=0;p.alive=!p.disconnected;p.eliminated=!!p.disconnected;p.dashCd=rand(0,.45);p.pulseCd=rand(0,.8);p.dashTime=0;p.dashWindow=0;p.dashHits=[];p.dashExploded=false;p.knockbackTime=0;p.invuln=p.disconnected?0:0.85;p.roundScore=0;p.roundKnockouts=0;p.roundSurvival=0;p.flash=0;p.netInput={x:0,y:0};p.lastHitBy=null;p.lastHitAt=-999});orbs=[];hazards=[];particles=[];for(let i=0;i<5;i++)spawnOrb();timeLeft=ROUND_SECONDS;overtimeTime=0;eventTimer=7;orbTimer=3;shake=0;transitioning=false;updateHud()}
-function arenaBaseRadius(wd=world()){return Math.min(W,wd.h)*.43}
-function arenaRadius(wd=world()){const base=arenaBaseRadius(wd);if(overtimeTime>0){const t=clamp(overtimeTime/OVERTIME_SECONDS,0,1);return base*(.68-.54*t)}if(timeLeft<25){const t=clamp(timeLeft/25,0,1);return base*(.68+.32*t)}return base}
-function randomPointInArena(m=70){const wd=world(),R=Math.max(20,arenaRadius(wd)-m),a=rand(0,Math.PI*2),r=Math.sqrt(Math.random())*R;return{x:W/2+Math.cos(a)*r,y:wd.h/2+Math.sin(a)*r}}
-function spawnOrb(){const p=randomPointInArena(65);orbs.push({x:p.x,y:p.y,r:9,phase:rand(0,6.28),life:20})}
-function spawnBurst(x,y,color,count=10,power=180){for(let i=0;i<count;i++){const a=rand(0,Math.PI*2),v=rand(power*.2,power);particles.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,life:rand(.25,.65),max:.65,color,r:rand(2,5)})}}
-function useDash(p){if(net.mode==='guest'&&p&&p.id===localPlayerId){if(p.dashCd<=0&&p.alive)sendNet({type:'action',action:'dash'});return}if(p.dashCd>0||!p.alive||p.disconnected||gameState!=='playing'||paused)return;const dir=p.id===localPlayerId?input:(p.netInput||{x:p.faceX,y:p.faceY});let dx=dir.x||p.faceX,dy=dir.y||p.faceY;if(Math.hypot(dx,dy)<.12){dx=p.faceX||1;dy=p.faceY||0}const n=norm(dx,dy);p.vx+=n.x*720;p.vy+=n.y*720;p.dashCd=4;p.dashTime=.23;p.dashWindow=.58;p.dashHits=[];p.dashExploded=false;p.knockbackTime=Math.max(p.knockbackTime,.2);p.invuln=0;p.faceX=n.x;p.faceY=n.y;spawnBurst(p.x,p.y,p.color,14,170);shake=Math.max(shake,3)}
-function usePulse(p){if(net.mode==='guest'&&p&&p.id===localPlayerId){if(p.pulseCd<=0&&p.alive)sendNet({type:'action',action:'pulse'});return}if(p.pulseCd>0||!p.alive||p.disconnected||gameState!=='playing'||paused)return;p.pulseCd=7;spawnBurst(p.x,p.y,p.color,24,250);particles.push({x:p.x,y:p.y,ring:true,life:.48,max:.48,color:p.color,r:18});for(const o of players){if(o===p||!o.alive||o.disconnected)continue;const dx=o.x-p.x,dy=o.y-p.y,d=Math.hypot(dx,dy);if(d<145){const n=norm(dx,dy),force=(1-d/145)*620+220;o.vx+=n.x*force;o.vy+=n.y*force;o.knockbackTime=Math.max(o.knockbackTime,.42);o.lastHitBy=p.id;o.lastHitAt=globalClock;o.flash=.28;if(d<88){p.roundScore+=1;p.score+=1;}}}shake=Math.max(shake,7)}
-function doKnockout(p,source){if(!p.alive)return;p.alive=false;p.eliminated=true;spawnBurst(p.x,p.y,p.color,30,290);let credit=source;if(!credit&&p.lastHitBy&&globalClock-p.lastHitAt<5)credit=players.find(q=>q.id===p.lastHitBy);if(credit&&credit!==p){credit.score+=2;credit.roundScore+=2;credit.knockouts++;credit.roundKnockouts++;}shake=Math.max(shake,10)}
-function dashContact(a,b){if(!a.alive||!b.alive||a.dashWindow<=0||a.dashHits.includes(b.id))return; a.dashHits.push(b.id);const n=norm(b.x-a.x,b.y-a.y);b.vx+=n.x*690+a.vx*.16;b.vy+=n.y*690+a.vy*.16;b.knockbackTime=Math.max(b.knockbackTime,.52);b.lastHitBy=a.id;b.lastHitAt=globalClock;b.flash=.32;a.score+=1;a.roundScore+=1;spawnBurst(b.x,b.y,b.color,13,190);shake=Math.max(shake,5);if(a.dashHits.length>=2&&!a.dashExploded){a.dashExploded=true;spawnBurst(b.x,b.y,a.color,48,420);for(const q of players){if(!q.alive||q.disconnected||q===a)continue;const dx=q.x-b.x,dy=q.y-b.y,d=Math.hypot(dx,dy);if(d<235){const nn=norm(dx,dy);q.vx+=nn.x*(730*(1-d/235)+240);q.vy+=nn.y*(730*(1-d/235)+240);q.knockbackTime=.65;q.lastHitBy=a.id;q.lastHitAt=globalClock;}}a.score+=1;a.roundScore+=1;shake=19;}}
-function roundTiebreak(list){return [...list].sort((a,b)=>b.roundScore-a.roundScore||b.roundKnockouts-a.roundKnockouts||b.roundSurvival-a.roundSurvival)}
-function update(dt){if(gameState!=='playing'||paused)return;globalClock+=dt;const wd=world();timeLeft=Math.max(0,timeLeft-dt);if(timeLeft<=0)overtimeTime+=dt;eventTimer-=dt;orbTimer-=dt;
-if(timeLeft>0&&eventTimer<=0){eventTimer=18;const pt=randomPointInArena(150);hazards.push({x:pt.x,y:pt.y,r:rand(58,82),life:7,max:7,activeIn:1.4,pushCooldown:0});$('eventBanner').textContent='⚠ CHAOS WAVE';$('eventBanner').classList.add('visible');setTimeout(()=>$('eventBanner').classList.remove('visible'),2300)}
-if(timeLeft>0&&orbTimer<=0){orbTimer=rand(2.4,4);if(orbs.length<7)spawnOrb()}
-for(const hz of hazards){hz.life-=dt;hz.activeIn-=dt;hz.pushCooldown=(hz.pushCooldown||0)-dt;if(hz.activeIn<=0&&hz.pushCooldown<=0){hz.pushCooldown=.28;for(const p of players){if(!p.alive||p.disconnected)continue;const dx=p.x-hz.x,dy=p.y-hz.y,d=Math.hypot(dx,dy);if(d<hz.r+p.r){const n=norm(dx,dy);p.vx+=n.x*170;p.vy+=n.y*170;p.knockbackTime=Math.max(p.knockbackTime,.24);}}}}hazards=hazards.filter(h=>h.life>0);
-for(const o of orbs){o.phase+=dt*2;o.life-=dt}orbs=orbs.filter(o=>o.life>0);
-for(const p of players){if(p.disconnected||!p.alive)continue;p.roundSurvival+=dt;p.survivalTime+=dt;p.dashCd=Math.max(0,p.dashCd-dt);p.pulseCd=Math.max(0,p.pulseCd-dt);p.invuln=Math.max(0,p.invuln-dt);p.dashTime=Math.max(0,p.dashTime-dt);p.dashWindow=Math.max(0,p.dashWindow-dt);p.knockbackTime=Math.max(0,p.knockbackTime-dt);p.flash=Math.max(0,p.flash-dt);let mv=p.id===localPlayerId?input:(p.netInput||{x:0,y:0});const moving=Math.hypot(mv.x,mv.y)>.06;if(moving){const n=norm(mv.x,mv.y);p.faceX=n.x;p.faceY=n.y;const acc=p.knockbackTime>0?2.2:(p.dashTime>0?2:10);p.vx+=(n.x*250-p.vx)*Math.min(1,dt*acc);p.vy+=(n.y*250-p.vy)*Math.min(1,dt*acc)}else{p.vx*=Math.pow(.12,dt);p.vy*=Math.pow(.12,dt)}const sp=Math.hypot(p.vx,p.vy),mx=(p.dashTime>0?620:(p.knockbackTime>0?690:250));if(sp>mx){p.vx=p.vx/sp*mx;p.vy=p.vy/sp*mx}p.x+=p.vx*dt;p.y+=p.vy*dt;
-const dx=p.x-W/2,dy=p.y-wd.h/2,rad=Math.hypot(dx,dy),R=arenaRadius(wd);if(rad>R-78&&rad>0){const pr=clamp((rad-(R-78))/78,0,1)*105;p.vx-=dx/rad*pr*dt;p.vy-=dy/rad*pr*dt}
-for(let i=orbs.length-1;i>=0;i--){const o=orbs[i];if(Math.hypot(p.x-o.x,p.y-o.y)<p.r+o.r+3){p.score+=1;p.roundScore+=1;p.dashCd=Math.max(0,p.dashCd-1);p.pulseCd=Math.max(0,p.pulseCd-1);spawnBurst(o.x,o.y,'#c7ff5e',9,140);orbs.splice(i,1);break}}}
-for(let i=0;i<players.length;i++)for(let j=i+1;j<players.length;j++){const a=players[i],b=players[j];if(!a.alive||!b.alive||a.disconnected||b.disconnected)continue;let dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy),mn=a.r+b.r;if(d<mn&&d>.001){const n=norm(dx,dy),over=mn-d;a.x-=n.x*over*.5;a.y-=n.y*over*.5;b.x+=n.x*over*.5;b.y+=n.y*over*.5;const atA=a.dashWindow>0&&!a.dashHits.includes(b.id),atB=b.dashWindow>0&&!b.dashHits.includes(a.id);if(atA)dashContact(a,b);if(atB)dashContact(b,a);}}
-const liveWd=world(),R2=arenaRadius(liveWd);for(const p of players){if(!p.alive||p.disconnected)continue;if(Math.hypot(p.x-W/2,p.y-liveWd.h/2)>R2+p.r*.16){let src=null;if(p.lastHitBy&&globalClock-p.lastHitAt<5)src=players.find(q=>q.id===p.lastHitBy);doKnockout(p,src);}}
-for(const pt of particles){pt.life-=dt;if(!pt.ring){pt.x+=(pt.vx||0)*dt;pt.y+=(pt.vy||0)*dt;pt.vx*=.92;pt.vy*=.92}else pt.r+=dt*430}particles=particles.filter(p=>p.life>0);shake=Math.max(0,shake-dt*24);
-const alive=players.filter(p=>p.alive&&!p.disconnected);if(alive.length<=1){finishRound(alive[0]||null);return}if(overtimeTime>=OVERTIME_SECONDS){finishRound(roundTiebreak(players.filter(p=>!p.disconnected))[0]||null);return}updateHud()}
-function finishRound(winnerOverride){if(transitioning||gameState!=='playing')return;transitioning=true;timeLeft=0;const eligible=players.filter(p=>!p.disconnected);let winner=winnerOverride||roundTiebreak(eligible)[0];if(winner){winner.roundWins++;winner.score+=3;winner.roundScore+=3}const entry=roundTiebreak(eligible).map(p=>({id:p.id,name:p.name,score:p.roundScore,color:p.color,roundWins:p.roundWins||0,alive:!!p.alive}));roundScores.push({round,winnerId:winner?winner.id:null,players:entry});gameState='roundEnd';paused=true;showRoundEndUI({round,winner,players:entry});if(net.mode==='host')broadcast({type:'roundEnd',round,winner:winner?{id:winner.id,name:winner.name,color:winner.color}:null,players:entry,state:snapshotData().state});if(round>=ROUND_COUNT){gameState='result';showFinal()}if(net.mode==='host')broadcastSnapshot(true)}
-function showFinal(){if(gameState!=='result')return;paused=true;const order=[...players.filter(p=>!p.disconnected)].sort((a,b)=>(b.roundWins||0)-(a.roundWins||0)||b.score-a.score);const w=order[0];$('modalTag').textContent='MATCH COMPLETE';$('modalTitle').textContent=w?(w.id===localPlayerId?'TE VAGY A BAJNOK!':`${esc(w.name)} A BAJNOK!`):'NINCS GYŐZTES';$('modalText').innerHTML=order.map((p,i)=>`<span style="color:${p.color};font-weight:900">${i+1}. ${esc(p.name)}</span> — ${p.roundWins||0} kör · ${p.score} pont`).join('<br>');$('resumeBtn').textContent=net.mode==='guest'?'Várakozás a hostra…':'↻ Új meccs';$('resumeBtn').disabled=net.mode==='guest';$('restartBtn').style.display='none';$('modalWrap').classList.add('show');if(net.mode==='host')broadcast({type:'matchResult',players:order.map(p=>({id:p.id,name:p.name,score:p.score,color:p.color,roundWins:p.roundWins||0}))})}
-function showRoundEndUI(data){const r=data.round||round,w=data.winner;const ranking=data.players||[];$('modalTag').textContent=`ROUND ${r} / ${ROUND_COUNT} COMPLETE`;$('modalTitle').textContent=w?`${esc(w.name)} NYERTE A KÖRT!`:'KÖR VÉGE';$('modalText').innerHTML=(w?`<b style="color:${w.color}">${esc(w.name)}</b> nyerte.<br><br>`:'')+ranking.map((p,i)=>`<span style="color:${p.color};font-weight:900">${i+1}. ${esc(p.name)}</span> — ${p.score||0} pont`).join('<br>');$('resumeBtn').textContent=net.mode==='guest'?'Várakozás a hostra…':'▶ Következő kör';$('resumeBtn').disabled=net.mode==='guest';$('restartBtn').style.display='none';$('modalWrap').classList.add('show')}
-function startNextRound(){if(gameState!=='roundEnd'||net.mode==='guest')return;if(round>=ROUND_COUNT){gameState='result';showFinal();return}round++;gameState='playing';paused=false;hostPaused=false;resetRound();$('roundLabel').textContent=`ROUND ${round} / ${ROUND_COUNT}`;$('modalWrap').classList.remove('show');lastTime=performance.now();if(net.mode==='host')broadcast({type:'roundStart',state:snapshotData().state});if(!raf)raf=requestAnimationFrame(loop)}
-function esc(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function updateHud(){$('timer').textContent=overtimeTime>0?`OT ${fmt(Math.max(0,OVERTIME_SECONDS-overtimeTime))}`:`${Math.floor(timeLeft/60)}:${fmt(timeLeft%60)}`;$('roundLabel').textContent=`ROUND ${Math.min(round,ROUND_COUNT)} / ${ROUND_COUNT}`;const p=localPlayer();$('myScore').textContent=fmt(p?p.score:0);if(p){$('dashCd').style.setProperty('--cd',`${p.dashCd/4*100}%`);$('pulseCd').style.setProperty('--cd',`${p.pulseCd/7*100}%`);}}
-function drawBackground(c,w,h){const g=c.createLinearGradient(0,0,w,h);g.addColorStop(0,'#0b1830');g.addColorStop(.42,'#080f22');g.addColorStop(1,'#030611');c.fillStyle=g;c.fillRect(0,0,w,h);}
-function drawArena(c,w,h){drawBackground(c,w,h);const cx=w/2,cy=h/2,R=Math.max(20,(w===W&&gameState!=='menu')?arenaRadius({w:W,h}):Math.min(w,h)*.43);c.save();c.fillStyle='#030713';c.beginPath();c.arc(cx,cy,R+7,0,Math.PI*2);c.fill();const metal=c.createRadialGradient(cx-R*.22,cy-R*.3,10,cx,cy,R);metal.addColorStop(0,'#263f65');metal.addColorStop(1,'#071225');c.fillStyle=metal;c.beginPath();c.arc(cx,cy,R,0,Math.PI*2);c.fill();c.strokeStyle='#75f8ff';c.lineWidth=2.2;c.shadowColor='#52f4ff';c.shadowBlur=19;c.beginPath();c.arc(cx,cy,R,0,Math.PI*2);c.stroke();c.shadowBlur=0;c.restore();}
-function drawHazards(c){for(const hz of hazards){c.save();c.fillStyle='rgba(255,67,151,.25)';c.beginPath();c.arc(hz.x,hz.y,hz.r,0,Math.PI*2);c.fill();c.strokeStyle='#ff4ea9';c.lineWidth=2;c.beginPath();c.arc(hz.x,hz.y,hz.r,0,Math.PI*2);c.stroke();c.restore()}}
-function drawOrb(c,o){c.save();c.translate(o.x,o.y+Math.sin(o.phase)*2);c.fillStyle='#c7ff5e';c.shadowColor='#c7ff5e';c.shadowBlur=18;c.beginPath();c.arc(0,0,o.r,0,Math.PI*2);c.fill();c.restore()}
-function drawPlayer(c,p){c.save();c.translate(p.x,p.y);const alive=p.alive&&!p.disconnected;c.globalAlpha=alive?1:.25;c.fillStyle=p.color;c.shadowColor=p.color;c.shadowBlur=alive?18:0;c.beginPath();c.arc(0,0,p.r,0,Math.PI*2);c.fill();c.shadowBlur=0;c.strokeStyle='#fff';c.lineWidth=1.5;c.beginPath();c.arc(0,0,p.r,0,Math.PI*2);c.stroke();c.fillStyle='#fff';c.font=`900 ${p.id===localPlayerId?12:10}px system-ui`;c.textAlign='center';c.fillText(alive?p.name:p.name+' · OUT',0,-p.r-12);c.restore()}
-function drawParticles(c){for(const p of particles){c.save();c.globalAlpha=clamp(p.life/p.max,0,1);c.fillStyle=p.color;c.beginPath();c.arc(p.x,p.y,p.r,0,Math.PI*2);c.fill();c.restore()}}
-function drawGame(){if(!$('game').classList.contains('active')||!ctx)return;const cw=canvas.clientWidth,ch=canvas.clientHeight,wd=world();ctx.clearRect(0,0,cw,ch);const scale=Math.min(cw/W,ch/wd.h),drawW=W*scale,drawH=wd.h*scale,ox=(cw-drawW)/2,oy=(ch-drawH)/2;ctx.save();ctx.translate(ox,oy);ctx.scale(scale,scale);if(shake>0)ctx.translate(rand(-shake,shake),rand(-shake,shake));drawArena(ctx,W,wd.h);drawHazards(ctx);for(const o of orbs)drawOrb(ctx,o);for(const p of players)drawPlayer(ctx,p);drawParticles(ctx);ctx.restore()}
-function loop(now){if(gameState==='menu')return;let dt=Math.min(.033,Math.max(0,(now-lastTime)/1000||0));lastTime=now;if(!paused&&gameState==='playing'&&net.mode!=='guest')update(dt);if(net.mode==='guest'&&gameState==='playing'&&now-lastInputSend>50){sendNet({type:'input',x:paused?0:input.x,y:paused?0:input.y});lastInputSend=now}if(net.mode==='host'&&['playing','roundEnd','result'].includes(gameState)&&now-lastStateSend>50){broadcastSnapshot();lastStateSend=now}drawGame();if(['playing','roundEnd','result'].includes(gameState))raf=requestAnimationFrame(loop)}
-function showPause(){if(gameState!=='playing'&&gameState!=='result')return;paused=true;if(net.mode==='host'){hostPaused=true;broadcast({type:'hostPause',paused:true})}$('modalTag').textContent=gameState==='result'?'MATCH COMPLETE':'PAUSE MENU';$('modalTitle').textContent='Szünet?';$('resumeBtn').textContent=gameState==='result'?(net.mode==='guest'?'Várakozás…':'↻ Új meccs'):'▶ Folytatás';$('resumeBtn').disabled=gameState==='result'&&net.mode==='guest';$('modalWrap').classList.add('show')}
-function goHome(){if(heroRaf){cancelAnimationFrame(heroRaf);heroRaf=0}if(net.peer||net.mode!=='disconnected')closeOnline(false);paused=true;gameState='menu';$('modalWrap').classList.remove('show');$('roomWrap').classList.remove('show');$('game').classList.remove('active');$('menu').classList.add('active');input.x=input.y=0;resetJoy();cancelAnimationFrame(raf);drawHero()}
-function drawHero(){const c=heroCtx,cv=heroCanvas;if(!c||!cv)return;const w=cv.clientWidth,h=cv.clientHeight;if(!w||!h)return;c.clearRect(0,0,w,h);c.save();c.scale(w/W,h/620);drawArena(c,W,620);c.restore();if(!heroRaf&&$('menu').classList.contains('active'))heroRaf=requestAnimationFrame(()=>{globalClock+=.016;drawHero();})}
-function resetJoy(){input.x=input.y=0;joyPointer=null;$('joyKnob').style.transform='translate(0px,0px)';const s=$('joystick');s.style.left='';s.style.top='';}
-function setJoy(e){const r=$('joystick').getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=e.clientX-cx,dy=e.clientY-cy,max=r.width*.33,mag=Math.hypot(dx,dy),f=mag>max?max/mag:1;const x=dx*f,y=dy*f;input.x=clamp(x/max,-1,1);input.y=clamp(y/max,-1,1);$('joyKnob').style.transform=`translate(${x}px,${y}px)`}
-function cleanName(v){return String(v||'').replace(/[<>\u0000-\u001f]/g,'').trim().slice(0,16)||'Player'}
-function makeRoomCode(){const C='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let o='';for(let i=0;i<6;i++)o+=C[Math.floor(Math.random()*C.length)];return o}
-function showRoomSetup(mode){roomMode=mode;networkLost=false;$('roomLobby').style.display='none';$('roomSetup').style.display='';$('roomCodeField').style.display=mode==='join'?'':'none';$('roomError').textContent='';$('roomSetupTag').textContent=mode==='create'?'CREATE PARTY ROOM':'JOIN PARTY ROOM';$('roomSetupTitle').textContent=mode==='create'?'Szoba létrehozása':'Csatlakozás szobához';$('roomConfirmBtn').textContent=mode==='create'?'＋ Szoba létrehozása':'↗ Csatlakozás';$('roomConfirmBtn').disabled=false;$('roomWrap').classList.add('show')}
+const COLORS=['#ff7a18','#ffe55a','#8aff6a','#7ab8ff','#ff6eb8','#9d78ff','#5effe0','#ffb36a'];
+const PEER_CONFIG={debug:0,secure:true,config:{iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:stun1.l.google.com:19302'},{urls:'stun:stun2.l.google.com:19302'},{urls:'stun:stun3.l.google.com:19302'},{urls:'stun:global.stun.twilio.com:3478'}],sdpSemantics:'unified-plan'}};
+
+const SCENARIOS=[
+"Éjszakára az IKEA raktárában rekedtél. –10 °C van, nincs fűtés, csak plüssjátékok vesznek körül.",
+"Egy liftben rekedtél nyolc órára. 40 °C van, nincs térerő, és a lift időnként megrázkódik.",
+"Zárás után a Decathlon áruház sátrakat árusító részlegén felejtettek. Odakint vihar tombol, odabent sötét van.",
+"Egy lakatlan szigeten rekedtél, és közeleg a dagály. Csak egy pálmafa és egy bőrönd áll a rendelkezésedre.",
+"Zombiapokalipszis tört ki a Tescóban. A kasszánál rekedtél, és közelednek a zombik.",
+"A hétvégére ott felejtettek a sulid tornatermében. Nincs ennivaló, ivóvíz vagy térerő.",
+"Egy hőlégballonban lebegsz ezer méter magasan, de a ballon lassan ereszt.",
+"A Balaton közepén sodródsz egy matracon. A matrac leeresztett, és már este van.",
+"Egy metróalagútban rekedtél, és bokáig ér a beömlő víz. Nincs világítás.",
+"A nagymamád darazsakkal teli padlásán rekedtél, az ajtó pedig beszorult.",
+"Egy éjjel-nappal nyitva tartó szaunában rekedtél. 90 °C van, és nincs kijárat.",
+"Egy szénakazalban vagy, és valaki kívülről felgyújtotta a pajtát.",
+"Éjszakára egy vidámparkban rekedtél. Minden játék magától elindul, és hatalmas zajt csap.",
+"Hóviharba kerültél a hegyen. Csak egy szakadt sátorvázad van, ponyva nélkül.",
+"Egy barlangban rekedtél. A lámpád villog, és denevérek röpködnek körülötted.",
+"Beestél egy háromméteres gödörbe a kertben. Esik az eső, és gyűlik a sár.",
+"Éjszakára az állatkertben rekedtél, és két majom kiszabadult.",
+"Egy kukásautóban ébredtél. A hátsó ajtó zárva van, és rettenetes a bűz.",
+"Egy óriáskerék tetején rekedtél. A szerkezet megállt, és erős szél fúj.",
+"Az IKEA parkolójában lerobbant az autód. –15 °C van, és kifogyott a benzin."
+];
+
+const ITEMS=[
+{em:"🦩",nm:"felfújható flamingó"},{em:"🦆",nm:"gumikacsa"},{em:"📦",nm:"10 méter szigetelőszalag"},{em:"🔊",nm:"hangosbemondó"},{em:"🍌",nm:"fürt banán"},{em:"🧻",nm:"alufólia"},{em:"🪞",nm:"kézitükör"},{em:"🔦",nm:"elemlámpa, elem nélkül"},{em:"🧦",nm:"büdös zokni"},{em:"🧊",nm:"jégkockatartó"},{em:"🪤",nm:"egérfogó"},{em:"🪁",nm:"papírsárkány"},{em:"🧃",nm:"szívószál"},{em:"🎈",nm:"luficsomag"},{em:"🧲",nm:"hűtőmágnes"},{em:"🩴",nm:"papucs"},{em:"🥄",nm:"fakanál"},{em:"🪠",nm:"vécépumpa"},{em:"🧤",nm:"sütőkesztyű"},{em:"📎",nm:"100 gemkapocs"},{em:"🪢",nm:"2 méter madzag"},{em:"🧴",nm:"sampon"},{em:"🕯️",nm:"illatgyertya"},{em:"🔧",nm:"franciakulcs"},{em:"🪥",nm:"fogkefe"},{em:"🧸",nm:"plüssmackó"},{em:"🪣",nm:"vödör"},{em:"🧃",nm:"dobozos tej"},{em:"📯",nm:"trombita"},{em:"🪑",nm:"kempingszék"},{em:"🧢",nm:"baseballsapka"},{em:"🥫",nm:"konzervbab"},{em:"🪤",nm:"légycsapó"},{em:"📻",nm:"retró rádió"},{em:"🧵",nm:"varrókészlet"},{em:"🪫",nm:"lemerült külső akkumulátor"},{em:"🥽",nm:"úszószemüveg"},{em:"🪮",nm:"fésű"},{em:"🧯",nm:"üres poroltó"},{em:"🪓",nm:"kis balta"},{em:"🧹",nm:"seprű"},{em:"🪙",nm:"egy marék aprópénz"},{em:"📦",nm:"polisztiroldoboz"},{em:"🧣",nm:"sál"},{em:"🥁",nm:"játékdob"},{em:"🪇",nm:"maracas"},{em:"🧼",nm:"szappan"},{em:"🪀",nm:"jojó"},{em:"📏",nm:"vonalzó"},{em:"🔩",nm:"csavarok"},{em:"🪚",nm:"kézi fűrész"},{em:"🧰",nm:"kulcs nélküli szerszámosláda"},{em:"🪞",nm:"nagy tükör"},{em:"🧴",nm:"naptej"},{em:"🩹",nm:"sebtapasz"},{em:"🦺",nm:"láthatósági mellény"},{em:"⛑️",nm:"sisak"},{em:"🧤",nm:"gumikesztyű"},{em:"🪢",nm:"hegymászó kötél"},{em:"🎣",nm:"horgászbot horog nélkül"}
+];
+
+let players=[],localPlayerId=null,net={mode:'offline',peer:null,conn:null,connections:new Map(),code:'',name:'Játékos',isHost:false,playerId:null,joinTimer:null,closing:false};
+let round=0,currentScenario='',myItems=[],playerItems={},stories={},votes={},scores={},revealTimer=null,revealLeft=60;
+let gameState='menu';
+
+function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function cleanName(v){return String(v||'').replace(/[<>\u0000-\u001f]/g,'').trim().slice(0,16)||'Játékos'}
+function makeCode(){const C='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let o='';for(let i=0;i<6;i++)o+=C[Math.floor(Math.random()*C.length)];return o}
+function pickItems(n){const a=[...ITEMS].sort(()=>Math.random()-0.5);return a.slice(0,n)}
+function pickScenario(){return SCENARIOS[Math.floor(Math.random()*SCENARIOS.length)]}
+
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');}
 function setRoomError(t){$('roomError').textContent=t||'';$('roomLobbyError').textContent=t||''}
-function showRoomLobby(){ $('roomSetup').style.display='none';$('roomLobby').style.display='';$('roomWrap').classList.add('show');$('roomCodeDisplay').textContent=net.code||'------';updateLobbyUI();}
-function updateLobbyUI(remote){let people;if(remote&&Array.isArray(remote.players))people=remote.players;else people=players.filter(p=>p.human&&!p.disconnected).map(p=>({id:p.id,name:p.name,color:p.color,host:p.id===localPlayerId}));$('roomPlayers').innerHTML=people.map(p=>`<div class="room-player"><span class="room-dot" style="background:${p.color}"></span><strong>${esc(p.name)}</strong><small>${p.host?'HOST':(p.id===localPlayerId?'TE':'JÁTÉKOS')}</small></div>`).join('')||'<div class="room-player">Csatlakozás…</div>';if(net.isHost){$('roomStatus').textContent=`${people.length}/8 játékos · Oszd meg a kódot.`;$('startOnlineBtn').disabled=people.length<2;$('startOnlineBtn').textContent=people.length<2?'▶ Meccs indítása (legalább 2 fő)':`▶ Meccs indítása (${people.length} játékos)`;}else{$('roomStatus').textContent=`${people.length}/8 játékos · A host indítja.`;}}
+function showRoomSetup(mode){
+  $('roomSetup').style.display='';$('roomLobby').style.display='none';
+  $('roomCodeField').style.display=mode==='join'?'':'none';
+  $('roomSetupTitle').textContent=mode==='create'?'Szoba létrehozása':'Csatlakozás';
+  $('roomSetupText').textContent=mode==='create'?'Add meg a neved; a szobakódot létrehozás után megoszthatod.':'Add meg a neved és a hatjegyű szobakódot.';
+  $('roomConfirmBtn').textContent=mode==='create'?'Szoba létrehozása':'Csatlakozás';
+  $('roomWrap').classList.add('show');
+  window._roomMode=mode;
+}
+function showLobby(){ $('roomSetup').style.display='none';$('roomLobby').style.display='';$('roomWrap').classList.add('show');$('roomCodeDisplay').textContent=net.code||'------';updateLobbyUI(); }
+function updateLobbyUI(remote){
+  let list;if(remote&&remote.players)list=remote.players;else list=players.filter(p=>!p.disconnected).map(p=>({id:p.id,name:p.name,color:p.color,host:p.id===localPlayerId}));
+  $('roomPlayers').innerHTML=list.map(p=>`<div class="p-row"><span class="p-dot" style="background:${p.color}"></span><strong>${esc(p.name)}</strong><small style="margin-left:auto;color:#8a9a85">${p.host?'HÁZIGAZDA':p.id===localPlayerId?'TE':''}</small></div>`).join('')||'<div class="p-row">Várakozás...</div>';
+  const cnt=list.length;
+  if(net.isHost){$('roomStatus').textContent=`${cnt}/8 játékos`; $('startRoundBtn').disabled=cnt<1; $('startRoundBtn').textContent=cnt<=1?'Egyéni kaland indítása':'Kör indítása ('+cnt+' játékos)';}
+  else{$('roomStatus').textContent=`${cnt}/8 játékos · a házigazda indítja`;$('startRoundBtn').style.display='none'}
+}
 function sendNet(m){try{if(net.mode==='guest'&&net.conn&&net.conn.open)net.conn.send(m)}catch(e){}}
 function broadcast(m){if(net.mode!=='host')return;for(const c of net.connections.values()){try{if(c.open)c.send(m)}catch(e){}}}
-function lobbyData(){return{code:net.code,players:players.filter(p=>p.human&&!p.disconnected).map(p=>({id:p.id,name:p.name,color:p.color,host:p.id===localPlayerId}))}}
+function lobbyData(){return{code:net.code,players:players.filter(p=>!p.disconnected).map(p=>({id:p.id,name:p.name,color:p.color,host:p.id===localPlayerId}))}}
 function broadcastLobby(){const d=lobbyData();broadcast({type:'lobby',room:d});updateLobbyUI(d)}
-function snapshotData(){const wd=world();return{type:'state',state:{worldH:wd.h,gameState,round,timeLeft,overtimeTime,transitioning,globalClock,players:players.map(p=>({id:p.id,name:p.name,color:p.color,human:p.human,x:p.x,y:p.y,vx:p.vx,vy:p.vy,r:p.r,score:p.score,roundScore:p.roundScore,roundWins:p.roundWins||0,alive:p.alive,eliminated:!!p.eliminated,dashCd:p.dashCd,pulseCd:p.pulseCd,dashTime:p.dashTime,dashWindow:p.dashWindow,dashHits:p.dashHits||[],dashExploded:!!p.dashExploded,knockbackTime:p.knockbackTime||0,invuln:p.invuln,faceX:p.faceX,faceY:p.faceY,flash:p.flash,knockouts:p.knockouts,disconnected:!!p.disconnected})),orbs,hazards,particles:particles.slice(-60)}}}
-function broadcastSnapshot(){if(net.mode!=='host')return;broadcast(snapshotData())}
-function applySnapshot(msg){const st=msg&&msg.state;if(!st)return;sharedWorldH=st.worldH||null;round=st.round||1;timeLeft=st.timeLeft||0;overtimeTime=st.overtimeTime||0;transitioning=!!st.transitioning;globalClock=st.globalClock||globalClock;players=(st.players||[]).map(p=>({...p,netInput:{x:0,y:0}}));orbs=st.orbs||[];hazards=st.hazards||[];particles=st.particles||[];gameState=st.gameState||'playing';updateHud();if(gameState==='roundEnd'&&net.mode==='guest'){showRoundEndUI({round:round,players:st.players});paused=true}else if(gameState==='result'&&net.mode==='guest'){showFinal()}}
-function startNetworkVisuals(){if(heroRaf){cancelAnimationFrame(heroRaf);heroRaf=0}paused=false;transitioning=false;$('menu').classList.remove('active');$('game').classList.add('active');$('modalWrap').classList.remove('show');$('roomWrap').classList.remove('show');resize();lastTime=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop);if('wakeLock' in navigator){navigator.wakeLock.request('screen').then(l=>{wakeLock=l}).catch(()=>{});}}
-function startOnlineMatch(){if(net.mode!=='host')return;const h=players.filter(p=>p.human&&!p.disconnected);if(h.length<2){$('roomLobbyError').textContent='Legalább 2 játékos kell.';return}players=h;players.forEach((p,i)=>{p.color=COLORS[i%COLORS.length];p.score=0;p.roundWins=0;p.disconnected=false;});round=1;roundScores=[];overtimeTime=0;gameState='playing';paused=false;hostPaused=false;sharedWorldH=null;startNetworkVisuals();resetRound();broadcast({type:'matchStart',state:snapshotData().state});}
-function closeOnline(showMenu=true){net.closing=true;if(net.joinTimer)clearTimeout(net.joinTimer);try{if(wakeLock)wakeLock.release()}catch(e){}try{if(net.peer&&!net.peer.destroyed)net.peer.destroy()}catch(e){}net.peer=null;net.conn=null;net.connections.clear();net.mode='offline';net.isHost=false;net.code='';net.playerId=null;net.closing=false;sharedWorldH=null;localPlayerId='you';if(showMenu){paused=true;gameState='menu';$('game').classList.remove('active');$('menu').classList.add('active')}$('roomWrap').classList.remove('show')}
-function hostConnection(conn){let ok=false;const pid='p'+Math.random().toString(36).slice(2,9);conn.on('data',data=>{if(!data)return;if(data.type==='hello'){if(ok)return;if(gameState!=='lobby'){try{conn.send({type:'error',message:'A meccs már elkezdődött.'})}catch(e){}conn.close();return}if(players.filter(p=>p.human&&!p.disconnected).length>=8){try{conn.send({type:'error',message:'A szoba tele van.'})}catch(e){}conn.close();return}ok=true;const p=newPlayer(pid,cleanName(data.name),COLORS[players.length%COLORS.length],true,W/2+rand(-60,60),world().h/2+rand(-60,60));players.push(p);conn.playerId=pid;net.connections.set(conn.peer,conn);try{conn.send({type:'welcome',playerId:pid,room:lobbyData()})}catch(e){}broadcastLobby();return}if(!ok)return;const pl=players.find(q=>q.id===conn.playerId);if(!pl)return;if(data.type==='input'){pl.netInput={x:clamp(Number(data.x)||0,-1,1),y:clamp(Number(data.y)||0,-1,1)}}else if(data.type==='action'&&gameState==='playing'&&!paused){if(data.action==='dash')useDash(pl);if(data.action==='pulse')usePulse(pl);}});conn.on('close',()=>{if(net.closing)return;net.connections.delete(conn.peer);const pl=players.find(q=>q.id===conn.playerId);if(pl){if(gameState==='playing'||gameState==='result'){pl.disconnected=true;pl.alive=false;}else players=players.filter(q=>q.id!==pl.id);}broadcastLobby();});}
-function createRoom(attempt=0){if(!window.Peer){setRoomError('PeerJS nem töltődött be.');return}if(attempt>5){setRoomError('Nem sikerült kódot foglalni, frissítsd.');return}const code=makeRoomCode();net.name=cleanName($('roomNameInput').value);net.mode='host';net.isHost=true;net.code=code;localPlayerId='host';players=[newPlayer('host',net.name,COLORS[0],true,W/2,world().h/2)];net.connections=new Map();$('roomConfirmBtn').disabled=true;$('roomError').textContent=`Szoba: ${code}…`;let peer;try{peer=new Peer('chaos-arena-'+code,PEER_CONFIG)}catch(e){setRoomError('Peer hiba: '+e.message);$('roomConfirmBtn').disabled=false;return}net.peer=peer;peer.on('open',()=>{if(net.peer!==peer)return;net.code=code;gameState='lobby';$('roomConfirmBtn').disabled=false;showRoomLobby();$('roomStatus').textContent='Szoba kész. Oszd meg a kódot!';broadcastLobby();});peer.on('connection',hostConnection);peer.on('disconnected',()=>{try{peer.reconnect()}catch(e){}});peer.on('error',err=>{if(net.peer!==peer||net.closing)return;if(err.type==='unavailable-id'){try{peer.destroy()}catch(e){}createRoom(attempt+1);return}setRoomError(`Hálózati hiba (${err.type}). Próbáld újra.`);$('roomConfirmBtn').disabled=false;});}
-function joinRoom(){if(!window.Peer){setRoomError('PeerJS nem töltődött be.');return}const code=String($('roomCodeInput').value||'').toUpperCase().replace(/[^A-Z0-9]/g,'');if(code.length!==6){setRoomError('A kód 6 karakter.');return}net.name=cleanName($('roomNameInput').value);net.code=code;net.mode='guest';net.isHost=false;localPlayerId=null;$('roomConfirmBtn').disabled=true;$('roomError').textContent='Kapcsolódás…';let peer;try{peer=new Peer(PEER_CONFIG)}catch(e){setRoomError('Peer hiba.');$('roomConfirmBtn').disabled=false;return}net.peer=peer;let welcomed=false,rejected=false;peer.on('open',()=>{if(net.peer!==peer)return;const conn=peer.connect('chaos-arena-'+code,{reliable:true});net.conn=conn;if(net.joinTimer)clearTimeout(net.joinTimer);net.joinTimer=setTimeout(()=>{if(!welcomed&&!rejected){setRoomError('Nincs válasz 12mp alatt. Host telefonja elaludt vagy más hálózaton van.');$('roomConfirmBtn').disabled=false}},12000);conn.on('open',()=>{try{conn.send({type:'hello',name:net.name})}catch(e){}});conn.on('data',msg=>{if(!msg)return;if(msg.type==='welcome'){welcomed=true;clearTimeout(net.joinTimer);localPlayerId=msg.playerId;net.playerId=msg.playerId;showRoomLobby();if(msg.room)updateLobbyUI(msg.room);$('roomConfirmBtn').disabled=false}else if(msg.type==='lobby'){if(msg.room){net.code=msg.room.code||code;showRoomLobby();updateLobbyUI(msg.room);}}else if(msg.type==='error'){rejected=true;closeOnline(false);showRoomSetup('join');setRoomError(msg.message||'Csatlakozás sikertelen.');$('roomConfirmBtn').disabled=false}else if(msg.type==='matchStart'||msg.type==='roundStart'){if(msg.state){applySnapshot({state:msg.state});startNetworkVisuals();applySnapshot({state:msg.state});paused=false;$('modalWrap').classList.remove('show');}}else if(msg.type==='state'){applySnapshot(msg)}else if(msg.type==='roundEnd'){if(msg.state)applySnapshot({state:msg.state});gameState=round>=ROUND_COUNT?'result':'roundEnd';paused=true;if(round<ROUND_COUNT)showRoundEndUI(msg);else showFinal()}else if(msg.type==='matchResult'){gameState='result';showFinal()}else if(msg.type==='hostPause'){hostPaused=!!msg.paused;paused=hostPaused;if(paused){$('modalTag').textContent='HOST PAUSED';$('modalTitle').textContent='Szünet';$('modalText').textContent='A host szüneteltet.';$('resumeBtn').textContent='Várakozás…';$('resumeBtn').disabled=true;$('modalWrap').classList.add('show');}else{$('modalWrap').classList.remove('show');paused=false;}}});conn.on('close',()=>{if(net.closing)return;if(!welcomed){$('roomConfirmBtn').disabled=false;if(!rejected)setRoomError('Nem elérhető a szoba. Ellenőrizd a kódot.');return}$('modalTag').textContent='CONNECTION LOST';$('modalTitle').textContent='Kapcsolat megszakadt';$('modalText').textContent='Megszakadt a kapcsolat a hosttal.';$('modalWrap').classList.add('show');});});peer.on('disconnected',()=>{try{peer.reconnect()}catch(e){}});peer.on('error',err=>{if(err.type==='peer-unavailable')setRoomError('Nincs ilyen szoba. Ellenőrizd a kódot.');else setRoomError(`Hiba: ${err.type}`);$('roomConfirmBtn').disabled=false;});}
-$('createRoomBtn').addEventListener('click',()=>showRoomSetup('create'));$('joinRoomBtn').addEventListener('click',()=>showRoomSetup('join'));$('roomConfirmBtn').addEventListener('click',()=>{if(roomMode==='create')createRoom();else joinRoom()});$('roomCancelBtn').addEventListener('click',()=>{closeOnline(false);$('roomWrap').classList.remove('show')});$('startOnlineBtn').addEventListener('click',startOnlineMatch);$('leaveRoomBtn').addEventListener('click',()=>{closeOnline(true);$('roomWrap').classList.remove('show');$('modalWrap').classList.remove('show');resetJoy();cancelAnimationFrame(raf);drawHero()});$('copyRoomCodeBtn').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(net.code);$('copyRoomCodeBtn').textContent='Másolva ✓';setTimeout(()=>$('copyRoomCodeBtn').textContent='Másolás',1200)}catch(e){prompt('Kód:',net.code)}});
-function startJoy(e){e.preventDefault();if(joyPointer!==null)return;joyPointer=e.pointerId;const r=$('joystick').getBoundingClientRect();const cx=r.left+r.width/2,cy=r.top+r.height/2;const dx=e.clientX-cx,dy=e.clientY-cy;setJoy(e);$('joyZone').setPointerCapture(e.pointerId);}
-$('joyZone').addEventListener('pointerdown',startJoy);$('joyZone').addEventListener('pointermove',e=>{if(joyPointer===e.pointerId){e.preventDefault();setJoy(e)}});$('joyZone').addEventListener('pointerup',e=>{if(joyPointer===e.pointerId)resetJoy()});$('dashBtn').addEventListener('pointerdown',e=>{e.preventDefault();const p=localPlayer();if(p)useDash(p)});$('pulseBtn').addEventListener('pointerdown',e=>{e.preventDefault();const p=localPlayer();if(p)usePulse(p)});
-window.addEventListener('keydown',e=>{const k=e.key.toLowerCase();if(k==='w'||k==='arrowup')input.y=-1;if(k==='s'||k==='arrowdown')input.y=1;if(k==='a'||k==='arrowleft')input.x=-1;if(k==='d'||k==='arrowright')input.x=1;if(k===' '){const p=localPlayer();if(p)useDash(p)}if(k==='e'){const p=localPlayer();if(p)usePulse(p)}});window.addEventListener('keyup',e=>{const k=e.key.toLowerCase();if((k==='w'||k==='arrowup')&&input.y<0)input.y=0;if((k==='s'||k==='arrowdown')&&input.y>0)input.y=0;if((k==='a'||k==='arrowleft')&&input.x<0)input.x=0;if((k==='d'||k==='arrowright')&&input.x>0)input.x=0;});
-$('howBtn').addEventListener('click',()=>{$('modalTag').textContent='HOW TO PLAY';$('modalTitle').textContent='Irányítás';$('modalText').innerHTML='Joystick bal oldalon, Dash és Pulse jobb oldalon. Lökd ki a többieket!';$('modalWrap').classList.add('show');paused=true});$('menuBtn').addEventListener('click',()=>{paused=true;$('modalTag').textContent='PAUSE';$('modalTitle').textContent='Szünet';$('modalText').textContent='Folytatod?';$('modalWrap').classList.add('show');if(net.mode==='host')broadcast({type:'hostPause',paused:true})});$('resumeBtn').addEventListener('click',()=>{if(gameState==='roundEnd'){startNextRound();return}if(gameState==='result'&&net.mode==='host'){gameState='lobby';$('modalWrap').classList.remove('show');showRoomLobby();broadcastLobby();return}if(gameState==='result'){goHome();return}$('modalWrap').classList.remove('show');paused=false;if(net.mode==='host'){broadcast({type:'hostPause',paused:false})}lastTime=performance.now();if(!raf)raf=requestAnimationFrame(loop)});$('homeBtn').addEventListener('click',goHome);$('restartBtn').addEventListener('click',goHome);
-$('fullscreenBtn').addEventListener('click',()=>{const el=$('app');if(!document.fullscreenElement)el.requestFullscreen();else document.exitFullscreen();});
-window.addEventListener('resize',()=>{resize();if(gameState==='menu')drawHero()});
-resize();drawHero();
+
+function renderScenario(){ $('scenarioCard').style.display=''; $('scenarioText').textContent=currentScenario; $('roundLabel').textContent=round+'. KÖR'; $('roundVal').textContent=players.length+' játékos'; }
+function renderMyItems(){
+  const row=$('myItemsRow'); row.style.display=''; row.innerHTML='';
+  myItems.forEach((it,i)=>{
+    const d=document.createElement('div'); d.className='item-card'; d.style.setProperty('--r',(Math.random()*4-2)+'deg');
+    d.innerHTML=`<div class="em">${it.em}</div><div class="nm">${esc(it.nm)}</div>`;
+    row.appendChild(d);
+  });
+}
+function showPhase(name){
+  ['phaseReveal','phaseWrite','phaseWaiting','phaseStories','phaseVoting','phaseResult','phaseSoloResult'].forEach(id=>$(id).style.display='none');
+  if(name) $(name).style.display='';
+}
+function startRevealTimer(){
+  revealLeft=60; $('revealTimer').textContent=revealLeft;
+  clearInterval(revealTimer);
+  revealTimer=setInterval(()=>{revealLeft--; $('revealTimer').textContent=revealLeft; if(revealLeft<=0){clearInterval(revealTimer);}},1000);
+}
+function checkAllStories(){
+  const need=players.filter(p=>!p.disconnected).length;
+  const have=Object.keys(stories).length;
+  $('waitingText').textContent=`${have}/${need} kész`;
+  $('waitingDots').innerHTML=players.filter(p=>!p.disconnected).map(p=>`<span class="p-dot" style="background:${stories[p.id]?COLORS[2]:'#333'}"></span>`).join('');
+  if(have>=need){ setTimeout(()=>broadcastStories(),600); }
+}
+function broadcastStories(){
+  const list=Object.values(stories);
+  broadcast({type:'stories',stories:list});
+  showStoriesPhase(list);
+}
+function showStoriesPhase(list){
+  showPhase('phaseStories');
+  const cont=$('storiesList'); cont.innerHTML='';
+  list.forEach((s,i)=>{
+    const div=document.createElement('div'); div.className='story-card'; div.style.setProperty('--r',(Math.random()*2-1)+'deg');
+    div.innerHTML=`<div class="head"><span class="name">${esc(s.name)}</span><span class="items">${s.items.map(it=>it.em).join(' ')}</span></div><div class="txt">${esc(s.text)}</div><div style="font-size:10px;color:#8a9a85;margin-top:6px">${s.items.map(it=>esc(it.nm)).join(' + ')}</div>`;
+    cont.appendChild(div);
+  });
+  $('toVoteBtn').style.display=players.length>1?'':'none';
+  if(players.length<=1){ $('toVoteBtn').style.display='none'; }
+}
+function showVotingPhase(list){
+  showPhase('phaseVoting');
+  const cont=$('votingList'); cont.innerHTML='';
+  list.forEach(s=>{
+    if(s.id===localPlayerId) return;
+    const div=document.createElement('div'); div.className='story-card';
+    div.innerHTML=`<div class="head"><span class="name">${esc(s.name)}</span></div><div class="txt">${esc(s.text)}</div><button class="btn btn-primary vote-btn" data-vote="${s.id}">Erre szavazok</button>`;
+    cont.appendChild(div);
+  });
+  cont.querySelectorAll('[data-vote]').forEach(b=>b.addEventListener('click',()=>{ submitVote(b.dataset.vote); }));
+}
+function submitVote(votedFor){
+  if(net.mode==='guest'){ sendNet({type:'vote',votedFor}); showPhase('phaseWaiting'); $('waitingText').textContent='Elküldted a szavazatodat. Várjuk a többieket…'; }
+  else{ votes[localPlayerId]=votedFor; checkAllVotes(); }
+}
+function checkAllVotes(){
+  const need=players.filter(p=>!p.disconnected).length;
+  const have=Object.keys(votes).length;
+  if(have>=need){ broadcastResult(); }
+}
+function broadcastResult(){
+  const count={}; Object.values(votes).forEach(id=>{count[id]=(count[id]||0)+1});
+  let winner=null,max=-1; for(const id in count){ if(count[id]>max){max=count[id]; winner=id;} }
+  const result={count,winner, stories:Object.values(stories), scores};
+  if(winner){ scores[winner]=(scores[winner]||0)+1; }
+  broadcast({type:'result',result});
+  showResultPhase(result);
+}
+function showResultPhase(res){
+  showPhase('phaseResult');
+  const box=$('resultBox');
+  if(!res.winner){ box.innerHTML='<div class="result-winner">Döntetlen!</div>'; }
+  else{
+    const w=players.find(p=>p.id===res.winner);
+    box.innerHTML=`<div class="result-winner">🏆 ${esc(w?w.name:'Valaki')} nyerte a kört! ${res.count[res.winner]||0} szavazattal</div>`;
+  }
+  let html='<div style="margin-top:10px">';
+  for(const id in res.count){ const p=players.find(x=>x.id===id); html+=`<div class="p-row"><span class="p-dot" style="background:${p?p.color:'#fff'}"></span>${esc(p?p.name:id)} — ${res.count[id]} szavazat</div>`; }
+  html+='</div>'; $('scoreBox').innerHTML=html+`<div style="margin-top:10px;font-size:11px;color:#8a9a85">Összpontszámok: ${players.map(p=>`${esc(p.name)}: ${scores[p.id]||0}`).join(' · ')}</div>`;
+}
+
+function startRoundHost(){
+  if(net.mode!=='host')return;
+  currentScenario=pickScenario(); round++;
+  stories={}; votes={}; playerItems={};
+  players.forEach(p=>{ if(!p.disconnected){ playerItems[p.id]=pickItems(3); } });
+  myItems=playerItems[localPlayerId]||[];
+  broadcast({type:'roundStart',scenario:currentScenario,round:round});
+  for(const conn of net.connections.values()){
+    const pid=conn.playerId; if(pid&&playerItems[pid]){ try{conn.send({type:'yourItems',items:playerItems[pid]});}catch(e){} }
+  }
+  renderScenario(); renderMyItems(); showPhase('phaseReveal'); startRevealTimer();
+  $('scenarioCard').style.display=''; $('myItemsRow').style.display='';
+}
+
+function startSolo(){
+  net.mode='solo'; players=[{id:'solo',name:cleanName($('roomNameInput').value),color:COLORS[0],disconnected:false}]; localPlayerId='solo'; round=0; scores={}; showScreen('game'); startSoloRound();
+}
+function startSoloRound(){
+  currentScenario=pickScenario(); round++; myItems=pickItems(3); stories={}; renderScenario(); renderMyItems(); showPhase('phaseReveal'); startRevealTimer(); $('scenarioCard').style.display=''; $('myItemsRow').style.display='';
+}
+
+// networking
+function closeOnline(){
+  net.closing=true; if(net.joinTimer)clearTimeout(net.joinTimer);
+  try{if(net.peer&&!net.peer.destroyed)net.peer.destroy()}catch(e){}
+  net.peer=null; net.conn=null; net.connections.clear(); net.mode='offline'; net.isHost=false; net.code=''; net.playerId=null; net.closing=false; localPlayerId=null; players=[];
+  $('roomWrap').classList.remove('show'); showScreen('menu');
+}
+function hostConnection(conn){
+  let ok=false;
+  conn.on('data',data=>{
+    if(!data)return;
+    if(data.type==='hello'){
+      if(ok)return; if(players.filter(p=>!p.disconnected).length>=8){ try{conn.send({type:'error',message:'Megtelt a szoba.'})}catch(e){} conn.close(); return; }
+      ok=true; const pid='p'+Math.random().toString(36).slice(2,9);
+      const p={id:pid,name:cleanName(data.name),color:COLORS[players.length%COLORS.length],disconnected:false};
+      players.push(p); conn.playerId=pid; net.connections.set(conn.peer,conn);
+      try{conn.send({type:'welcome',playerId:pid,room:lobbyData()})}catch(e){} broadcastLobby(); return;
+    }
+    if(!ok)return;
+    if(data.type==='story'){ stories[conn.playerId]={id:conn.playerId,name:players.find(x=>x.id===conn.playerId)?.name||'Játékos',text:data.text,items:playerItems[conn.playerId]||[]}; checkAllStories(); }
+    if(data.type==='vote'){ votes[conn.playerId]=data.votedFor; checkAllVotes(); }
+  });
+  conn.on('close',()=>{ if(net.closing)return; net.connections.delete(conn.peer); const pl=players.find(q=>q.id===conn.playerId); if(pl){ pl.disconnected=true; } broadcastLobby(); });
+}
+function createRoom(attempt=0){
+  if(!window.Peer){setRoomError('Nem sikerült betölteni az online játékhoz szükséges modult.');return}
+  if(attempt>5){setRoomError('Nem sikerült szobakódot létrehozni.');return}
+  const code=makeCode(); net.name=cleanName($('roomNameInput').value); net.code=code; net.isHost=true; net.mode='host'; localPlayerId='host';
+  players=[{id:'host',name:net.name,color:COLORS[0],disconnected:false}]; scores={}; net.connections=new Map();
+  $('roomConfirmBtn').disabled=true; setRoomError('Szoba: '+code+'...');
+  let peer; try{peer=new Peer('tuleld-'+code,PEER_CONFIG)}catch(e){setRoomError('Hiba: '+e.message);$('roomConfirmBtn').disabled=false;return}
+  net.peer=peer;
+  peer.on('open',()=>{ if(net.peer!==peer)return; net.code=code; showLobby(); $('roomConfirmBtn').disabled=false; });
+  peer.on('connection',hostConnection);
+  peer.on('disconnected',()=>{try{peer.reconnect()}catch(e){}});
+  peer.on('error',err=>{ if(net.peer!==peer||net.closing)return; if(err.type==='unavailable-id'){try{peer.destroy()}catch(e){} createRoom(attempt+1);return;} setRoomError('Hálózati hiba: '+err.type); $('roomConfirmBtn').disabled=false; });
+}
+function joinRoom(){
+  if(!window.Peer){setRoomError('Nem sikerült betölteni az online játékhoz szükséges modult.');return}
+  const code=String($('roomCodeInput').value||'').toUpperCase().replace(/[^A-Z0-9]/g,''); if(code.length!==6){setRoomError('A szobakódnak 6 karakterből kell állnia.');return}
+  net.name=cleanName($('roomNameInput').value); net.code=code; net.mode='guest'; net.isHost=false; localPlayerId=null;
+  $('roomConfirmBtn').disabled=true; setRoomError('Kapcsolódás a szobához…');
+  let peer; try{peer=new Peer(PEER_CONFIG)}catch(e){setRoomError('Nem sikerült elindítani a hálózati kapcsolatot.');$('roomConfirmBtn').disabled=false;return}
+  net.peer=peer; let welcomed=false;
+  peer.on('open',()=>{
+    const conn=peer.connect('tuleld-'+code,{reliable:true}); net.conn=conn;
+    net.joinTimer=setTimeout(()=>{ if(!welcomed){setRoomError('12 másodpercen belül nem érkezett válasz. Lehet, hogy a házigazda már nincs a szobában?'); $('roomConfirmBtn').disabled=false;}},12000);
+    conn.on('open',()=>{ try{conn.send({type:'hello',name:net.name})}catch(e){} });
+    conn.on('data',msg=>{
+      if(!msg)return;
+      if(msg.type==='welcome'){ welcomed=true; clearTimeout(net.joinTimer); localPlayerId=msg.playerId; net.playerId=msg.playerId; showLobby(); if(msg.room)updateLobbyUI(msg.room); $('roomConfirmBtn').disabled=false; }
+      else if(msg.type==='lobby'){ if(msg.room)updateLobbyUI(msg.room); }
+      else if(msg.type==='error'){ closeOnline(); showRoomSetup('join'); setRoomError(msg.message); $('roomConfirmBtn').disabled=false; }
+      else if(msg.type==='roundStart'){ currentScenario=msg.scenario; round=msg.round||1; stories={}; votes={}; renderScenario(); $('scenarioCard').style.display=''; showPhase('phaseReveal'); startRevealTimer(); }
+      else if(msg.type==='yourItems'){ myItems=msg.items||[]; renderMyItems(); }
+      else if(msg.type==='stories'){ showStoriesPhase(msg.stories||[]); }
+      else if(msg.type==='result'){ showResultPhase(msg.result); }
+    });
+    conn.on('close',()=>{ if(net.closing)return; if(!welcomed){setRoomError('Nem elérhető a szoba'); $('roomConfirmBtn').disabled=false; return;} $('phaseWaiting').style.display=''; $('waitingText').textContent='A házigazda kilépett.'; });
+  });
+  peer.on('disconnected',()=>{try{peer.reconnect()}catch(e){}});
+  peer.on('error',err=>{ setRoomError('Hiba: '+(err.type||'ismeretlen')); $('roomConfirmBtn').disabled=false; });
+}
+
+// UI binds
+$('createRoomBtn').addEventListener('click',()=>showRoomSetup('create'));
+$('joinRoomBtn').addEventListener('click',()=>showRoomSetup('join'));
+$('soloBtn').addEventListener('click',()=>{ const name=cleanName($('roomNameInput').value||'Játékos'); $('roomNameInput').value=name; startSolo(); });
+$('howBtn').addEventListener('click',()=>$('howWrap').classList.add('show'));
+$('howCloseBtn').addEventListener('click',()=>$('howWrap').classList.remove('show'));
+$('roomConfirmBtn').addEventListener('click',()=>{ if(window._roomMode==='create')createRoom(); else joinRoom(); });
+$('roomCancelBtn').addEventListener('click',()=>{ closeOnline(); $('roomWrap').classList.remove('show'); });
+$('leaveRoomBtn').addEventListener('click',()=>closeOnline());
+$('copyCodeBtn').addEventListener('click',async()=>{ try{await navigator.clipboard.writeText(net.code); $('copyCodeBtn').textContent='Másolva ✓'; setTimeout(()=>$('copyCodeBtn').textContent='Másolás',1200);}catch(e){prompt('Szobakód:',net.code);} });
+$('leaveGameBtn').addEventListener('click',()=>closeOnline());
+$('startRoundBtn').addEventListener('click',()=>{
+  if(net.mode==='solo'||players.length<=1){ startSoloRound(); return; }
+  if(net.isHost){ startRoundHost(); $('roomWrap').classList.remove('show'); showScreen('game'); }
+});
+$('goWriteBtn').addEventListener('click',()=>{ showPhase('phaseWrite'); $('storyInput').focus(); });
+$('storyInput').addEventListener('input',()=>{ $('charCount').textContent=$('storyInput').value.length; });
+$('submitStoryBtn').addEventListener('click',()=>{
+  const txt=$('storyInput').value.trim(); if(txt.length<5){ alert('Írj legalább egy mondatot!'); return; }
+  if(net.mode==='guest'){
+    sendNet({type:'story',text:txt}); showPhase('phaseWaiting'); $('waitingText').textContent='Elküldted a történetedet. Várjuk a többieket…';
+  }else if(net.mode==='solo'){
+    stories['solo']={id:'solo',name:players[0]?.name||'Te',text:txt,items:myItems};
+    showPhase('phaseSoloResult');
+  }else{
+    stories[localPlayerId]={id:localPlayerId,name:players.find(p=>p.id===localPlayerId)?.name||'Házigazda',text:txt,items:myItems||[]};
+    showPhase('phaseWaiting'); checkAllStories();
+  }
+  $('storyInput').value=''; $('charCount').textContent='0';
+});
+$('toVoteBtn').addEventListener('click',()=>{ const list=Object.values(stories); showVotingPhase(list); });
+$('nextRoundBtn').addEventListener('click',()=>{ if(net.isHost){ startRoundHost(); } else if(net.mode==='solo'){ startSoloRound(); } });
+$('soloNextBtn').addEventListener('click',()=>startSoloRound());
+$('endGameBtn').addEventListener('click',()=>closeOnline());
+
+showScreen('menu');
 })();
 </script>
 </body>
