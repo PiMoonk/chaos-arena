@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#10130f">
-<meta name="description" content="Sötét humorú, horroros túlélős partyjáték. Válassz egy tárgykártyát, írd meg a történeted, és szavazzatok a legjobbra.">
-<title>TÚLÉLD, HA TUDOD! — A lehetetlen túlélőjáték</title>
+<meta name="theme-color" content="#11131a">
+<meta name="description" content="Abszurd partyjáték lehetetlen küldetésekkel, különös tárgykártyákkal és titkos szavazással.">
+<title>KÉPTELEN KÜLDETÉS — Abszurd partyjáték</title>
 <style>
 :root{
-  --bg:#0b0e0b;--bg-soft:#121712;--panel:#171d16;--panel2:#20271e;
-  --paper:#f6edda;--paper-bright:#fff8e8;--ink:#20241c;--muted:#a6b09e;--faint:#6f7a69;
-  --orange:#ff7a18;--orange2:#ffad62;--yellow:#ffe35c;--green:#a3ff72;--red:#ff687b;
-  --stroke:rgba(240,245,230,.12);--radius:20px;--shadow:0 18px 50px rgba(0,0,0,.32)
+  --bg:#11131a;--bg-soft:#191b26;--panel:#222531;--panel2:#2b2e3d;
+  --paper:#f5f0e6;--paper-bright:#fffcf5;--ink:#242630;--muted:#a5a9ba;--faint:#74788a;
+  --orange:#d8ff68;--orange2:#d8ff68;--yellow:#b9a7ff;--green:#d8ff68;--red:#ff6b61;
+  --stroke:rgba(230,232,245,.12);--radius:20px;--shadow:0 20px 65px rgba(0,0,0,.38)
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;min-height:100%;background:var(--bg);color:#edf1e8;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
@@ -147,6 +147,74 @@ h1 i{display:block;margin-top:8px;font-style:italic;color:transparent;-webkit-te
 @media(max-width:560px){#menu{padding:19px 14px 26px}.menu-controls{grid-template-columns:1fr 1fr;gap:8px}.setting{padding:10px}.actions .btn{flex:1 1 calc(50% - 8px);min-width:0;padding:0 9px;font-size:9px}.preview{padding:14px;border-radius:18px}.preview-card{padding:9px 7px;min-height:145px}.preview-card .title{font-size:10px}.preview-obj{font-size:8px}.preview-obj span{font-size:15px}.game-main{padding-top:15px;gap:13px}.topbar{min-height:57px}.brand{font-size:13px}.topbar .btn{min-height:34px;padding:0 9px;font-size:8px}.round-val{font-size:15px}.scenario-card{padding:18px 15px}.scenario-card .text{font-size:20px}.hand-grid{gap:7px}.hand-card{padding:9px 8px 10px;min-height:177px;border-radius:12px}.card-title{font-size:11px;min-height:26px}.card-object{gap:4px;font-size:9px}.card-object .em{width:19px;flex-basis:19px;font-size:16px}.hand-card.selected:after{top:6px;right:5px;font-size:6px;padding:4px}.phase{padding:14px 12px}.story-card{padding:12px}.phase-buttons{gap:7px}.phase-buttons .btn{min-width:100%;}}
 @media(max-width:370px){.hand-grid{grid-template-columns:1fr}.hand-card{min-height:auto}.card-title{min-height:0}.card-objects{gap:5px}.menu-controls{grid-template-columns:1fr}.preview-hands{gap:5px}.preview-card{padding:7px 5px}.preview-obj{gap:3px;font-size:7px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+
+/* KÉPTELEN KÜLDETÉS — új grafikai rendszer; a játéklogika és a DOM-azonosítók változatlanok. */
+#app{background:radial-gradient(ellipse at 12% 0%,#292b3a 0%,#171923 36%,#0d0f15 82%)}
+#app:before{opacity:.055;background-size:19px 19px}
+.eyebrow{border-color:rgba(216,255,104,.3);background:rgba(216,255,104,.07);color:#d8ff68}
+.pip{background:#d8ff68;box-shadow:0 0 13px rgba(216,255,104,.65)}
+h1 span{color:#f5f0e6;text-shadow:3px 4px 0 rgba(0,0,0,.32)}
+h1 i{-webkit-text-stroke-color:#d8ff68}
+.btn-primary{color:#20251a;background:linear-gradient(110deg,#d8ff68,#e7ff9e);box-shadow:0 8px 26px rgba(216,255,104,.12)}
+.btn-primary:hover{filter:brightness(1.04)}
+.btn-paper{background:#f5f0e6;color:#242630;border-color:#fffaf0}
+.btn-secondary{background:rgba(255,255,255,.045);border-color:rgba(230,232,245,.15)}
+.setting{background:rgba(255,255,255,.035);border-color:rgba(230,232,245,.12)}
+.setting label{color:#a5a9ba}
+.setting select{background:#171923;color:#f5f0e6;border-color:rgba(230,232,245,.14)}
+.preview{background:linear-gradient(150deg,rgba(39,42,57,.98),rgba(19,21,30,.98));border-color:rgba(230,232,245,.13);transform:rotate(.25deg)}
+.preview:after{border-color:rgba(216,255,104,.18);box-shadow:0 0 0 25px rgba(216,255,104,.025),0 0 0 54px rgba(185,167,255,.025)}
+.preview-top span:last-child{color:#d8ff68}
+.preview-scenario:before{background:rgba(216,255,104,.92)}
+.preview-scenario .tag{color:#4f6723}
+.preview-bottom b{color:#d8ff68}
+.topbar{background:rgba(17,19,26,.94);border-bottom-color:rgba(230,232,245,.12)}
+.brand{font-style:normal;letter-spacing:-.07em}.brand span{color:#d8ff68}
+.round-label{color:#a5a9ba}
+.mode-pill{border-color:rgba(185,167,255,.28);color:#c8bbff;background:rgba(185,167,255,.06)}
+.scenario-card{background:#f5f0e6;color:#242630;transform:none;border-radius:17px}
+.scenario-card:before{background:rgba(216,255,104,.95)}
+.scenario-card .tag{color:#596e2e}
+.scenario-card .warning{color:#62549b;border-color:rgba(98,84,155,.28)}
+.phase{background:linear-gradient(145deg,rgba(35,38,51,.97),rgba(24,26,36,.98));border-color:rgba(230,232,245,.12)}
+.phase-overline{color:#d8ff68}
+.phase-desc{color:#b3b6c5}
+.hand-card{background:#f5f0e6;border-color:transparent;color:#242630;box-shadow:0 9px 24px rgba(0,0,0,.2)}
+.hand-card.selected{border-color:#d8ff68;box-shadow:0 0 0 3px rgba(216,255,104,.18),0 14px 30px rgba(0,0,0,.25)}
+.hand-card.selected:after{color:#20251a;background:#d8ff68}
+.card-code{color:#71685a}
+.card-mark{background:#e8e0cf;color:#292c22}
+.hand-footer{color:#a5a9ba}
+.timer{border-color:rgba(185,167,255,.3);color:#d4caff;background:rgba(185,167,255,.06)}
+.selected-banner{background:rgba(216,255,104,.055);border-color:rgba(216,255,104,.23)}
+.selected-icon{background:#d8ff68;color:#242630}
+.selected-banner strong{color:#f5f0e6}
+.story-input{background:#f5f0e6;color:#242630;border-color:#d5d0c4}
+.story-input:focus{border-color:#d8ff68;box-shadow:0 0 0 3px rgba(216,255,104,.13)}
+.input-meta{color:#a5a9ba}
+.waiting-pip.done{background:#d8ff68;box-shadow:0 0 10px rgba(216,255,104,.35)}
+.story-card{background:#f5f0e6;color:#242630;border:1px solid rgba(255,255,255,.12)}
+.story-num{color:#596e2e}
+.story-num:before{background:#d8ff68}
+.story-card-title{color:#71685a}
+.story-objects{color:#71685a}
+.vote-btn.chosen{background:#d8ff68;color:#20251a}
+.score-rank{color:#d8ff68;background:rgba(216,255,104,.09)}
+.score-value{color:#d8ff68}
+.result-winner{background:linear-gradient(110deg,#d8ff68,#e8ffad);color:#20251a}
+.result-section-title{color:#b9a7ff}
+.modal{background:linear-gradient(145deg,#272a39,#171923);border-color:rgba(230,232,245,.15)}
+.modal-kicker{color:#d8ff68}
+.room-input{background:#11131a;color:#f5f0e6;border-color:rgba(230,232,245,.15)}
+.room-input:focus{border-color:#d8ff68}
+.room-code-row{background:rgba(216,255,104,.055);border-color:rgba(216,255,104,.24)}
+.room-code{color:#d8ff68}
+.rule-num{background:rgba(216,255,104,.08);border-color:rgba(216,255,104,.22);color:#d8ff68}
+.rule{color:#c3c6d3}
+.p-row{background:rgba(255,255,255,.035);border-color:rgba(230,232,245,.1)}
+#roomStatus{color:#c3c6d3!important}
+@media(max-width:560px){.preview{transform:none}.hand-card.selected:after{background:#d8ff68;color:#20251a}}
+
 </style>
 </head>
 <body>
@@ -154,11 +222,11 @@ h1 i{display:block;margin-top:8px;font-style:italic;color:transparent;-webkit-te
 <section id="menu" class="screen active">
   <div class="menu-inner">
     <div class="menu-copy">
-      <div class="eyebrow"><span class="pip"></span> ONLINE PARTYJÁTÉK · 2–8 JÁTÉKOS</div>
-      <h1><span>TÚLÉLD</span><i>HA TUDOD!</i></h1>
-      <p class="intro">Három tárgyból álló kártyapakli, egy reménytelen helyzet, és egy perc, hogy kitaláld a <strong>legzseniálisabb, legbetegebb vagy legviccesebb túlélési tervet.</strong> A történetekre szavaztok, a pontokat pedig körökön át gyűjtitek.</p>
+      <div class="eyebrow"><span class="pip"></span> LEHETETLEN MEGBÍZÁSOK · 2–8 JÁTÉKOS</div>
+      <h1><span>KÉPTELEN</span><i>KÜLDETÉS.</i></h1>
+      <p class="intro">Három furcsa tárgy. Egy lehetetlen megbízás. Hatvan másodperc, hogy kitaláld a <strong>legötletesebb megoldást, a legjobb blöfföt vagy a legmeggyőzőbb sztorit.</strong> A többiek szavaznak — a legjobb ötlet viszi a pontot.</p>
       <div class="menu-controls">
-        <div class="setting"><label for="modeSelect">Játékmód</label><select id="modeSelect"><option value="mixed">Vegyes túlélés</option><option value="horror">Horror és pszichothriller</option><option value="adult">18+ fekete humor</option></select></div>
+        <div class="setting"><label for="modeSelect">Játékmód</label><select id="modeSelect"><option value="mixed">Vegyes küldetések</option><option value="horror">Horror és rejtély</option><option value="adult">18+ fekete humor</option></select></div>
         <div class="setting"><label for="roundLimit">Parti hossza</label><select id="roundLimit"><option value="3">3 kör · gyors</option><option value="5" selected>5 kör · klasszikus</option><option value="7">7 kör · hosszú</option><option value="10">10 kör · maraton</option><option value="0">Végtelen · amíg bírjátok</option></select></div>
       </div>
       <div class="actions">
@@ -167,64 +235,64 @@ h1 i{display:block;margin-top:8px;font-style:italic;color:transparent;-webkit-te
         <button id="soloBtn" class="btn btn-paper">▣ Egyszemélyes mód</button>
         <button id="howBtn" class="btn btn-secondary">? Játékszabályok</button>
       </div>
-      <p class="smallprint"><strong>Hogyan működik?</strong> Mindenkinek három tárgykártya van a kezében. Körönként egyet játszik ki, a megmaradt két lap mellé pedig új kártyát kap. A történetek szerző nélkül jelennek meg; a szavazás után felfedjük, ki írta őket. A legtöbb pontot szerző játékos nyeri a partit.</p>
+      <p class="smallprint"><strong>Hogyan működik?</strong> Válassz egyet a három tárgykártyádból, és használd mindhárom tárgyat a megbízás megoldásához. Írhatsz alibit, alkut, reklámot, nyomozási tervet vagy teljesen abszurd magyarázatot. A megoldások név nélkül kerülnek szavazásra; a legtöbb pontot szerző játékos nyeri a partit.</p>
     </div>
     <div class="preview" aria-label="Példa a játék kártyáira">
-      <div class="preview-top"><span>AKTA 013 / TÚLÉLÉSI PROTOKOLL</span><span>● VESZÉLYES ÖTLETEK</span></div>
-      <div class="preview-scenario"><div class="tag">⚠ HELYZET: NINCS JÓ MEGOLDÁS</div><p>Hajnali 3-kor bezáródsz egy elhagyott wellnesshotelbe. A hangosbemondó a neveden szólít — pedig a recepción senki sincs.</p></div>
+      <div class="preview-top"><span>KÜLDETÉS #001 / LEHETETLEN MEGBÍZÁS</span><span>● ÖTLETELJ SZABADON</span></div>
+      <div class="preview-scenario"><div class="tag">AKTA 001 · A MEGBÍZÁSOD</div><p>A Hold eltűnt az égről, a kormány szerint ez csak reklámkampány. Öt perc múlva sajtótájékoztatót tartasz, és meg kell győznöd a világot.</p></div>
       <div class="preview-hands">
-        <div class="preview-card" style="--rot:-1.5deg"><div class="number">KÁRTYA 01</div><div class="title">A nagybácsi pincéje</div><div class="preview-obj"><span>🪩</span>diszkógömb</div><div class="preview-obj"><span>🧀</span>fél kiló trappista</div><div class="preview-obj"><span>📼</span>VHS-kazetta</div></div>
-        <div class="preview-card" style="--rot:1deg"><div class="number">KÁRTYA 02</div><div class="title">Gyanús csomag</div><div class="preview-obj"><span>🪠</span>vécépumpa</div><div class="preview-obj"><span>🦆</span>beszélő gumikacsa</div><div class="preview-obj"><span>🧂</span>óriási sótartó</div></div>
-        <div class="preview-card" style="--rot:-.7deg"><div class="number">KÁRTYA 03</div><div class="title">Utolsó műszak</div><div class="preview-obj"><span>🕯️</span>félbetört gyertya</div><div class="preview-obj"><span>🧸</span>plüssmackó</div><div class="preview-obj"><span>🔔</span>recepciós csengő</div></div>
+        <div class="preview-card" style="--rot:-1.5deg"><div class="number">TÁRGYKÁRTYA 01</div><div class="title">A sajtós csomagja</div><div class="preview-obj"><span>🎙️</span>kézi mikrofon</div><div class="preview-obj"><span>🎟️</span>hamis belépő</div><div class="preview-obj"><span>🐊</span>felfújható krokodil</div></div>
+        <div class="preview-card" style="--rot:1deg"><div class="number">TÁRGYKÁRTYA 02</div><div class="title">A szakértő látszata</div><div class="preview-obj"><span>🥼</span>laboratóriumi köpeny</div><div class="preview-obj"><span>🔎</span>nagyítólencse</div><div class="preview-obj"><span>🛂</span>hivatalos pecsét</div></div>
+        <div class="preview-card" style="--rot:-.7deg"><div class="number">TÁRGYKÁRTYA 03</div><div class="title">Tárgyalási ajánlat</div><div class="preview-obj"><span>🪙</span>aranyszínű zseton</div><div class="preview-obj"><span>📝</span>üres szerződés</div><div class="preview-obj"><span>🥇</span>csokoládéérem</div></div>
       </div>
-      <div class="preview-bottom"><span>VÁLASSZ LAPOT. TALÁLJ KI EGY TERVET.</span><b>NE TE LEGYÉL A KÖVETKEZŐ.</b></div>
+      <div class="preview-bottom"><span>VÁLASSZ TÁRGYAKAT. OLDJ MEG EGY LEHETETLENT.</span><b>A LEGJOBB SZTORI NYER.</b></div>
     </div>
   </div>
 </section>
 
 <section id="game" class="screen">
   <header class="topbar">
-    <div class="brand">TÚLÉLD<span>!</span></div>
+    <div class="brand">KÉPTELEN<span>.</span></div>
     <div class="top-center"><div id="roundLabel" class="round-label">1. KÖR</div><div id="roundVal" class="round-val">1 / 5</div><div id="modePill" class="mode-pill">VEGYES TÚLÉLÉS</div></div>
     <button id="leaveGameBtn" class="btn btn-secondary">Kilépés ↗</button>
   </header>
   <main class="game-main">
     <div id="scenarioCard" class="scenario-card">
-      <div class="scenario-head"><div class="tag">⚠ LEHETETLEN HELYZET</div><div id="scenarioModeTag" class="warning">TÚLÉLÉSI AKTA</div></div>
+      <div class="scenario-head"><div class="tag">AKTA / A MEGBÍZÁSOD</div><div id="scenarioModeTag" class="warning">KÜLÖNLEGES MEGBÍZÁS</div></div>
       <div id="scenarioText" class="text">—</div>
     </div>
 
     <section id="phaseReveal" class="phase">
-      <div class="phase-overline">01 / Válassz a kezedből</div>
-      <h3>Három kártyád van. Egyet vihetsz.</h3>
-      <p class="phase-desc">Mindegyik lapon három tárgy szerepel. Kattints arra a kártyára, amelyikből a legjobb túlélési történetet tudod kihozni. A kijátszott lapot a kör végén újra cseréljük.</p>
+      <div class="phase-overline">01 / Válassz tárgykártyát</div>
+      <h3>Három lehetőség. Válassz egyet.</h3>
+      <p class="phase-desc">Mindegyik lapon három tárgy van. Válaszd ki azt a csomagot, amelyből a legjobb megoldást, blöfföt vagy megoldást hozhatod ki. A kijátszott lap helyére új érkezik.</p>
       <div id="handGrid" class="hand-grid"></div>
       <div class="hand-footer"><span id="handStatus">Válassz ki egy kártyát a folytatáshoz.</span><span class="timer" id="revealTimer">60</span></div>
-      <div class="hand-actions"><button id="goWriteBtn" class="btn btn-primary" disabled>✍ Történet megírása</button><span style="font-size:10px;color:#7f8a77">Időkeret: 60 másodperc</span></div>
+      <div class="hand-actions"><button id="goWriteBtn" class="btn btn-primary" disabled>✍ Megoldás megírása</button><span style="font-size:10px;color:#7f8a77">Időkeret: 60 másodperc</span></div>
     </section>
 
     <section id="phaseWrite" class="phase">
-      <div class="phase-overline">02 / Alkoss valamit</div>
-      <h3>Hogyan éled túl?</h3>
-      <p class="phase-desc">Használd mindhárom tárgyat a kiválasztott kártyáról. Nem kell tudományosan helyesnek lennie — a kreativitás, a logika és a váratlan fordulat ér pontot a közönségtől.</p>
+      <div class="phase-overline">02 / Oldd meg a küldetést</div>
+      <h3>Hogyan oldod meg?</h3>
+      <p class="phase-desc">Használd mindhárom tárgyat a kiválasztott lapról. Írhatsz meggyőző ajánlatot, alibit, alkut, reklámot vagy teljesen abszurd megoldást. A kreativitás, a következetesség és a váratlan fordulat számít.</p>
       <div id="selectedBanner" class="selected-banner"></div>
-      <textarea id="storyInput" class="story-input" maxlength="600" placeholder="Írd le a túlélési tervedet… Legyen okos, sötét, abszurd vagy mindhárom."></textarea>
+      <textarea id="storyInput" class="story-input" maxlength="600" placeholder="Írd le a megoldásodat… Legyen meggyőző, őrült, sötét vagy mindhárom."></textarea>
       <div class="input-meta"><span>Legalább 5 karakter</span><span><b id="charCount">0</b> / 600</span></div>
       <div id="writeError" class="error-text"></div>
       <div class="phase-buttons"><button id="backToHandBtn" class="btn btn-secondary">← Másik kártyát választok</button><button id="submitStoryBtn" class="btn btn-primary">Kész a történet ✓</button></div>
     </section>
 
     <section id="phaseWaiting" class="phase">
-      <div class="phase-overline">Adatátvitel / Türelemjáték</div>
+      <div class="phase-overline">Különleges ügyosztály / Várakozás</div>
       <h3 id="waitingTitle">Várunk a többiekre…</h3>
-      <p id="waitingText" class="phase-desc">A történeted megérkezett. Amint mindenki végzett, jön a felolvasás és a szavazás.</p>
+      <p id="waitingText" class="phase-desc">A megoldásod megérkezett. Amint mindenki végzett, jön a felolvasás és a szavazás.</p>
       <div id="waitingPips" class="waiting-pips"></div>
     </section>
 
     <section id="phaseStories" class="phase">
-      <div class="phase-overline">03 / Bizonyítékok</div>
-      <h3>Felolvasás: ki mit talált ki?</h3>
-      <p class="phase-desc">A történeteket egyelőre név nélkül látjátok. Olvassátok fel őket egymásnak, aztán szavazzatok a legerősebb megoldásra.</p>
+      <div class="phase-overline">03 / Megoldások</div>
+      <h3>Felolvasás: ki hogyan oldotta meg?</h3>
+      <p class="phase-desc">A megoldások név nélkül jelennek meg. Olvassátok fel őket egymásnak, majd szavazzatok a legötletesebb, legmeggyőzőbb vagy legviccesebb megoldásra.</p>
       <div id="storiesList" class="story-list"></div>
       <p id="storiesStatus" class="phase-desc" style="margin:12px 0 0"></p>
       <button id="toVoteBtn" class="btn btn-primary" style="width:100%;margin-top:13px">Szavazás indítása →</button>
@@ -232,13 +300,13 @@ h1 i{display:block;margin-top:8px;font-style:italic;color:transparent;-webkit-te
 
     <section id="phaseVoting" class="phase">
       <div class="phase-overline">04 / Titkos szavazás</div>
-      <h3>Melyik volt a legjobb történet?</h3>
-      <p class="phase-desc">Egy szavazatod van. Saját történetedre nem szavazhatsz. A szerzők kiléte csak a szavazás lezárása után derül ki.</p>
+      <h3>Melyik a legjobb megoldás?</h3>
+      <p class="phase-desc">Egy szavazatod van. Saját megoldásodra nem szavazhatsz. A szerzők kiléte csak a szavazás lezárása után derül ki.</p>
       <div id="votingList" class="story-list"></div>
     </section>
 
     <section id="phaseResult" class="phase">
-      <div class="phase-overline">05 / Az ítélet megszületett</div>
+      <div class="phase-overline">05 / Eredményhirdetés</div>
       <h3 id="resultHeading">Köreredmény</h3>
       <div id="resultBox"></div>
       <div id="scoreBox"></div>
@@ -246,10 +314,10 @@ h1 i{display:block;margin-top:8px;font-style:italic;color:transparent;-webkit-te
     </section>
 
     <section id="phaseSoloResult" class="phase">
-      <div class="phase-overline">Napló / Túlélési jelentés</div>
-      <h3>Elkészült a történeted.</h3>
+      <div class="phase-overline">Kreatív műhely / Megoldási jegyzet</div>
+      <h3>Elkészült a megoldásod.</h3>
       <div id="soloStoryBox" class="story-card" style="margin-top:12px"></div>
-      <p class="phase-desc" style="margin-top:12px">Nincs szavazás — ez a mód ötletelésre és történetírásra való. A kijátszott kártyát lecseréltük egy újra.</p>
+      <p class="phase-desc" style="margin-top:12px">Nincs szavazás — ez a mód ötletelésre és kreatív írásra való. A kijátszott kártyát lecseréltük egy újra.</p>
       <button id="soloNextBtn" class="btn btn-primary" style="width:100%;margin-top:8px">Új lehetetlen helyzet →</button>
     </section>
 
@@ -287,16 +355,16 @@ h1 i{display:block;margin-top:8px;font-style:italic;color:transparent;-webkit-te
 
 <div id="howWrap" class="modal-wrap">
   <div class="modal">
-    <div class="modal-kicker">Játékszabályok</div><h2>Három tárgy. Egy rossz ötlet sem túl rossz.</h2>
+    <div class="modal-kicker">Játékszabályok</div><h2>Három tárgy. Egy lehetetlen küldetés.</h2>
     <div class="rules-list">
-      <div class="rule"><span class="rule-num">01</span><span><b>Helyzet:</b> Mindenki ugyanazt a lehetetlen, horroros vagy abszurd szituációt kapja.</span></div>
-      <div class="rule"><span class="rule-num">02</span><span><b>Kéz:</b> Minden játékos három különböző tárgykártyából választ. Egy kártyán három tárgy van.</span></div>
-      <div class="rule"><span class="rule-num">03</span><span><b>Történet:</b> 60 másodperc alatt írj egy tervet, és használd fel mindhárom tárgyat a kiválasztott lapról.</span></div>
-      <div class="rule"><span class="rule-num">04</span><span><b>Szavazás:</b> A történetek név nélkül jelennek meg. Mindenki egy másik játékos történetére szavazhat.</span></div>
+      <div class="rule"><span class="rule-num">01</span><span><b>Megbízás:</b> Mindenki ugyanazt a lehetetlen, abszurd, horroros vagy kényelmetlen feladatot kapja.</span></div>
+      <div class="rule"><span class="rule-num">02</span><span><b>Kéz:</b> Három tárgykártyából választasz. Egy lapon három tárgy szerepel.</span></div>
+      <div class="rule"><span class="rule-num">03</span><span><b>Megoldás:</b> 60 másodperc alatt alkoss tervet, blöfföt, alibit vagy magyarázatot. Mindhárom tárgyat használd fel.</span></div>
+      <div class="rule"><span class="rule-num">04</span><span><b>Szavazás:</b> A megoldások név nélkül jelennek meg. Mindenki egy másik játékos megoldására szavazhat.</span></div>
       <div class="rule"><span class="rule-num">05</span><span><b>Pontok:</b> A kör legtöbb szavazatot kapó szerzője 1 pontot kap. Holtversenynél minden érintett kap 1 pontot.</span></div>
-      <div class="rule"><span class="rule-num">06</span><span><b>Új lap, új kör:</b> A kijátszott kártya helyett új érkezik. A parti végén az összesített pontszám dönt.</span></div>
+      <div class="rule"><span class="rule-num">06</span><span><b>Új lap, új kör:</b> A kijátszott kártya helyére új érkezik. A parti végén az összesített pontszám dönt.</span></div>
     </div>
-    <p style="font-size:10px;color:#808c78">Az online módhoz internetkapcsolat szükséges. A horror és 18+ mód nyomasztó témákat, fekete humort és természetfeletti helyzeteket tartalmazhat.</p>
+    <p style="font-size:10px;color:#a5a9ba">Az online módhoz internetkapcsolat szükséges. A horror és 18+ mód természetfeletti témákat és sötét humort tartalmazhat.</p>
     <button id="howCloseBtn" class="btn btn-primary" style="width:100%;margin-top:8px">Értem — játsszunk</button>
   </div>
 </div>
@@ -307,91 +375,11 @@ h1 i{display:block;margin-top:8px;font-style:italic;color:transparent;-webkit-te
 (()=>{
 'use strict';
 const $=id=>document.getElementById(id);
-const COLORS=['#ff7a18','#ffe35c','#a3ff72','#7ab8ff','#ff6eb8','#b79aff','#5effe0','#ffad62'];
+const COLORS=['#D8FF68','#B9A7FF','#FF6B61','#7AB8FF','#FF8FC8','#67E4CF','#F6B85F','#D8DCE8'];
 const PEER_CONFIG={debug:0,secure:true,config:{iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:stun1.l.google.com:19302'},{urls:'stun:stun2.l.google.com:19302'},{urls:'stun:global.stun.twilio.com:3478'}],sdpSemantics:'unified-plan'}};
-const MODE_NAMES={mixed:'Vegyes túlélés',horror:'Horror és pszichothriller',adult:'18+ fekete humor'};
-const SCENARIOS=[
- {mode:'mixed',text:'Éjszakára bezáródsz egy IKEA-raktárba, odakint mínusz tíz fok van, bent pedig valaki minden órában átrendezi a plüssállatokat.'},
- {mode:'mixed',text:'Egy liftben rekedsz nyolc órára. Nincs térerő, a kijelző visszaszámol, de nem tudod, mi fog történni a nullánál.'},
- {mode:'mixed',text:'Egy lakatlan szigeten ébredsz. A parton egy bőrönd, egy gumicsónak és egy tábla vár: „A dagály nem a legnagyobb problémád.”'},
- {mode:'mixed',text:'Zombiapokalipszis tört ki egy hipermarketben. A kijárat előtt álló biztonsági kapu csak törzsvásárlói kártyával nyílik.'},
- {mode:'mixed',text:'A Balaton közepén sodródsz egy leeresztő matracon. A túlpart fényei eltűnnek, a telefonod pedig 1%-on van.'},
- {mode:'mixed',text:'Egy vidámparkban rekedsz zárás után. A hullámvasút magától elindul, és a hangszóró minden menet előtt a te nevedet mondja be.'},
- {mode:'mixed',text:'Hóvihar zár el egy hegyi turistaházban. A kandalló hideg, a rádió csak egyetlen mondatot ismétel: „Ne engedjétek be.”'},
- {mode:'mixed',text:'Egy luxus-tengeralattjáró konyhájában ragadsz, miközben a kapitány bejelenti, hogy a felszínre emelkedéshez valakinek le kell mondania a reggelijéről.'},
- {mode:'mixed',text:'Egy elhagyott bevásárlóközpontban rekedsz. Minden kirakatban egy órával későbbi önmagad látható.'},
- {mode:'mixed',text:'A világ legunalmasabb céges csapatépítőjén vagy. A kijárat csak akkor nyílik ki, ha a főnököd végre őszintén válaszol egy kérdésre.'},
- {mode:'horror',text:'Éjjel 03:17-kor felébredsz egy teljesen ismeretlen házban. A falióra visszafelé jár, a telefonodban pedig egy videó van, amin te alszol.'},
- {mode:'horror',text:'Egy elhagyott kórház liftje megáll a mínusz harmadik emeleten. Az ajtó túloldaláról valaki a gyerekkori beceneveden szólít.'},
- {mode:'horror',text:'Egy ködös erdei úton lerobban az autód. A fák között valaki ugyanolyan tempóban követi a mozdulataidat — csak mindig egy másodperccel később.'},
- {mode:'horror',text:'Egy motelben a recepciós közli, hogy a szobád már foglalt. Amikor felmész, a saját hangodat hallod bentről segítségért könyörögni.'},
- {mode:'horror',text:'Egy bezárt múzeumban éjszakázol. Minden alkalommal, amikor elfordulsz egy viaszfigurától, közelebb kerül az ajtóhoz.'},
- {mode:'horror',text:'A házadban minden tükör egy szobával többet mutat, mint amennyi valójában van. A plusz szobában valaki épp most kapcsolta fel a villanyt.'},
- {mode:'horror',text:'Egy föld alatti bunkerben vagy. A rádió szerint odakint minden rendben, a zsilip kamerája viszont azt mutatja, hogy valami belülről kopogtat.'},
- {mode:'horror',text:'Egy éjjeli vonaton az összes utas egyszerre feléd fordul. A kalauz jegyet kér — a jegyen a holnapi dátum és a halálod helyszíne szerepel.'},
- {mode:'horror',text:'A szomszéd lakásból minden éjjel a saját hangodon hallod, ahogy felolvasod a holnapi nap eseményeit. Ma este a felvétel megállt a következő mondat előtt.'},
- {mode:'horror',text:'Egy temetkezési vállalat épületében rekedsz. A hűtőkamra ajtajára valaki belülről felírta a nevedet — friss, párás betűkkel.'},
- {mode:'adult',text:'A családi végrendelet felolvasásán kiderül, hogy mindenki örököl valamit — kivéve téged. Neked egy lezárt dobozt hagytak, rajta ezzel: „Nyisd ki, ha mindenki elment.”'},
- {mode:'adult',text:'Egy luxus wellnesshotelben dolgozol éjszakai műszakban. A vendégkönyvben valaki minden nap beír egy új panaszt a holnapi dátummal — és mind a te hibád.'},
- {mode:'adult',text:'Egy temetésen a ravatalozó hangszórója váratlanul bekapcsol, és az elhunyt hangján elkezdi felsorolni a jelenlévők titkait. A te neved következik.'},
- {mode:'adult',text:'Egy titkos társaság vacsorájára tévedsz. Minden fogás után valaki kiesik a tagságból, a következő étlapon pedig a te kedvenc ételed szerepel „búcsúfogásként”.'},
- {mode:'adult',text:'A főnököd rád bízza a cég irattárát péntek este. Éjfélkor a nyomtató magától elindul, és 400 oldalban kinyomtatja a kollégáid rólad alkotott véleményét.'},
- {mode:'adult',text:'Egy lepukkant bár mosdójában ébredsz, zsebedben egy idegen jegygyűrűvel és egy cetlivel: „Ne bízz abban, aki emlékszik az estére.” Te vagy az egyetlen, aki nem.'},
- {mode:'adult',text:'A lakógyűlésen valaki bejelenti, hogy az épületnek van egy titkos pincéje. A közös képviselő rád néz, és azt mondja: „Akkor talán elmagyarázod, miért van lent a neved a falon?”'},
- {mode:'adult',text:'Egy valóságshow forgatásán mindenki azt hiszi, hogy kiesésre játszotok. A rendező lekapcsolja a kamerákat, és közli: a szerződés apróbetűs része szerint csak egy ember mehet haza.'},
- {mode:'adult',text:'Hajnali háromkor csörög a telefonod. A vonal másik végén egy ügyintéző közli, hogy a rendszer szerint már öt éve halott vagy, és most jön az éves elégedettségi kérdőív.'},
- {mode:'adult',text:'Egy elhagyatott tárgyalóteremben találod magad. A bíró, az ügyész és az egyetlen tanú mind te vagy — és a jegyzőkönyv szerint már bevallottad.'}
-];
-const CARD_TEMPLATES=[
- {id:'c01',title:'A nagybácsi pincéje',items:[['🪩','diszkógömb'],['🧀','fél kiló trappista'],['📼','VHS-kazetta']]},
- {id:'c02',title:'Gyanús csomag',items:[['🪠','vécépumpa'],['🦆','beszélő gumikacsa'],['🧂','óriási sótartó']]},
- {id:'c03',title:'Utolsó műszak',items:[['🕯️','félbetört gyertya'],['🧸','plüssmackó'],['🔔','recepciós csengő']]},
- {id:'c04',title:'Kínos családi örökség',items:[['🦷','befőttesüvegnyi műfogsor'],['📸','rosszkor készült családi fotó'],['🧴','levendulás testápoló']]},
- {id:'c05',title:'A büfé zárása után',items:[['🥒','savanyú uborka'],['🥤','szénsavas, nyitott kóla'],['🧤','óriási gumikesztyű']]},
- {id:'c06',title:'Irodai túlélőcsomag',items:[['📎','300 gemkapocs'],['🖨️','papírelakadásos nyomtató'],['☕','hideg, háromnapos kávé']]},
- {id:'c07',title:'A gondnok titka',items:[['🗝️','ismeretlen kulcscsomó'],['🧹','csillámporos seprű'],['🪙','egy darab régi zseton']]},
- {id:'c08',title:'Kétbalkezes barkács',items:[['🔨','görbe szögű kalapács'],['🧵','összegubancolódott cérna'],['🩴','egy páratlan papucs']]},
- {id:'c09',title:'Wellness-csomag',items:[['🥒','két uborkakarika'],['🧖','izzadt szaunasapka'],['🧴','ismeretlen masszázsolaj']]},
- {id:'c10',title:'A gyerekszoba mélye',items:[['🪀','repedt jojó'],['🧃','üres szívószálas doboz'],['🦖','egy fog nélküli játékdínó']]},
- {id:'c11',title:'Kamu szakértő',items:[['🥽','karcos védőszemüveg'],['📏','30 centis vonalzó'],['📚','egy könyv, aminek hiányzik a fele']]},
- {id:'c12',title:'Éjjeli büntetés',items:[['🔦','lemerült elemlámpa'],['🎺','repedt trombita'],['🧻','egy guriga vécépapír']]},
- {id:'c13',title:'Kétes romantika',items:[['🌹','műanyag rózsa'],['💌','felbontott szerelmeslevél'],['🕶️','óriási szív alakú napszemüveg']]},
- {id:'c14',title:'A lomtalanítás hőse',items:[['🪑','háromlábú szék'],['🧯','üres poroltó'],['🪞','repedt kézitükör']]},
- {id:'c15',title:'Pincei leltár',items:[['🫙','ismeretlen befőtt'],['🔗','rozsdás lánc'],['📻','csak recsegő rádió']]},
- {id:'c16',title:'A kisvárosi legenda',items:[['🧢','izzadt baseballsapka'],['🦷','óriási műfogsor'],['🪶','fekete toll egy galambból']]},
- {id:'c17',title:'Késő esti büntetőkör',items:[['🪇','maracas'],['🧼','szappan, ami nem habzik'],['🧦','páratlan, nedves zokni']]},
- {id:'c18',title:'A rossz ajándék',items:[['🎁','becsomagolt tégla'],['🧲','óriási hűtőmágnes'],['🧸','plüssmackó, ami nevet ha megnyomod']]},
- {id:'c19',title:'Olcsó varázslat',items:[['🪄','eltört varázspálca'],['🐇','üres cilinder'],['✨','egy tasak csillámpor']]},
- {id:'c20',title:'A gyanús konyha',items:[['🥄','óriási fakanál'],['🧅','egy nyers hagyma'],['🧊','jégkockaformába fagyott leves']]},
- {id:'c21',title:'Túlélő influenszer',items:[['🤳','törött szelfibot'],['💍','olcsó műgyűrű'],['🔋','lemerült powerbank']]},
- {id:'c22',title:'Régi iskola',items:[['🧪','üres kémcső'],['📐','derékszögű vonalzó'],['🛎️','tanári csengő']]},
- {id:'c23',title:'Temetői piknik',items:[['🧺','piknikkosár'],['🍇','mazsola'],['🕯️','születésnapi gyertya']]},
- {id:'c24',title:'A recepciós fiókja',items:[['🗂️','üres dosszié'],['🪪','lejárt igazolvány'],['🔑','szállodakulcs 13-as számmal']]},
- {id:'c25',title:'Gyanús játszótér',items:[['🪁','szakadt papírsárkány'],['🪣','homokozóvödör'],['🧸','egy szem nélküli plüssnyúl']]},
- {id:'c26',title:'A bizarr nagytakarítás',items:[['🧽','óriási szivacs'],['🧴','ablaktisztító'],['🪥','elektromos fogkefe fej nélkül']]},
- {id:'c27',title:'Átkozott turkáló',items:[['👠','egy darab magassarkú'],['🧥','túl hosszú ballonkabát'],['🧣','végtelennek tűnő sál']]},
- {id:'c28',title:'Kétes díjátadó',items:[['🏆','műanyag serleg'],['🎤','mikrofon elem nélkül'],['🧾','egy 83 méter hosszú számla']]},
- {id:'c29',title:'A hűtő mélye',items:[['🧀','kőkemény sajtvég'],['🥫','konzerv, címke nélkül'],['🥢','egy darab evőpálcika']]},
- {id:'c30',title:'A barkácsőrült hagyatéka',items:[['🪚','tompa kézifűrész'],['🪢','csomós hegymászó kötél'],['🔩','egy óriási csavaranya']]},
- {id:'c31',title:'Vészhelyzeti szülinap',items:[['🎂','laposra nyomódott torta'],['🎈','egy félig leeresztett lufi'],['🎉','konfettiágyú, használati utasítás nélkül']]},
- {id:'c32',title:'A gyanús szerzetes',items:[['🔔','repedt kolomp'],['📿','műanyag rózsafüzér'],['🍯','egy üveg méz, ami világít']]},
- {id:'c33',title:'Metróvégi csomag',items:[['🎫','lejárt metrójegy'],['🧤','két különböző kesztyű'],['📣','kézi megafon, recsegő hanggal']]},
- {id:'c34',title:'Olcsó sci-fi',items:[['🪫','laposra merült akkumulátor'],['🛸','műanyag repülő csészealj'],['🧠','zselés stresszagy']]},
- {id:'c35',title:'Elátkozott háztartás',items:[['🧂','só, ami mindig visszaszóródik'],['🪟','miniatűr ablakkeret'],['🪡','óriási varrótű cérna nélkül']]},
- {id:'c36',title:'Az utolsó ügyfél',items:[['📠','faxgép papír nélkül'],['🪙','egy ismeretlen érme'],['🍬','három mentolos cukorka']]},
- {id:'c37',title:'Középkori wellness',items:[['🪶','libatollas párna'],['🪵','nedves fahasáb'],['🪥','faragott fogpiszkáló']]},
- {id:'c38',title:'Borzalmas hobbi',items:[['🧶','összegubancolódott fonal'],['🪆','matrjoska egyetlen babával'],['🧩','egy kirakós utolsó darabja']]},
- {id:'c39',title:'Az éjszakai portás',items:[['🛎️','szállodai csengő'],['🗒️','egy lista, rajta a neveddel'],['🔦','dinamós zseblámpa']]},
- {id:'c40',title:'Teljesen haszontalan hős',items:[['🦺','neon láthatósági mellény'],['🪠','mini vécépumpa'],['🥁','játékkisdob']]},
- {id:'c41',title:'A régi kazettás magnó',items:[['📼','felirat nélküli VHS'],['✂️','tompa olló'],['🕰️','megállt falióra']]},
- {id:'c42',title:'A gyanús fogorvos',items:[['🦷','óriási műfog'],['🧸','fogorvosi plüssállat'],['🪥','sörtétlen fogkefe']]},
- {id:'c43',title:'Szellemes vacsora',items:[['🍷','üres borospohár'],['🍴','hajlított villa'],['🧂','sótartó, ami nevet']]},
- {id:'c44',title:'Pánikcsomag a mosdóból',items:[['🪞','párás tükör'],['🧻','utolsó négyzet vécépapír'],['🧴','kézfertőtlenítő, címke nélkül']]},
- {id:'c45',title:'A rossz bűvész',items:[['🕊️','gumi galamb'],['🪄','ragacsos varázspálca'],['🧣','végtelennek tűnő kendő']]},
- {id:'c46',title:'Alagsori műszak',items:[['🔦','villogó elemlámpa'],['🧰','bezárt szerszámosláda'],['📻','rádió, ami csak suttogást fog']]},
- {id:'c47',title:'A büntetőreggeli',items:[['🥚','főtt tojás héj nélkül'],['🥓','gumiszerű bacon'],['🥤','szénsavmentes energiaital']]},
- {id:'c48',title:'Túlélőcsomag 2.0',items:[['🪢','rugalmas gumipók'],['🧲','mágneses karkötő'],['🧴','csillámos naptej']]}
-];
+const MODE_NAMES={mixed:'Vegyes küldetések',horror:'Horror és rejtély',adult:'18+ fekete humor'};
+const SCENARIOS=[{"mode":"mixed","text":"Egy befektetőnek el kell adnod a világ első önállóan gondolkodó vécékeféjét. Három hasonló startup csődjét finanszírozta. Találj ki olyan ajánlatot, amelyre igent mond."},{"mode":"mixed","text":"Egy idegen civilizáció egyetlen emberi szokás alapján dönti el, megtarthatjuk-e a bolygót. Győzd meg a küldöttet, hogy a legfurcsább szokásunk valójában az emberiség legnagyobb erénye."},{"mode":"mixed","text":"A városi múzeumból eltűnt egy kéttonnás szobor. Az ajtók zárva maradtak, a riasztó végig működött, a kamerákon pedig mindenki saját magát látja. Rakj össze hihető magyarázatot a sajtónak."},{"mode":"mixed","text":"A polgármester téged nevezett ki a város első sárkányügyi biztosává. Holnap lakossági gyűlésen kell elérned, hogy a tűzokádó sárkányt társasházi lakóként elfogadják. Tarts meggyőző beszédet."},{"mode":"mixed","text":"Egy luxusszálloda láthatatlan szobákat hirdet. Az első vendég reklamál, mert szerinte a szobája tele van bútorokkal, amelyeket senki más nem lát. Oldd meg a panaszt úgy, hogy a vendég elégedetten távozzon."},{"mode":"mixed","text":"A pokol ügyfélszolgálatán dolgozol. Egy szellem teljes visszatérítést követel az ördögűzésért, mert a démon továbbra is a lakásában lakik. Válaszolj úgy, hogy ne legyen belőle túlvilági botrány."},{"mode":"mixed","text":"A Hold egyik napról a másikra eltűnt, de a kormány szerint ez csak reklámkampány. Sajtótájékoztatót kell tartanod, és hihető magyarázatot adnod, mielőtt egy csillagász élő adásban megcáfol."},{"mode":"mixed","text":"Egy esküvőre véletlenül a sötét erdő teljes szörnytanácsát hívták meg násznépnek. Te vagy a ceremóniamester. Vezesd le a szertartást úgy, hogy egyik vendég se sértődjön meg."},{"mode":"mixed","text":"Egy aukción mindenki felbecsülhetetlen ereklyének hisz egy teljesen értéktelen tárgyat. Te vagy az árverésvezető. Add el a lehető legmagasabb áron anélkül, hogy nyíltan hazudnál."},{"mode":"mixed","text":"A cég vezérigazgatója bejelenti, hogy a céges macska lesz az új főnököd. A holnapi értekezleten meg kell győznöd a vezetőséget, hogy ez javítani fogja a teljesítményt."},{"mode":"mixed","text":"Egy valóságshow-ban minden versenyző azt hiszi, hogy ő a műsorvezető. Öt perc múlva élő adás kezdődik. Találj ki olyan szabályt, amellyel folytatódhat a műsor anélkül, hogy bárkit nyíltan lelepleznél."},{"mode":"mixed","text":"Egy időutazó azt állítja, hogy te vagy a jövőbeli mentora, de semmire sem emlékszel. Bizonyítsd be, hogy jogosan bízik benned, anélkül, hogy ismernéd a jövőt."},{"mode":"mixed","text":"A város lakói levelet kaptak: holnaptól minden árnyék adóköteles. Te vagy az önkormányzat szóvivője. Magyarázd el az új rendeletet úgy, hogy a tömeg ne forduljon ellened."},{"mode":"mixed","text":"Egy étterem Michelin-csillagot kapott, mert a kritikus szerint a séf főztje felidézte a gyerekkori traumáit. Neked kell megvédened a séfet a díjátadón, miközben a közönség kérdéseket tesz fel."},{"mode":"mixed","text":"Egy gazdag gyűjtő meg akarja venni az egyetlen bizonyítékot arra, hogy te nem vagy robot. Állíts össze ellenajánlatot úgy, hogy a bizonyíték nálad maradjon, a gyűjtő pedig azt higgye, nyert."},{"mode":"horror","text":"Egy elhagyott színházban minden este meghal a főszereplő a fináléban — minden alkalommal más módon. Ma te vagy a rendező. Találj ki új befejezést, amely megszakítja a mintát, mielőtt felmegy a függöny."},{"mode":"horror","text":"Egy motel 13-as szobájából a saját hangodon kérsz segítséget, pedig a folyosón állsz. Győzd meg az éjszakai recepcióst, hogy a szobában senkinek sem szabad lennie — és hogy ne nyissa ki az ajtót."},{"mode":"horror","text":"A ház minden tükre egy plusz szobát mutat. A szobában álló alak azt állítja, hogy nála van az egyetlen kijárati kulcs. Juss hozzá a kulcshoz úgy, hogy ne engedd át az alakot a tükör túloldalára."},{"mode":"horror","text":"Egy régi rádió minden éjjel a holnapi baleseteket közvetíti. Ma a saját nevedet hallod a hírekben. Győzd meg a helyi rádióst, hogy adásban változtassa meg a történet végét, mielőtt eljön az éjfél."},{"mode":"horror","text":"Egy szellem a városháza hangszóróján keresztül mindenki titkait kezdi felolvasni. A következő név a tiéd. Tereld más irányba a közgyűlés figyelmét, és állítsd le a közvetítést anélkül, hogy bevallanád, mit rejtegetsz."},{"mode":"horror","text":"A temetőben állásinterjúra hívtak. A munkáltató egy kétszáz éve halott igazgató, aki nem hiszi el, hogy ő maga halott. Éjfél előtt rá kell venned, hogy aláírja a szerződésedet."},{"mode":"horror","text":"Egy nyomozó hangfelvételt kap egy eltűnt embertől, amelyen a holnapi bűntény részletei hallhatók. Te tudod, hogy a felvétel nem lehet valódi. Győzd meg a nyomozót, hogy mégis vizsgálja ki az ügyet."},{"mode":"horror","text":"Az éjszakai vonaton minden utas téged bámul. A jegyeden a holnapi dátum és egy ismeretlen állomás neve szerepel. Vedd rá a kalauzt, hogy állítsa meg a vonatot a következő állomáson, noha szerinte ilyen hely nem létezik."},{"mode":"horror","text":"Egy föld alatti könyvtárban a könyvek a következő nap eseményeit írják le. Egy kötet biztosan hazudik, és ha valaki elolvassa, a hazugság valóra válik. Azonosítsd a hamis könyvet anélkül, hogy kinyitnád."},{"mode":"horror","text":"Egy viaszbábúmúzeumban te vezeted az utolsó tárlatvezetést. A figurák minden alkalommal közelebb kerülnek a látogatókhoz, amikor senki sem néz rájuk. Juttasd ki a csoportot úgy, hogy pánik ne törjön ki."},{"mode":"horror","text":"Egy faluban minden éjjel éjfélkor mindenki elfelejt egy eseményt a múltjából. Ma este a falu lakói téged fognak elfelejteni. Mielőtt éjfélt üt az óra, vedd rá őket, hogy emlékezzenek egyetlen fontos igazságra."},{"mode":"horror","text":"A motel vendégkönyve szerint holnap reggel kijelentkezel, pedig ma érkeztél. A recepciós azt mondja, a rendszer sosem téved. Vedd rá, hogy törölje a bejegyzést anélkül, hogy kimondanád a saját nevedet."},{"mode":"horror","text":"Az árnyékod eltűnt, de azóta cetliken üzen neked, és pontosan tudja, mit fogsz tenni. A rendőrség csalónak tart. Bizonyítsd be, hogy az árnyék önállóan cselekszik, mielőtt újabb üzenetet hagy."},{"mode":"horror","text":"Egy elátkozott bábszínházban a főbáb minden előadás végén megjósolja valaki halálát. Ma te vagy a rendező, és a közönség már bent ül. Fejezd be az előadást úgy, hogy a jóslat ne váljon valóra."},{"mode":"horror","text":"Egy lakógyűlésen kiderül, hogy az épületben lakó összes szellem tulajdonosnak tekinti magát. Téged neveztek ki közös képviselőnek. Érd el, hogy elfogadják: te vagy az egyetlen élő lakó, aki jogosult dönteni."},{"mode":"adult","text":"Egy temetésen a hangosítás váratlanul bekapcsol, és az elhunyt hangján elkezdi felolvasni a jelenlévők titkait. A te neved következik. Mondj olyan búcsúbeszédet, amellyel más irányba tereled a figyelmet."},{"mode":"adult","text":"A HR véletlenül mindenkinek kiküldi a kollégák belső monológjait. Hétfő reggelre felmondási hullám fenyeget. Te vezeted a rendkívüli értekezletet: mentsd meg a céget egyetlen őszinte, de vállalható beszéddel."},{"mode":"adult","text":"A családi végrendelet szerint te örökölsz egy lezárt kartondobozt, mindenki más pedig pénzt. A rokonaid csalónak tartanak. Vedd rá őket, hogy a dobozt közösen, tanúk előtt nyissátok ki."},{"mode":"adult","text":"Egy ügyintéző közli, hogy a rendszer szerint öt éve halott vagy, ezért a fizetésedet zárolták. A hivatal csak egyetlen űrlappal tud segíteni, de az űrlap szerint halottnak kell lenned a kitöltéshez. Intézd el, hogy élőként kezeljenek."},{"mode":"adult","text":"Egy karaoke bárban véletlenül téged választanak meg polgármesternek. A városnak 30 éve lejárt számlája van, és a behajtó már a színpadon áll. Tarts beszédet, amellyel időt nyersz a városnak."},{"mode":"adult","text":"Egy wellnesshotel vendégkönyvében valaki minden nap panaszt ír a holnapi dátummal — és mind a te hibád. A főnököd reggel sajtótájékoztatót tart. Találj ki olyan magyarázatot, amely nem teszi még rosszabbá a helyzetet."},{"mode":"adult","text":"A lakásod tulajdonosa kijelenti, hogy a láthatatlan lakótársadnak is fizetnie kell a bérleti díjat. A lakótárs nem hajlandó megjelenni, de rendszeresen használja a hűtőt. Hozz tető alá egy megállapodást mindhárom féllel."},{"mode":"adult","text":"Egy influenszer élő adásban megsértett egy idegen civilizációt, és most a szponzorai menekülnek. Te vagy a kríziskommunikációs tanácsadó. Írj olyan nyilvános bocsánatkérést, amely nem hangzik újabb sértésnek."},{"mode":"adult","text":"A főnököd rád bízza a „teljesen önkéntes” létszámcsökkentés bejelentését. Mindenki tudja, hogy senki sem akar önként távozni. Vezesd úgy a megbeszélést, hogy végül mindenki számára elfogadható alternatíva szülessen."},{"mode":"adult","text":"Egy startup prémium csendet árul befőttesüvegben. Az első vásárló visszaküldi a terméket, mert szerinte a csend sikítozott. Találj ki visszatérítési szabályzatot, amellyel a cég túléli a botrányt."},{"mode":"adult","text":"A városi tanács tagjai egymásnak ítélik oda „az év legrosszabb szomszédja” díjat, miközben neked egy park felújítására kell pénzt szerezned. Vezesd át a költségvetést a díjátadó káoszán keresztül."},{"mode":"adult","text":"Egy céges szabadulószobából csak akkor nyílik ki az ajtó, ha a főnök őszintén bocsánatot kér a csapatától. Ő kizárólag vállalati közhelyekben tud beszélni. Segíts neki megfogalmazni egy valódi bocsánatkérést."},{"mode":"adult","text":"Egy temetkezési vállalatnál kiderül, hogy az ügyfél a saját temetését születésnapi buliként foglalta le, és már megérkeztek a vendégek. Hívd fel az ügyfelet, tisztázd a félreértést, és mentsd meg a rendezvényt."},{"mode":"adult","text":"Egy valóságshow szerződése szerint csak egy versenyző mehet haza, de a forgatás végére mindenki megkedvelte egymást. Te vagy a műsor producere. Találj ki olyan finálét, amely megfelel a szerződésnek, de senkit sem tesz vesztesként."},{"mode":"adult","text":"Egy távoli rokontól 40 000 hűségpontot örökölsz, amelyet kizárólag egy csődbe ment áruházban lehet beváltani. A család szerint ez nem örökség, hanem sértés. Tárgyalj ki belőle valami valódi értéket."}];
+const CARD_TEMPLATES=[{"id":"c01","title":"A sajtós csomagja","items":[["🎙️","működő kézi mikrofon"],["🎟️","hamis sajtóbelépő"],["🐊","felfújható krokodil"]]},{"id":"c02","title":"A szakértő látszata","items":[["🥼","fehér laboratóriumi köpeny"],["🔎","nagyítólencse"],["🛂","hivatalosnak látszó pecsét"]]},{"id":"c03","title":"A tárgyalóterem fiókja","items":[["🎙️","működő diktafon"],["📄","üres hivatalos űrlapok"],["🐔","nyomásra vijjogó gumicsirke"]]},{"id":"c04","title":"Éjszakai recepció","items":[["🔔","réz recepciós csengő"],["🗝️","mesterkulcs 13-as címkével"],["📖","vendégkönyv egy kitépett lappal"]]},{"id":"c05","title":"A tévéstáb doboza","items":[["📹","működő kézikamera"],["🎬","filmes csapó"],["🕊️","életnagyságú plüssgalamb"]]},{"id":"c06","title":"Vállalati prezentáció","items":[["🔴","lézeres prezentációs mutató"],["📋","vágólap üres lapokkal"],["🏆","felirat nélküli serleg"]]},{"id":"c07","title":"A bűvész bőröndje","items":[["🃏","jelölt pakli francia kártya"],["🧣","piros selyemsál"],["🐇","műnyúl, rugós füllel"]]},{"id":"c08","title":"A nyomozó zsebe","items":[["🔦","működő UV-lámpa"],["🔍","zsebnagyító"],["✨","csillámpor kis tasakban"]]},{"id":"c09","title":"A hivatalos küldemény","items":[["🕯️","piros pecsétviasz"],["📁","zárható irattartó"],["🦆","beszélő gumikacsa"]]},{"id":"c10","title":"Luxusvacsora-készlet","items":[["🍽️","ezüst tálalófedő"],["📜","elegáns étlap üres oldallal"],["🕯️","elemes hangulatgyertya"]]},{"id":"c11","title":"A költöztető doboza","items":[["🪢","ötméteres kötél"],["🪛","többfunkciós csavarhúzó"],["🐒","felhúzható játékmajom"]]},{"id":"c12","title":"Tárgyalási ajánlat","items":[["🪙","aranyszínű zseton"],["📝","üres szerződés"],["🥇","óriási csokoládéérem"]]},{"id":"c13","title":"Az éjjeli portás","items":[["🔦","működő elemlámpa"],["📻","feltöltött kézi adó-vevő"],["🦺","fényvisszaverő mellény"]]},{"id":"c14","title":"A filmforgatás kellékei","items":[["🩸","színházi művér"],["📣","kézi megafon"],["🤚","beszélő kézbáb"]]},{"id":"c15","title":"A marketinges fiókja","items":[["💡","hordozható körfény"],["📦","felirat nélküli termékminta"],["🎉","konfettiágyú"]]},{"id":"c16","title":"A hamis díjátadó","items":[["🏆","műanyag aranyserleg"],["🎗️","szatén díjszalag"],["👏","gombnyomásra tapsoló doboz"]]},{"id":"c17","title":"Robotbemutató","items":[["🔊","hangvezérelt okoshangszóró"],["🔋","két új AA-elem"],["🪱","plüss földigiliszta"]]},{"id":"c18","title":"Az elveszett ügyirat","items":[["💾","üres USB-meghajtó"],["🔎","nagyítólencse"],["💸","aláírt, de kitöltetlen csekk kellékváltozata"]]},{"id":"c19","title":"A furcsa ajándék","items":[["🎁","lezárt ajándékdoboz"],["🔈","hordozható hangszóró"],["🦞","gumiból készült homár"]]},{"id":"c20","title":"A lakógyűlés raktára","items":[["🗺️","az épület alaprajza"],["📏","ötméteres mérőszalag"],["☝️","óriási habszivacs mutatóujj"]]},{"id":"c21","title":"A műsorvezető táskája","items":[["🗒️","műsorvezetői súgókártyák"],["🎤","működő mikrofon"],["🐴","lófejmaszk"]]},{"id":"c22","title":"A restaurátor készlete","items":[["🧤","fehér pamutkesztyű"],["🖌️","puha restaurátorecset"],["📷","régi fénykép kitakart arccal"]]},{"id":"c23","title":"A félig komoly tudós","items":[["🧪","kék folyadékos kémcső"],["🥽","védőszemüveg"],["⏱️","konyhai időzítő"]]},{"id":"c24","title":"A tárgyalás sötét oldala","items":[["💼","üres aktatáska"],["⛓️","aranyszínű műlánc"],["🐕","nyomásra ugató játék kutya"]]},{"id":"c25","title":"Az álomügynök táskája","items":[["😴","alvómaszk"],["🎙️","hangrögzítő"],["⌛","miniatűr homokóra"]]},{"id":"c26","title":"A hivatalnok eszközei","items":[["🛂","hivatalos pecsét"],["🎫","kézi sorszámosztó"],["👑","műanyag játékkorona"]]},{"id":"c27","title":"A színpadi asszisztens","items":[["🧥","fekete köpeny"],["🃏","bűvésztrükk-kártyák"],["🚗","távirányítós kisautó"]]},{"id":"c28","title":"A közgyűlés kellékei","items":[["📽️","hordozható projektor"],["📢","kézi hangosbemondó"],["☝️","óriási habszivacs mutatóujj"]]},{"id":"c29","title":"A titkos aukció","items":[["👝","bársonyzsák"],["🔢","árverési licittábla"],["🥔","szemekkel ellátott krumpli"]]},{"id":"c30","title":"Ajándék az űrből","items":[["🗺️","csillagtérkép"],["📻","kézi rádió"],["🦖","műanyag dinoszaurusz"]]},{"id":"c31","title":"A botránykezelő dossziéja","items":[["📁","sajtóközlemény-mappa"],["🎧","zajszűrős fejhallgató"],["👏","gombnyomásra tapsoló doboz"]]},{"id":"c32","title":"A gasztrokritikus táskája","items":[["🍴","ezüstvilla"],["🌫️","aroma-permetező"],["👅","vicces nyelvmérő vonalzó"]]},{"id":"c33","title":"A temetkezési iroda","items":[["📖","vendégkönyv"],["🔊","hordozható hangszóró"],["🤡","felhúzható bohócjáték"]]},{"id":"c34","title":"Az ügyvéd íróasztala","items":[["📝","üres szerződés"],["🧮","zsebszámológép"],["🕯️","piros pecsétviasz"]]},{"id":"c35","title":"A múzeum raktára","items":[["🧤","archív kesztyű"],["📦","lezárt műtárgydoboz"],["👑","felfújható királyi korona"]]},{"id":"c36","title":"A nyomozó mellékállása","items":[["📸","azonnal előhívó fényképezőgép"],["🖊️","UV-fényben világító jelölő"],["👩‍🦱","óriási partyparóka"]]},{"id":"c37","title":"A hotel talált tárgyai","items":[["☂️","nagy, fekete esernyő"],["🔑","számozott szekrénykulcs"],["🕶️","óriási napszemüveg"]]},{"id":"c38","title":"Olcsó sci-fi kellékek","items":[["📻","kézi adó-vevő"],["🛡️","ezüst hőtakaró"],["🛸","műanyag repülő csészealj"]]},{"id":"c39","title":"Az iskola igazgatója","items":[["🧑‍🏫","tanári tábla krétával"],["🔔","iskolai csengő"],["🧸","tanárnak öltöztetett plüss"]]},{"id":"c40","title":"Az árverésvezető táskája","items":[["🔨","árverési kalapács"],["🔢","kézi számláló"],["🐔","vijjogó gumicsirke"]]}];
 
 let players=[],localPlayerId=null;
 let net={mode:'offline',peer:null,conn:null,connections:new Map(),code:'',name:'Játékos',isHost:false,playerId:null,joinTimer:null,closing:false};
@@ -431,14 +419,14 @@ function sendToPlayer(pid,m){if(net.mode!=='host')return;for(const c of net.conn
 function broadcastLobby(){broadcast({type:'lobby',room:lobbyData()});updateLobbyUI(lobbyData());}
 function renderScenario(){
   $('scenarioText').textContent=currentScenario;$('roundLabel').textContent=`${round}. KÖR`;$('roundVal').textContent=maxRounds?`${round} / ${maxRounds}`:`${round} / ∞`;$('modePill').textContent=MODE_NAMES[modeChoice]||MODE_NAMES.mixed;
-  $('scenarioModeTag').textContent=modeChoice==='horror'?'HORROR AKTA':modeChoice==='adult'?'18+ / FEKETE HUMOR':'TÚLÉLÉSI AKTA';
+  $('scenarioModeTag').textContent=modeChoice==='horror'?'REJTÉLYAKTA':modeChoice==='adult'?'18+ / FEKETE HUMOR':'KÜLÖNLEGES MEGBÍZÁS';
 }
 function renderHand(){
   const grid=$('handGrid');grid.innerHTML='';
   myHand.forEach((card,i)=>{
     const b=document.createElement('button');b.type='button';b.className='hand-card'+(card.id===selectedCardId?' selected':'');b.setAttribute('aria-pressed',card.id===selectedCardId?'true':'false');
     b.innerHTML=`<div class="card-topline"><span class="card-code">TÁRGYKÁRTYA 0${i+1}</span><span class="card-mark">${['✳','⚡','☠'][i]||'✳'}</span></div><div class="card-title">${esc(card.title)}</div><div class="card-objects">${card.items.map(it=>`<div class="card-object"><span class="em">${esc(it.em)}</span><span>${esc(it.nm)}</span></div>`).join('')}</div>`;
-    b.addEventListener('click',()=>{selectedCardId=card.id;renderHand();$('goWriteBtn').disabled=false;$('handStatus').textContent=`Kiválasztva: ${card.title}. Ezzel a három tárggyal kell megoldanod a helyzetet.`;});grid.appendChild(b);
+    b.addEventListener('click',()=>{selectedCardId=card.id;renderHand();$('goWriteBtn').disabled=false;$('handStatus').textContent=`Kiválasztva: ${card.title}. Ezzel a három tárggyal oldd meg a küldetést.`;});grid.appendChild(b);
   });
   if(!myHand.length){grid.innerHTML='<p class="phase-desc">A kártyák betöltése…</p>';}
 }
@@ -490,14 +478,14 @@ function acceptStory(pid,cardId,text){
 function checkAllStories(){
   if(net.mode!=='host'||roundStage!=='writing'||storiesSent)return;
   const active=activePlayers();const have=active.filter(p=>!!stories[p.id]).length;
-  $('waitingText').textContent=`${have}/${active.length} játékos története érkezett meg.`;renderWaitingDots();
+  $('waitingText').textContent=`${have}/${active.length} játékos megoldása érkezett meg.`;renderWaitingDots();
   if(have>=active.length&&active.length>=2){setTimeout(()=>{if(!storiesSent&&roundStage==='writing')broadcastStories();},450);}
 }
 function broadcastStories(){if(net.mode!=='host'||storiesSent)return;storiesSent=true;roundStage='stories';const list=shuffle(Object.values(stories)).map((s,i)=>({...s,number:i+1}));currentStoryOrder=list;broadcast({type:'stories',stories:list});showStoriesPhase(list);}
 function showStoriesPhase(list){
   currentStoryOrder=Array.isArray(list)?list:[];roundStage='stories';showPhase('phaseStories');const cont=$('storiesList');cont.innerHTML='';
   currentStoryOrder.forEach(s=>{const d=document.createElement('article');d.className='story-card';d.innerHTML=`<div class="story-card-head"><span class="story-num">TÖRTÉNET #${String(s.number||1).padStart(2,'0')}</span><span class="story-card-title">${esc(s.cardTitle||'Kijátszott kártya')}</span></div><div class="story-text">${esc(s.text)}</div><div class="story-objects">FELHASZNÁLT TÁRGYAK: ${s.items.map(it=>esc(it.em)+' '+esc(it.nm)).join(' · ')}</div>`;cont.appendChild(d);});
-  const hostCanStart=net.mode==='host';$('toVoteBtn').style.display=hostCanStart?'':'none';$('storiesStatus').textContent=hostCanStart?'Olvassátok fel egymásnak a történeteket, majd indítsd el a szavazást.':'Olvassátok fel egymásnak a történeteket. A házigazda hamarosan elindítja a szavazást.';
+  const hostCanStart=net.mode==='host';$('toVoteBtn').style.display=hostCanStart?'':'none';$('storiesStatus').textContent=hostCanStart?'Olvassátok fel egymásnak a megoldásoket, majd indítsd el a szavazást.':'Olvassátok fel egymásnak a megoldásoket. A házigazda hamarosan elindítja a szavazást.';
 }
 function startVoting(){if(net.mode!=='host'||roundStage!=='stories')return;roundStage='voting';hasVoted=false;broadcast({type:'voteStart',stories:currentStoryOrder});showVotingPhase(currentStoryOrder);}
 function showVotingPhase(list){
@@ -532,7 +520,7 @@ function showResultPhase(res){
 }
 function finishMatch(){if(net.mode==='host'){const final={scores:{...scores},round,roster:publicRoster(true)};broadcast({type:'gameEnd',final});showFinalPhase(final);}else if(net.mode==='solo'){showFinalPhase({scores:{...scores},round,roster:publicRoster(true)});}}
 function showFinalPhase(data){if(data.roster)syncRoster(data.roster);if(data.scores)scores={...data.scores};roundStage='final';showPhase('phaseFinal');const sorted=[...players].sort((a,b)=>(Number(scores[b.id])||0)-(Number(scores[a.id])||0));const best=sorted.length?(Number(scores[sorted[0].id])||0):0;const winners=sorted.filter(p=>(Number(scores[p.id])||0)===best);$('finalWinnerBox').innerHTML=`<div class="result-winner"><div class="label">${winners.length>1?'Holtverseny':'Végső győztes'}</div><div class="winner-name">🏆 ${winners.map(p=>esc(p.name)).join(' · ')}</div><div class="sub">${best} pont · ${round} lejátszott kör</div></div>`;$('finalScoreBox').innerHTML=leaderboardHTML(scores,players);}
-function submitSoloStory(text,card){const item={id:'solo',name:players[0].name,text,cardTitle:card.title,items:card.items};lastSoloStory=item;myHand=refillHand(myHand.filter(c=>c.id!==card.id),3);playerHands.solo=myHand;selectedCardId=null;$('soloStoryBox').innerHTML=`<div class="story-card-head"><span class="story-num">TÚLÉLÉSI JELENTÉS</span><span class="story-card-title">${esc(item.cardTitle)}</span></div><div class="story-text">${esc(item.text)}</div><div class="story-objects">FELHASZNÁLT TÁRGYAK: ${item.items.map(it=>esc(it.em)+' '+esc(it.nm)).join(' · ')}</div>`;showPhase('phaseSoloResult');}
+function submitSoloStory(text,card){const item={id:'solo',name:players[0].name,text,cardTitle:card.title,items:card.items};lastSoloStory=item;myHand=refillHand(myHand.filter(c=>c.id!==card.id),3);playerHands.solo=myHand;selectedCardId=null;$('soloStoryBox').innerHTML=`<div class="story-card-head"><span class="story-num">MEGOLDÁSI JELENTÉS</span><span class="story-card-title">${esc(item.cardTitle)}</span></div><div class="story-text">${esc(item.text)}</div><div class="story-objects">FELHASZNÁLT TÁRGYAK: ${item.items.map(it=>esc(it.em)+' '+esc(it.nm)).join(' · ')}</div>`;showPhase('phaseSoloResult');}
 function closeOnline(){
   net.closing=true;if(net.joinTimer)clearTimeout(net.joinTimer);clearInterval(revealTimer);
   try{if(net.conn&&net.conn.open)net.conn.close();}catch(e){}
@@ -585,7 +573,7 @@ function joinRoom(){
       else if(msg.type==='voteStart')showVotingPhase(msg.stories||[]);
       else if(msg.type==='result')showResultPhase(msg.result||{});
       else if(msg.type==='gameEnd')showFinalPhase(msg.final||{});
-      else if(msg.type==='storyError'){showPhase('phaseWrite');$('writeError').textContent=msg.message||'Nem sikerült beküldeni a történetet.';}
+      else if(msg.type==='storyError'){showPhase('phaseWrite');$('writeError').textContent=msg.message||'Nem sikerült beküldeni a megoldást.';}
     });
     conn.on('close',()=>{if(net.closing)return;if(!welcomed){setRoomError('A szoba nem elérhető vagy a házigazda kilépett.');$('roomConfirmBtn').disabled=false;}else{$('waitingTitle').textContent='Megszakadt a kapcsolat';$('waitingText').textContent='A házigazda kapcsolata megszakadt. Lépj ki, majd próbálj újra csatlakozni.';showPhase('phaseWaiting');}});
   });
@@ -614,8 +602,8 @@ $('submitStoryBtn').addEventListener('click',()=>{
   const txt=$('storyInput').value.trim();const card=chosenCard();if(!card){$('writeError').textContent='Előbb válassz egy tárgykártyát.';return;}if(txt.length<5){$('writeError').textContent='Írj legalább egy rövid mondatot.';return;}
   clearInterval(revealTimer);$('submitStoryBtn').disabled=true;
   if(net.mode==='solo'){submitSoloStory(txt,card);return;}
-  if(net.mode==='guest'){sendNet({type:'story',cardId:card.id,text:txt});selectedCardId=null;showPhase('phaseWaiting');$('waitingTitle').textContent='Történet beküldve';$('waitingText').textContent='A történeted megérkezett. Várunk, amíg a többiek is befejezik.';}
-  else if(net.mode==='host'){acceptStory(localPlayerId,card.id,txt);selectedCardId=null;showPhase('phaseWaiting');$('waitingTitle').textContent='Történet beküldve';$('waitingText').textContent='A történeted megérkezett. Várunk, amíg a többiek is befejezik.';}
+  if(net.mode==='guest'){sendNet({type:'story',cardId:card.id,text:txt});selectedCardId=null;showPhase('phaseWaiting');$('waitingTitle').textContent='Megoldás beküldve';$('waitingText').textContent='A megoldásod megérkezett. Várjuk, amíg a többiek is befejezik.';}
+  else if(net.mode==='host'){acceptStory(localPlayerId,card.id,txt);selectedCardId=null;showPhase('phaseWaiting');$('waitingTitle').textContent='Megoldás beküldve';$('waitingText').textContent='A megoldásod megérkezett. Várjuk, amíg a többiek is befejezik.';}
   $('storyInput').value='';$('charCount').textContent='0';
 });
 $('toVoteBtn').addEventListener('click',startVoting);
