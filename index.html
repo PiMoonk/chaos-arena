@@ -72,6 +72,18 @@
  .prompt.end{background:var(--green);color:var(--green-ink)}
  .prompt.end h2{color:#205a35}
  .prompt .tag{font-size:10px;text-transform:uppercase;letter-spacing:.12em;font-weight:900;opacity:.8}
+ .pair-grid{display:grid;grid-template-columns:minmax(0,1fr) 42px minmax(0,1fr);align-items:stretch;gap:8px;margin:12px 0 4px}
+ .pair-card{min-width:0;border-radius:18px;padding:20px;display:flex;flex-direction:column;min-height:205px}
+ .pair-card.base{background:var(--blue);color:var(--blue-ink)}.pair-card.base h2{color:#173e78}
+ .pair-card.modifier{background:var(--lilac);color:var(--lilac-ink)}.pair-card.modifier h2{color:#60367e}
+ .pair-card .tag{font-size:10px;text-transform:uppercase;letter-spacing:.12em;font-weight:900;opacity:.8}
+ .pair-card h2{font-size:clamp(20px,3vw,25px);margin:12px 0 9px;line-height:1.18}
+ .pair-card p{font-size:15px;margin:0;color:inherit}
+ .pair-kind{display:inline-flex;align-self:flex-start;border-radius:999px;padding:4px 9px;margin-top:9px;background:#ffffffa8;font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+ .pair-join{display:grid;place-items:center;align-self:center;width:38px;height:38px;border-radius:50%;background:white;border:1px solid var(--line);color:var(--ink);font-size:24px;font-weight:800;box-shadow:0 3px 12px #25364a0a}
+ .pair-result{background:var(--gold);color:var(--gold-ink);border-radius:16px;padding:16px 19px;margin:10px 0 14px}
+ .pair-result .tag{font-size:10px;text-transform:uppercase;letter-spacing:.12em;font-weight:900;opacity:.8}
+ .pair-result p{font-size:16px;font-weight:750;color:inherit;margin:6px 0 0}
  .step{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line)}
  .step:last-child{border:0}
  .num{flex:0 0 27px;height:27px;border-radius:50%;background:#edf1f5;color:var(--ink);display:grid;place-items:center;font-weight:900;font-size:12px}
@@ -88,7 +100,7 @@
  .deck-row span{font-size:12px;color:var(--muted)}
  footer{text-align:center;color:#8a96a5;font-size:11px;margin-top:28px}
  .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#172638;color:white;padding:11px 16px;border-radius:12px;box-shadow:0 8px 25px #0003;z-index:5;font-size:13px}
- @media(max-width:620px){.wrap{padding:13px 12px 34px}.grid,.deck-list{grid-template-columns:1fr}.card{padding:17px}.hero .scribble{font-size:54px;right:10px}.turn-head{align-items:flex-start;flex-direction:column}}
+ @media(max-width:620px){.wrap{padding:13px 12px 34px}.grid,.deck-list{grid-template-columns:1fr}.card{padding:17px}.hero .scribble{font-size:54px;right:10px}.turn-head{align-items:flex-start;flex-direction:column}.pair-grid{grid-template-columns:1fr;gap:5px}.pair-card{min-height:0;padding:17px}.pair-join{width:30px;height:30px;font-size:20px}.pair-card h2{font-size:22px}}
  </style>
  </head>
  <body>
@@ -108,12 +120,13 @@
   </div>
   <div class="card section">
    <h2>Kezdjünk egy új történetet!</h2>
-   <p class="muted">A weboldal a kártyákat és a fordulókat kezeli. A rajzot valódi papírra készítsétek.</p>
+   <p class="muted">A bal oldali lap adja az alapot, a jobb oldali pedig egy hozzá illő csavart. A rajzot valódi papírra készítsétek.</p>
    <div class="grid">
     <div class="field"><label for="players">Játékosok száma</label><select id="players"><option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option></select></div>
     <div class="field"><label for="rounds">Fordulók száma</label><select id="rounds"><option value="6">6 – rövid</option><option value="8" selected>8 – normál</option><option value="10">10 – hosszú</option></select></div>
    </div>
    <div class="field"><label for="theme">Témakör</label><select id="theme"><option value="all">Vegyes – mindenféle történet</option><option value="adventure">Kaland és felfedezés</option><option value="fantasy">Mesevilág és fantasy</option><option value="mystery">Rejtély és nyomozás</option><option value="funny">Vicces és abszurd</option><option value="animals">Állati kalandok</option><option value="space">Űrkaland</option></select></div>
+  <p class="muted">A témakör a kezdőhelyzetet hangolja; a későbbi páros kártyák szabadon kombinálnak, hogy új és váratlan történetek születhessenek.</p>
    <div class="field"><label for="names">Játékosnevek (vesszővel elválasztva, opcionális)</label><input id="names" placeholder="Anna, Bence, Lili, Marci"></div>
    <div class="row">
     <label style="display:flex;gap:8px;align-items:center;font-weight:600"><input id="timerToggle" type="checkbox" style="width:auto"> Időzítő bekapcsolása (90 mp)</label>
@@ -121,7 +134,7 @@
    <div class="actions"><button type="button" class="primary" id="startBtn">Játék indítása →</button><button type="button" class="secondary hidden" id="resumeBtn">Mentett játék folytatása</button></div>
   </div>
   <div class="card section">
-   <div class="row between"><div><h2>A pakli tartalma</h2><p class="muted">Kezdőhelyzetek, karakterek, helyszínek, konfliktusok, események, bonyodalmak, fordulatok, következmények és rajzos kihívások.</p></div><span class="pill green" id="deckTotal">Kártyák</span></div>
+   <div class="row between"><div><h2>A pakli tartalma</h2><p class="muted">72 bal oldali alapötlet és 72 hozzájuk illő jobb oldali csavar, kiegészítő rajzeszközök, kihívások és befejezések.</p></div><span class="pill green" id="deckTotal">Kártyák</span></div>
    <div class="deck-list" id="deckStats"></div>
   </div>
  </section>
@@ -132,11 +145,24 @@
    <div class="progress"><span id="progressBar" style="width:0%"></span></div>
    <p class="muted" id="gameHint">Nézzétek meg az eddigi rajzot, majd húzzátok fel a történet következő kártyáit.</p>
    <div class="prompt special" id="startPrompt"><div class="tag">A TÖRTÉNET KIINDULÓHELYZETE</div><h2 id="startTitle"></h2><p id="startText"></p></div>
-   <div id="cardsArea">
-    <div class="prompt story"><div class="tag">MIT rajzolj? · Történetkártya</div><h2 id="storyTitle"></h2><p id="storyText"></p></div>
-    <div class="prompt tech"><div class="tag">HOGYAN rajzolj? · Rajztechnikakártya</div><h2 id="techTitle"></h2><p id="techText"></p></div>
-    <div id="extraArea"></div>
-   </div>
+     <div id="cardsArea">
+   <div class="pair-grid" id="pairArea">
+    <article class="pair-card base">
+     <div class="tag">1. BAL OLDAL · KIINDULÓ ELEM</div>
+     <span class="pair-kind" id="baseKind">Karakter / helyszín / tárgy / probléma</span>
+     <h2 id="baseTitle"></h2><p id="baseText"></p>
+    </article>
+    <div class="pair-join" aria-hidden="true">+</div>
+    <article class="pair-card modifier">
+     <div class="tag">2. JOBB OLDAL · CSAVAR / FELTÉTEL</div>
+     <span class="pair-kind" id="modifierKind">Váratlan feltétel</span>
+     <h2 id="modifierTitle"></h2><p id="modifierText"></p>
+    </article>
+   </div>
+   <div class="pair-result" id="pairResult"><div class="tag">A KÉT KÁRTYA EGYÜTT</div><p id="pairInstruction"></p></div>
+   <div class="prompt tech"><div class="tag">HOGYAN rajzolj? · Rajztechnikakártya</div><h2 id="techTitle"></h2><p id="techText"></p></div>
+   <div id="extraArea"></div>
+  </div>
    <div class="row between" style="margin-top:16px">
     <span class="muted" id="drawCount">Kártyák: 2</span>
     <button type="button" class="secondary" id="redrawBtn">↻ Egy kártya újrahúzása</button>
@@ -182,8 +208,8 @@
    <p><strong>A cél:</strong> közösen létrehozni egy összefüggő történetet egyetlen papírlapon, majd emlékezetből elmesélni.</p>
    <div class="step"><span class="num">1</span><div><strong>Készüljetek elő!</strong><p class="muted">Tegyetek az asztalra egy A3-as lapot és többféle rajzeszközt. Üljetek úgy, hogy mindenki lássa a rajzot.</p></div></div>
    <div class="step"><span class="num">2</span><div><strong>Válasszatok kezdőhelyzetet!</strong><p class="muted">A weboldal ad egy kiinduló szituációt. Az első játékos ezt rajzolja le a kapott kártyák szerint.</p></div></div>
-   <div class="step"><span class="num">3</span><div><strong>Húzzatok két kártyát!</strong><p class="muted">Az egyik megmondja, mit vigyél tovább a történetben, a másik pedig azt, milyen eszközzel vagy technikával rajzolj.</p></div></div>
-   <div class="step"><span class="num">4</span><div><strong>Folytassátok a közös rajzot!</strong><p class="muted">Minden játékos a teljes képet nézve kapcsolódjon legalább egy korábbi szereplőhöz vagy eseményhez. Ne különálló képeket készítsetek.</p></div></div>
+   <div class="step"><span class="num">3</span><div><strong>Húzzatok két kártyát!</strong><p class="muted">A bal oldali kártya ad egy karaktert, helyszínt, tárgyat vagy problémát. A jobb oldali ehhez illő, váratlan feltételt, veszélyt vagy feladatot rendel. A két lap együtt egyetlen történethelyzetet alkot.</p></div></div>
+   <div class="step"><span class="num">4</span><div><strong>Rajzoljátok meg a megoldást és a következményeket!</strong><p class="muted">Minden játékos a teljes képet nézve kapcsolódjon legalább egy korábbi szereplőhöz vagy eseményhez. Ne különálló képeket készítsetek.</p></div></div>
    <div class="step"><span class="num">5</span><div><strong>Meséljétek el!</strong><p class="muted">Az utolsó forduló után tegyétek félre a telefont. Közösen idézzétek fel a történetet, majd használjátok a kérdéseket segítségként.</p></div></div>
    <div class="section"><h3>Fontos közös szabályok</h3><ul class="muted"><li>A rajz nem verseny: nem a szépsége, hanem a történet számít.</li><li>A rajzoló csak röviden magyarázhat, ne mesélje el előre a teljes ötletét.</li><li>Ha egy kártya nem teljesíthető a rendelkezésre álló eszközökkel, egyszer újrahúzható.</li><li>Az időzítő opcionális; kikapcsolt állapotban nincs időkorlát.</li><li>Ha egy kártya kellemetlen vagy nem megfelelő, közösen cseréljétek le.</li></ul></div>
   </div>
@@ -436,52 +462,45 @@ const CONSEQUENCES = [
  ["A csapat új szabályt alkot","A szereplők tanulnak a történtekből, és közös szabályban állapodnak meg."]
 ];
 
+const BASE_CARDS = [{"type":"character","kind":"Karakter","title":"Egy pályakezdő mentős","text":"Segíteni akar, de egy régi hibája miatt fél újra döntést hozni."},{"type":"character","kind":"Karakter","title":"Egy nyugdíjas mozdonyvezető","text":"Olyan útvonalat ismer, amely már évtizedek óta nem szerepel a térképeken."},{"type":"character","kind":"Karakter","title":"Egy eltűntnek hitt testvér","text":"Váratlanul visszatér, de nem emlékszik a családjára."},{"type":"character","kind":"Karakter","title":"Egy különc feltaláló","text":"Van egy működő találmánya, de nem tudja, pontosan mire való."},{"type":"character","kind":"Karakter","title":"Egy kezdő nyomozó","text":"Minden apró részletet észrevesz, kivéve azt, ami közvetlenül előtte van."},{"type":"character","kind":"Karakter","title":"Egy beszélő kutya","text":"Emberi nyelven beszél, de csak akkor, ha senki sem figyel rá."},{"type":"character","kind":"Karakter","title":"Egy maszkos idegen","text":"Mindenki ismeri a hangját, de senki sem tudja, honnan."},{"type":"character","kind":"Karakter","title":"Egy túl lelkes idegenvezető","text":"Olyan helyekre is el akarja vinni a csapatot, amelyekről jobb lenne nem tudni."},{"type":"character","kind":"Karakter","title":"Egy félénk cirkuszi artista","text":"Olyan képessége van, amelyre most mindenkinek szüksége lehet."},{"type":"character","kind":"Karakter","title":"Egy fáradt királyi futár","text":"Egy üzenetet kell átadnia, de nem tudja, miért ilyen fontos."},{"type":"character","kind":"Karakter","title":"Egy apró termetű őr","text":"Egy hatalmas épületet vagy értékes tárgyat véd, és senkit sem enged közel."},{"type":"character","kind":"Karakter","title":"Egy híres séf","text":"Különös ételt készít, amelynek váratlan hatása van."},{"type":"character","kind":"Karakter","title":"Egy régi ellenfél","text":"Most segítséget kér azoktól, akikkel korábban szemben állt."},{"type":"character","kind":"Karakter","title":"Egy kíváncsi kisgyerek","text":"Olyan dolgot vett észre, amelyet a felnőttek mind figyelmen kívül hagytak."},{"type":"character","kind":"Karakter","title":"Egy magányos űrhajós","text":"Üzeneteket kap, amelyek mintha a saját jövőjéből érkeznének."},{"type":"character","kind":"Karakter","title":"Egy csendes könyvtáros","text":"Minden könyv tartalmára emlékszik, kivéve egyetlen kötetét."},{"type":"character","kind":"Karakter","title":"Egy kétbalkezes biztonsági őr","text":"Mindig rosszkor van rossz helyen, de valahogy mégis megoldja a bajt."},{"type":"character","kind":"Karakter","title":"Egy ismeretlen örökös","text":"Egy olyan vagyont vagy feladatot kapott, amelyről eddig nem is tudott."},{"type":"location","kind":"Helyszín","title":"Egy elhagyott pályaudvar","text":"A peronon még égnek a lámpák, de a menetrendben nem szerepel egyetlen vonat sem."},{"type":"location","kind":"Helyszín","title":"Egy zsúfolt éjszakai piac","text":"Minden árus ugyanazt az apró tárgyat próbálja eladni."},{"type":"location","kind":"Helyszín","title":"Egy föld alatti parkoló","text":"Az autók rendszámai ismerősek, de egyik tulajdonost sem találni."},{"type":"location","kind":"Helyszín","title":"Egy bezárt vidámpark","text":"A játékok maguktól elindulnak, noha az áramot régen kikapcsolták."},{"type":"location","kind":"Helyszín","title":"Egy hegyi menedékház","text":"Odakint vihar tombol, bent pedig valaki mindenkit név szerint ismer."},{"type":"location","kind":"Helyszín","title":"Egy víz alatti kutatóállomás","text":"A megfigyelőablakon túl valami rendszeresen elhalad."},{"type":"location","kind":"Helyszín","title":"Egy régi városi könyvtár","text":"A katalógusban olyan emberek nevei is szerepelnek, akik még meg sem születtek."},{"type":"location","kind":"Helyszín","title":"Egy eldugott benzinkút","text":"A kasszában minden vásárlás után más összeg jelenik meg."},{"type":"location","kind":"Helyszín","title":"Egy hatalmas üvegház","text":"A növények mintha reagálnának a szereplők beszélgetésére."},{"type":"location","kind":"Helyszín","title":"Egy kastély bálterme","text":"A vendégek közül senki sem emlékszik arra, mikor érkezett."},{"type":"location","kind":"Helyszín","title":"Egy holdbázis étkezője","text":"A falinaptár szerint ugyanaz a nap kezdődik újra."},{"type":"location","kind":"Helyszín","title":"Egy folyóparti kemping","text":"A sátrak és a csomagok reggelre mindig máshová kerülnek."},{"type":"location","kind":"Helyszín","title":"Egy elhagyott kórházi folyosó","text":"Minden ajtón más név áll, mint néhány perccel korábban."},{"type":"location","kind":"Helyszín","title":"Egy kisvárosi főtér","text":"Minden óra egyszerre megáll, és az emberek egy irányba néznek."},{"type":"location","kind":"Helyszín","title":"Egy havas hegyi állomás","text":"A hóban csak befelé vezető lábnyomokat találtok."},{"type":"location","kind":"Helyszín","title":"Egy régi filmszínház","text":"A vásznon olyan jelenet jelenik meg, amely éppen a teremben történik."},{"type":"location","kind":"Helyszín","title":"Egy zsúfolt repülőtér","text":"Minden járatot törölnek, kivéve egyet, amely nem szerepel a kijelzőn."},{"type":"location","kind":"Helyszín","title":"Egy erdei tisztás","text":"A fák törzsén friss jelölések láthatók, mintha valaki térképet rajzolt volna."},{"type":"object","kind":"Tárgy","title":"Egy repedt zsebóra","text":"A mutatói nem az időt, hanem valaki más pulzusát követik."},{"type":"object","kind":"Tárgy","title":"Egy lezárt fémdoboz","text":"Belülről halk kopogás hallatszik, de a doboz túl kicsi ahhoz, hogy bárki beleférjen."},{"type":"object","kind":"Tárgy","title":"Egy régi fényképezőgép","text":"Minden elkészült képen feltűnik valaki, aki nem volt jelen."},{"type":"object","kind":"Tárgy","title":"Egy rozsdás kulcscsomó","text":"Egyik kulcs sem illik a közelben található zárakba."},{"type":"object","kind":"Tárgy","title":"Egy vérfoltos sál","text":"A rajta lévő vér régi, de a szövet még nedves."},{"type":"object","kind":"Tárgy","title":"Egy ismeretlen eredetű telefon","text":"Olyan hívások érkeznek rá, amelyek csak holnap fognak megtörténni."},{"type":"object","kind":"Tárgy","title":"Egy üres üvegcse","text":"Aki belenéz, nem a saját tükörképét látja."},{"type":"object","kind":"Tárgy","title":"Egy fél pár kesztyű","text":"A párja mindig annál bukkan fel, aki éppen hazudik."},{"type":"object","kind":"Tárgy","title":"Egy szakadt térkép","text":"Olyan utcákat is mutat, amelyek a valóságban nem léteznek."},{"type":"object","kind":"Tárgy","title":"Egy díszes zenedoboz","text":"A dallama minden alkalommal más emléket idéz fel."},{"type":"object","kind":"Tárgy","title":"Egy régi magnókazetta","text":"A felvételen a jelenlévők beszélgetése hallható, még mielőtt megtörténne."},{"type":"object","kind":"Tárgy","title":"Egy nehéz bőrönd","text":"A súlya folyamatosan változik, de senki sem nyitotta ki."},{"type":"object","kind":"Tárgy","title":"Egy törött korona","text":"Mindenki azt állítja, hogy korábban nála volt."},{"type":"object","kind":"Tárgy","title":"Egy jelöletlen gyógyszeres fiola","text":"A címke hiányzik, és senki sem vállalja, hogy tudja, mi van benne."},{"type":"object","kind":"Tárgy","title":"Egy fekete esernyő","text":"Akkor is csöpög róla az eső, amikor hetek óta száraz az idő."},{"type":"object","kind":"Tárgy","title":"Egy apró robot","text":"Mindenkit követ, de csak egyetlen embernek engedelmeskedik."},{"type":"object","kind":"Tárgy","title":"Egy üres boríték","text":"A belsejében friss ujjlenyomatok és egyetlen hajszál található."},{"type":"object","kind":"Tárgy","title":"Egy különös sakkfigura","text":"Minden alkalommal másik mezőn jelenik meg, amikor senki sem néz oda."},{"type":"situation","kind":"Probléma / élethelyzet","title":"Egy eltűnt személy keresése","text":"A keresés közben mindenki másként emlékszik arra, mikor látta utoljára."},{"type":"situation","kind":"Probléma / élethelyzet","title":"Egy félbeszakadt esküvő","text":"A szertartás közepén valaki olyan nevet mond, amely senkihez sem tartozik."},{"type":"situation","kind":"Probléma / élethelyzet","title":"Egy városi áramszünet","text":"A tartalék áramforrás csak egyetlen épületet képes működtetni."},{"type":"situation","kind":"Probléma / élethelyzet","title":"Egy sikertelen mentőakció","text":"A megmentett személy nem akarja elhagyni a helyszínt."},{"type":"situation","kind":"Probléma / élethelyzet","title":"Egy rejtélyes csomag kézbesítése","text":"A címzett neve minden alkalommal megváltozik, amikor valaki felolvassa."},{"type":"situation","kind":"Probléma / élethelyzet","title":"Egy elromlott vízellátó rendszer","text":"A csapokból különböző helyekről származó tárgyak kerülnek elő."},{"type":"situation","kind":"Probléma / élethelyzet","title":"Egy fontos verseny döntője","text":"A versenyzők rájönnek, hogy nem ugyanazt a célt próbálják elérni."},{"type":"situation","kind":"Probléma / élethelyzet","title":"Egy eltűnt műalkotás ügye","text":"A képet mindenki látta, de senki sem tudja leírni."},{"type":"situation","kind":"Probléma / élethelyzet","title":"Egy titkos találkozó megszervezése","text":"Két meghívott ugyanarra az időpontra, de két különböző helyre érkezik."},{"type":"situation","kind":"Probléma / élethelyzet","title":"Egy veszélyes kísérlet leállítása","text":"A szerkezetet csak úgy lehet kikapcsolni, ha valaki bekapcsolva tartja."},{"type":"situation","kind":"Probléma / élethelyzet","title":"Egy hajó váratlan megállása","text":"A legénység szerint már megérkeztek, pedig még el sem indultak."},{"type":"situation","kind":"Probléma / élethelyzet","title":"Egy családi örökség körüli vita","text":"Minden örökös más tárgyat tart az igazi örökségnek."},{"type":"situation","kind":"Probléma / élethelyzet","title":"Egy rejtélyes hang forrásának megtalálása","text":"A hang mindig akkor szólal meg, amikor valaki elhallgat."},{"type":"situation","kind":"Probléma / élethelyzet","title":"Egy fontos bizonyíték eltűnése","text":"A bizonyíték mindenkinél járt, de senki sem emlékszik rá."},{"type":"situation","kind":"Probléma / élethelyzet","title":"Egy menthetetlennek tűnő helyzet","text":"A megoldás egy olyan szereplőn múlik, akit eddig senki sem vett komolyan."},{"type":"situation","kind":"Probléma / élethelyzet","title":"Egy veszélyes határidő közeledése","text":"Három feladatot kell teljesíteni, de csak egyre van elegendő idő."},{"type":"situation","kind":"Probléma / élethelyzet","title":"Egy félreértésből kialakult pánik","text":"Mindenki menekülni kezd, de senki sem tudja, mi elől."},{"type":"situation","kind":"Probléma / élethelyzet","title":"Egy elveszett emlék visszaszerzése","text":"Valaki emlékszik az eseményekre, de nem a saját életére."}];
+const MODIFIER_CARDS = [{"type":"character","kind":"Karaktercsavar","title":"aki nem látja az arcokat, de a hangokat azonnal felismeri","text":"A karakternek más jelekből kell felismernie a többieket, és ez félreértésekhez vezethet."},{"type":"character","kind":"Karaktercsavar","title":"akit senki sem vesz észre, amíg meg nem szólal","text":"A többieknek rá kell jönniük, hogyan lehet vele együttműködni."},{"type":"character","kind":"Karaktercsavar","title":"akinek az árnyéka önálló életet él","text":"Az árnyék olyan dolgokat tesz, amelyeket a karakter nem vállalna."},{"type":"character","kind":"Karaktercsavar","title":"aki tízpercenként más ember emlékeire ébred","text":"A szereplő tudása folyamatosan változik, és nem biztos, hogy a saját emlékeit őrzi."},{"type":"character","kind":"Karaktercsavar","title":"akit mindenki halottnak hisz, pedig csak eltűnt","text":"A visszatérése felborítja a többiek terveit, és magyarázatot követel."},{"type":"character","kind":"Karaktercsavar","title":"aki nem tudja, melyik oldalon áll","text":"Két egymással szemben álló csoport is a segítségét kéri."},{"type":"character","kind":"Karaktercsavar","title":"akinek a zsebében mindig megjelenik egy új kulcs","text":"Minden kulcs egy másik problémához kapcsolódik, de egyikhez sincs használati útmutató."},{"type":"character","kind":"Karaktercsavar","title":"aki pontosan azt teszi, amit valaki más suttog neki","text":"A többieknek ki kell deríteniük, ki irányítja, és miért."},{"type":"character","kind":"Karaktercsavar","title":"aki csak akkor mond igazat, amikor hazudni próbál","text":"A szándékai és a szavai folyamatosan ellentmondanak egymásnak."},{"type":"character","kind":"Karaktercsavar","title":"aki egyetlen fontos arcot sem tud megjegyezni","text":"Minden találkozás olyan, mintha először látná a többieket."},{"type":"character","kind":"Karaktercsavar","title":"akinek a neve minden fényképről eltűnik","text":"A múltja bizonyíthatatlanná válik, és valaki ezt ki akarja használni."},{"type":"character","kind":"Karaktercsavar","title":"aki nem hagy nyomot, de mindenhol jelen van","text":"A többiek csak közvetett jelekből tudják követni a mozgását."},{"type":"character","kind":"Karaktercsavar","title":"aki titokban a rivális csapatnak segít","text":"A segítség oka nem feltétlenül árulás: lehet, hogy így próbál megmenteni valakit."},{"type":"character","kind":"Karaktercsavar","title":"akit csak egyetlen szereplő lát","text":"A csapatnak el kell döntenie, kinek higgyen."},{"type":"character","kind":"Karaktercsavar","title":"aki minden éjjel ugyanazt az álmot látja","text":"Az álom apró részletei rendre megjelennek a valóságban."},{"type":"character","kind":"Karaktercsavar","title":"akinek a segítsége nélkül senki sem tud továbblépni","text":"A többieknek meg kell győzniük, hogy vállalja a szerepét."},{"type":"character","kind":"Karaktercsavar","title":"aki pontosan tudja, mi fog történni, de nem tudja elmondani","text":"Rajzokkal, jelekkel vagy tettekkel kell figyelmeztetnie a többieket."},{"type":"character","kind":"Karaktercsavar","title":"akit egy másik szereplő emlékei irányítanak","text":"Nem világos, hogy a döntései a sajátjai-e."},{"type":"location","kind":"Helyszíncsavar","title":"ahol mindenki másnak látszik, mint amilyen valójában","text":"A szereplőknek a külső helyett a tettekből kell felismerniük egymást."},{"type":"location","kind":"Helyszíncsavar","title":"ahol a lakók úgy viselkednek, mintha zombik lennének","text":"Senki sem tudja, ez fertőzés, színjáték vagy valamilyen közös szabály következménye."},{"type":"location","kind":"Helyszíncsavar","title":"ahol az órák mind más időt mutatnak","text":"A csapatnak ki kell derítenie, melyik időmérésben bízhat."},{"type":"location","kind":"Helyszíncsavar","title":"ahol a hangok csak öt perccel később érkeznek meg","text":"A szereplők saját mondataikra is késve kapnak választ."},{"type":"location","kind":"Helyszíncsavar","title":"ahol minden tárgy éjfélkor gazdát cserél","text":"Reggelre senki sem találja a saját felszerelését."},{"type":"location","kind":"Helyszíncsavar","title":"ahol senki sem emlékszik, miért jött oda","text":"A helyszín célját a nyomokból kell rekonstruálni."},{"type":"location","kind":"Helyszíncsavar","title":"ahol mindenki ugyanazt az embert keresi, de máshogy írja le","text":"Lehet, hogy nem ugyanarról a személyről beszélnek."},{"type":"location","kind":"Helyszíncsavar","title":"ahol a kijárat mindig ugyanabba a szobába vezet","text":"A menekülés helyett a hely szabályát kell megérteniük."},{"type":"location","kind":"Helyszíncsavar","title":"ahol a múlt eseményei látható képként ismétlődnek","text":"A jelenben zajló események összekeverednek a régi jelenetekkel."},{"type":"location","kind":"Helyszíncsavar","title":"ahol csak suttogva lehet beszélni, különben eltűnik valami","text":"Minden hangos szó után valami fontos nyomtalanul eltűnik."},{"type":"location","kind":"Helyszíncsavar","title":"ahol a fény és az árnyék felcserélődik","text":"A világos részek veszélyessé, a sötétek pedig biztonságossá válhatnak."},{"type":"location","kind":"Helyszíncsavar","title":"ahol mindenki úgy tesz, mintha ismerné a főszereplőt","text":"A főszereplőnek ki kell derítenie, honnan ismerik."},{"type":"location","kind":"Helyszíncsavar","title":"ahol egyetlen szabályt sem tartanak be két percig","text":"A szereplőknek folyamatosan alkalmazkodniuk kell."},{"type":"location","kind":"Helyszíncsavar","title":"ahol a gravitáció időnként megváltozik","text":"A legegyszerűbb mozdulatok is komoly tervezést igényelnek."},{"type":"location","kind":"Helyszíncsavar","title":"ahol minden lakó titokban ugyanazt az üzenetet várja","text":"Senki sem meri elárulni, kitől vagy mitől várja."},{"type":"location","kind":"Helyszíncsavar","title":"ahol az ajtók és ablakok nem ugyanoda nyílnak, mint korábban","text":"A megszokott útvonalak megbízhatatlanná válnak."},{"type":"location","kind":"Helyszíncsavar","title":"ahol mindenki arca ismerős, de senki sem tudja, honnan","text":"A helyszínen valami közös emléket vagy múltat rejtegetnek."},{"type":"location","kind":"Helyszíncsavar","title":"ahol egy korábbi esemény újra és újra lejátszódik","text":"A szereplőknek meg kell találniuk, mitől változhat meg a jelenet vége."},{"type":"object","kind":"Tárgycsavar","title":"amelyet friss vérnyomok borítanak, de a tulajdonosa sehol sincs","text":"A nyomokból ki kell deríteni, ki sérült meg, és miért maradt hátra a tárgy."},{"type":"object","kind":"Tárgycsavar","title":"amely nem ott található, ahol az előző jelenetben hagyták","text":"Valaki elmozdította, vagy a tárgy maga változtatja a helyét."},{"type":"object","kind":"Tárgycsavar","title":"amely egy eltűnt ember utolsó ismert tárgya","text":"A tárgy olyan nyomot rejthet, amely a keresést új irányba tereli."},{"type":"object","kind":"Tárgycsavar","title":"amelynek belsejéből halk kopogás hallatszik","text":"A hang forrását úgy kell megtalálni, hogy közben ne tegyenek kárt a tárgyban."},{"type":"object","kind":"Tárgycsavar","title":"amelyen egy olyan név szerepel, amelyet senki sem ismer","text":"A névhez tartozó személy váratlanul fontosnak bizonyulhat."},{"type":"object","kind":"Tárgycsavar","title":"amely csak akkor működik, ha két ellenfél együtt használja","text":"A riválisoknak félre kell tenniük a nézeteltérésüket."},{"type":"object","kind":"Tárgycsavar","title":"amely minden használatkor egy másik helyen bukkan fel","text":"A csapatnak ki kell találnia, hogyan lehet irányítani a mozgását."},{"type":"object","kind":"Tárgycsavar","title":"amelynek a másik fele valakinél már régóta megvan","text":"A két darab összeillesztése valamit elindít vagy felfed."},{"type":"object","kind":"Tárgycsavar","title":"amelyről minden szereplő azt állítja, hogy az övé","text":"Valaki hazudik, vagy a tárgynak több, egymástól független története van."},{"type":"object","kind":"Tárgycsavar","title":"amelynek az árnyéka nem hasonlít magára a tárgyra","text":"Az árnyék másik alakot vagy rejtett üzenetet mutat."},{"type":"object","kind":"Tárgycsavar","title":"amely egy régi bűntény helyszínére vezet vissza","text":"A szereplőknek újra kell vizsgálniuk egy lezártnak hitt ügyet."},{"type":"object","kind":"Tárgycsavar","title":"amely egy halottnak hitt személyhez tartozik","text":"A tárgy felbukkanása megkérdőjelezi, amit eddig biztosnak hittek."},{"type":"object","kind":"Tárgycsavar","title":"amelyen olyan friss ujjlenyomatok vannak, amelyek nem illenek senkire","text":"A nyomok tulajdonosa talán nem olyan, mint amilyennek látszik."},{"type":"object","kind":"Tárgycsavar","title":"amelyet valaki mindenáron el akar rejteni, de nem mondja meg, miért","text":"A csapatnak el kell döntenie, megőrizze vagy átadja-e."},{"type":"object","kind":"Tárgycsavar","title":"amelyből egy fontos, elfelejtett emlék kerül elő","text":"A megtaláló rájön, hogy a saját múltja is érintett."},{"type":"object","kind":"Tárgycsavar","title":"amellyel meg lehet állítani valamit, de nem lehet tudni, mit indít el","text":"A használata kockázatos döntés elé állítja a szereplőket."},{"type":"object","kind":"Tárgycsavar","title":"amely egy perccel később jelenik meg, mint amikor elteszik","text":"A tárgy mintha lemaradna a jelen idejéről."},{"type":"object","kind":"Tárgycsavar","title":"amelynek használata után valaki más emlékszik a történtekre","text":"A csapatnak ki kell derítenie, ki őrzi most a hiányzó emlékeket."},{"type":"situation","kind":"Megoldandó feladat","title":"amit meg kell oldanotok, mielőtt lejár a visszaszámlálás","text":"A határidő láthatóan közeledik, és minden döntésnek azonnali következménye van."},{"type":"situation","kind":"Megoldandó feladat","title":"amelyben valakit meg kell találni, de senki sem tudja, kit keres","text":"A keresés során a csapatnak először azt kell kiderítenie, ki hiányzik."},{"type":"situation","kind":"Megoldandó feladat","title":"amelyben két szereplő ugyanarra a célra teljesen más utat választ","text":"A két tervet össze kell hangolni, vagy dönteni kell közöttük."},{"type":"situation","kind":"Megoldandó feladat","title":"amelyben a csapatnak két rossz lehetőség közül kell választania","text":"Mindkét döntésnek ára van, és egyik sem hagy mindenkit elégedetten."},{"type":"situation","kind":"Megoldandó feladat","title":"amely csak akkor oldható meg, ha valaki bevall egy régi titkot","text":"A titok felfedése újabb konfliktust is elindíthat."},{"type":"situation","kind":"Megoldandó feladat","title":"amelyben valaki eltűnik, miközben mindenki látja","text":"A szereplőknek rá kell jönniük, hogyan történhetett meg az ellentmondás."},{"type":"situation","kind":"Megoldandó feladat","title":"amelyben egy ártatlannak hitt szereplő válik a fő gyanúsítottá","text":"A bizonyítékok ellene szólnak, de valami nem stimmel."},{"type":"situation","kind":"Megoldandó feladat","title":"amelyben egyetlen tárgy sorsa több ember életét befolyásolja","text":"A szereplőknek el kell dönteniük, ki rendelkezzen vele."},{"type":"situation","kind":"Megoldandó feladat","title":"amelyben valakit meg kell menteni, mielőtt túl késő lesz","text":"A mentőakcióhoz minden szereplőnek más képességére lesz szükség."},{"type":"situation","kind":"Megoldandó feladat","title":"amelyben minden szereplő másként emlékszik ugyanarra az eseményre","text":"A közös igazság csak az ellentmondások összevetésével derülhet ki."},{"type":"situation","kind":"Megoldandó feladat","title":"amelyben a megoldás elsőre túl egyszerűnek tűnik","text":"Valószínű, hogy valaki vagy valami el akarja terelni a figyelmet."},{"type":"situation","kind":"Megoldandó feladat","title":"amelyben egy korábbi döntés váratlan következményekkel jár","text":"A szereplőknek vállalniuk kell a felelősséget a múltbeli választásért."},{"type":"situation","kind":"Megoldandó feladat","title":"amelyben a csapatnak szét kell válnia, pedig együtt biztonságosabb","text":"A külön utakon haladóknak jeleket kell hagyniuk egymásnak."},{"type":"situation","kind":"Megoldandó feladat","title":"amelyben kiderül, hogy a segítségért cserébe valamit fel kell áldozni","text":"A csapatnak meg kell határoznia, mi az, amiről hajlandó lemondani."},{"type":"situation","kind":"Megoldandó feladat","title":"amelyben a gyanúsítottaknak mind van alibijük","text":"A megoldáshoz újra kell gondolni az események sorrendjét."},{"type":"situation","kind":"Megoldandó feladat","title":"amelyben az utolsó pillanatban teljesen megváltozik a cél","text":"A korábbi tervet félre kell tenni, és gyorsan új irányt találni."},{"type":"situation","kind":"Megoldandó feladat","title":"amelyben valaki más nevében kell cselekedni","text":"A szereplőknek el kell játszaniuk egy idegen szerepet anélkül, hogy lebuknának."},{"type":"situation","kind":"Megoldandó feladat","title":"amelyben egyetlen döntés visszafordíthatatlan következménnyel jár","text":"A csapatnak minden lehetőséget mérlegelnie kell, mielőtt cselekszik."}];
+
 const QUESTIONS = ["Mi volt a történet legelső eseménye?","Ki vagy mi volt az első fontos szereplő?","Milyen probléma nehezítette meg a szereplők dolgát?","Ki segített a többieken, és hogyan?","Melyik tárgy vagy helyszín bizonyult fontosnak?","Milyen váratlan fordulat történt?","Volt olyan szereplő, akiről kiderült valami meglepő?","Hogyan oldódott meg a legnagyobb probléma?","Mi volt a legviccesebb vagy legfurcsább részlet?","Hogyan ért véget a történet?"];
- const DECKS = {starts:STARTS,story:STORY,tech:TECH,challenge:CHALLENGE,twists:TWISTS,special:SPECIAL,endings:ENDINGS,characters:CHARACTERS,locations:LOCATIONS,solutions:SOLUTIONS,events:EVENTS,conflicts:CONFLICTS,complications:COMPLICATIONS,consequences:CONSEQUENCES};
- const DECK_LABELS={starts:"Kezdőtörténetek",story:"Történetkártyák",tech:"Rajzeszköz-kártyák",challenge:"Kreatív kihívások",twists:"Fordulatkártyák",special:"Speciális szabályok",endings:"Befejezések",characters:"Karakterkártyák",locations:"Helyszínkártyák",solutions:"Megoldáskártyák",events:"Eseménykártyák",conflicts:"Konfliktuskártyák",complications:"Bonyodalomkártyák",consequences:"Következménykártyák"};
+ const DECKS = {starts:STARTS,tech:TECH,challenge:CHALLENGE,twists:TWISTS,special:SPECIAL,endings:ENDINGS,bases:BASE_CARDS,modifiers:MODIFIER_CARDS};
+ const DECK_LABELS={starts:"Kezdőtörténetek",story:"Korábbi történetkártyák",tech:"Rajzeszköz-kártyák",challenge:"Kreatív kihívások",twists:"Fordulatkártyák",special:"Speciális szabályok",endings:"Befejezések",characters:"Korábbi karakterkártyák",locations:"Korábbi helyszínkártyák",solutions:"Korábbi megoldáskártyák",events:"Korábbi eseménykártyák",conflicts:"Korábbi konfliktuskártyák",complications:"Korábbi bonyodalomkártyák",consequences:"Korábbi következménykártyák",bases:"Bal oldali alapötletek",modifiers:"Jobb oldali csavarok"};
  const $=id=>document.getElementById(id);
  let game=null,timerInterval=null,timerLeft=90;
  function allCards(key){return DECKS[key]||[];}
  function pick(key,theme="all",used=[]){
-  const deck=allCards(key);
-  if(!Array.isArray(used))used=[];
+  const deck=allCards(key);if(!Array.isArray(used))used=[];
   let candidates=deck.map((x,i)=>({x,i})).filter(o=>!used.includes(o.i));
-  if(theme!=="all" && ["starts","story"].includes(key)){
-   const matched=candidates.filter(o=>o.x[2]===theme||o.x[2]==="all");
+  if(theme!=="all"&&key==="starts"){
+   const matched=candidates.filter(o=>!Array.isArray(o.x)||o.x[2]===theme||o.x[2]==="all");
    if(matched.length)candidates=matched;
   }
-  if(!candidates.length){
-   used.length=0;
-   candidates=deck.map((x,i)=>({x,i}));
-   if(theme!=="all" && ["starts","story"].includes(key)){
-    const matched=candidates.filter(o=>o.x[2]===theme||o.x[2]==="all");
-    if(matched.length)candidates=matched;
+  if(!candidates.length){used.length=0;candidates=deck.map((x,i)=>({x,i}));
+   if(theme!=="all"&&key==="starts"){
+    const matched=candidates.filter(o=>!Array.isArray(o.x)||o.x[2]===theme||o.x[2]==="all");if(matched.length)candidates=matched;
    }
   }
   if(!candidates.length)return {title:"Szabad történeti ötlet",text:"Találjatok ki közösen egy új eseményt!",category:key,index:-1};
-  const chosen=candidates[Math.floor(Math.random()*candidates.length)];
-  used.push(chosen.i);
-  return {title:chosen.x[0],text:chosen.x[1],category:key,index:chosen.i};
+  const chosen=candidates[Math.floor(Math.random()*candidates.length)];used.push(chosen.i);
+  const item=Array.isArray(chosen.x)?{title:chosen.x[0],text:chosen.x[1],type:chosen.x[2]}:{...chosen.x};
+  return {...item,category:key,index:chosen.i};
  }
- const PLOT_POOLS=["events","conflicts","twists","complications","solutions","consequences","story"];
- const SUPPORT_POOLS=["characters","locations","story","events","conflicts","complications","consequences"];
- function getRecentCategories(){
-  if(!game||!Array.isArray(game.history))return [];
-  return game.history.slice(-2).flatMap(entry=>(entry.cards||[]).map(card=>card.category)).filter(Boolean);
+ function pickCompatibleModifier(base){
+  const deck=allCards("modifiers"),used=game.used.modifiers;
+  let candidates=deck.map((card,index)=>({card,index})).filter(item=>item.card.type===base.type&&!used.includes(item.index));
+  if(!candidates.length){
+   const matching=deck.map((card,index)=>({card,index})).filter(item=>item.card.type===base.type);
+   const ids=new Set(matching.map(item=>item.index));game.used.modifiers=used.filter(index=>!ids.has(index));candidates=matching;
+  }
+  const chosen=candidates[Math.floor(Math.random()*candidates.length)];game.used.modifiers.push(chosen.index);
+  return {...chosen.card,category:"modifiers",index:chosen.index};
  }
- function chooseCategory(pool,phase,excluded=[]){
-  let weights;
-  if(phase==="opening")weights={events:3.2,conflicts:2.6,story:2.4,characters:2.5,locations:1.8,twists:0.8,complications:1.0,solutions:0.5,consequences:0.5};
-  else if(phase==="closing")weights={events:1.8,conflicts:1.8,story:1.0,characters:0.6,locations:0.4,twists:2.4,complications:1.8,solutions:3.2,consequences:2.8};
-  else weights={events:2.6,conflicts:3.0,story:1.8,characters:1.1,locations:0.9,twists:2.4,complications:3.0,solutions:1.5,consequences:1.8};
-  let candidates=pool.filter(key=>!excluded.includes(key)&&allCards(key).length);
-  if(!candidates.length)candidates=pool.filter(key=>allCards(key).length);
-  const recent=getRecentCategories();
-  const weighted=candidates.map(key=>({key,weight:(weights[key]||1)*(recent.slice(-3).includes(key)?0.48:1)}));
-  const total=weighted.reduce((sum,item)=>sum+item.weight,0);
-  let roll=Math.random()*total;
-  for(const item of weighted){roll-=item.weight;if(roll<=0)return item.key;}
-  return weighted[weighted.length-1].key;
+ function drawPair(){
+  const base=pick("bases","all",game.used.bases);
+  return [base,pickCompatibleModifier(base)];
  }
  function currentPhase(){
   if(game.round<=Math.max(2,Math.ceil(game.rounds*0.25)))return "opening";
@@ -489,37 +508,29 @@ const QUESTIONS = ["Mi volt a történet legelső eseménye?","Ki vagy mi volt a
   return "middle";
  }
  function drawRoundCards(){
-  const phase=currentPhase();
-  const isFinal=game.round===game.rounds;
-  const firstPool=isFinal?["events","conflicts","twists","complications","solutions","consequences"]:PLOT_POOLS;
-  const firstKey=chooseCategory(firstPool,phase,[]);
-  const first=pick(firstKey,game.theme,game.used[firstKey]);
-  const secondKey=isFinal?"endings":chooseCategory(SUPPORT_POOLS,phase,[firstKey]);
-  const second=pick(secondKey,game.theme,game.used[secondKey]);
-  const cards=[first,second];
+  const cards=drawPair(),isFinal=game.round===game.rounds;
+  if(isFinal)cards.push(pick("endings","all",game.used.endings));
   if(!isFinal&&Math.random()<0.22)cards.push(pick("challenge","all",game.used.challenge));
   if(!isFinal&&Math.random()<0.14)cards.push(pick("special","all",game.used.special));
   return cards;
  }
  function ensureGameState(){
-  if(!game.used)game.used={};
-  Object.keys(DECKS).forEach(key=>{if(!Array.isArray(game.used[key]))game.used[key]=[];});
+  if(!game.used)game.used={};Object.keys(DECKS).forEach(key=>{if(!Array.isArray(game.used[key]))game.used[key]=[];});
   if(!Array.isArray(game.history))game.history=[];
   if(!Array.isArray(game.players)||!game.players.length)game.players=["Játékos 1","Játékos 2"];
   if(!Number.isFinite(game.rounds)||game.rounds<1)game.rounds=8;
-  if(!Number.isFinite(game.turn))game.turn=0;
-  if(!Number.isFinite(game.round))game.round=0;
+  if(!Number.isFinite(game.turn))game.turn=0;if(!Number.isFinite(game.round))game.round=0;
+  // A korábbi mentések kártyái még nem alkottak összetartozó párt.
+  if(game.version!==3){game.currentCards=null;game.redrawn=false;game.version=3;}
  }
  function phaseHint(){
   const phase=currentPhase();
-  if(phase==="opening")return "Alapozzátok meg a történetet: kapcsoljatok össze egy új eseményt a már ismert szereplőkkel vagy a kezdőhelyzettel.";
-  if(phase==="closing")return "Közeledik a lezárás: a mostani döntéseknek legyen következményük, és kapcsolódjanak a korábbi eseményekhez.";
-  return "Bonyolódik a történet: engedjetek be új konfliktust, váratlan eseményt vagy olyan fordulatot, amely átírja a szereplők terveit.";
+  if(phase==="opening")return "Olvassátok össze a két lapot: ki vagy mi áll a történet középpontjában, és milyen szokatlan feltétel nehezíti a dolgát?";
+  if(phase==="closing")return "A mostani kártyapárból rajzoljátok meg a döntő lépést, a következményt vagy a megoldást. Kapcsoljátok vissza a korábbi eseményekhez.";
+  return "A két kártya együtt új problémát ad. Találjátok ki, hogyan kapcsolódik a már meglévő szereplőkhöz és eseményekhez.";
  }
- function displayCardText(card){
-  if(card.category==="locations")return card.text+" A helyszín csak a jelenet tere: nem kell titkos ajtónak, rejtélynek vagy újabb helyszínhez vezető útnak lennie. A konfliktus itt is kibontakozhat.";
-  return card.text;
- }
+ function displayCardText(card){return card.text||"";}
+
  function safeElement(tag,className,text){
   const element=document.createElement(tag);
   if(className)element.className=className;
@@ -527,18 +538,14 @@ const QUESTIONS = ["Mi volt a történet legelső eseménye?","Ki vagy mi volt a
   return element;
  }
  function renderExtraCards(cards){
-  const target=$("extraArea");
-  target.replaceChildren();
+  const target=$("extraArea");target.replaceChildren();
   cards.forEach(card=>{
-   const style=card.category==="twists"||card.category==="conflicts"?"special":(["solutions","endings","consequences"].includes(card.category)?"end":"extra");
+   const style=card.category==="twists"?"special":(card.category==="endings"?"end":"extra");
    const prompt=safeElement("div","prompt "+style);
-   prompt.appendChild(safeElement("div","tag",(DECK_LABELS[card.category]||"Kártya").toUpperCase()));
-   prompt.appendChild(safeElement("h2","",card.title));
-   prompt.appendChild(safeElement("p","",displayCardText(card)));
-   target.appendChild(prompt);
+   prompt.appendChild(safeElement("div","tag",(DECK_LABELS[card.category]||"Kiegészítő kártya").toUpperCase()));
+   prompt.appendChild(safeElement("h2","",card.title));prompt.appendChild(safeElement("p","",displayCardText(card)));target.appendChild(prompt);
   });
  }
-
  function show(section){
   ["home","game","recap","done","rules"].forEach(s=>$(s).classList.toggle("hidden",s!==section));
   requestAnimationFrame(()=>{window.scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0;});
@@ -547,72 +554,53 @@ const QUESTIONS = ["Mi volt a történet legelső eseménye?","Ki vagy mi volt a
  function save(){if(game){try{localStorage.setItem("folytasdRajzotSave",JSON.stringify(game));}catch(e){toast("A böngésző nem engedte a mentést ezen az eszközön.");}}}
  function loadSaved(){try{return JSON.parse(localStorage.getItem("folytasdRajzotSave")||"null")}catch(e){return null}}
  function updateDeckStats(){
-  $("deckStats").replaceChildren();
-  Object.entries(DECKS).forEach(([key,cards])=>{
-   const row=safeElement("div","deck-row");
-   row.appendChild(safeElement("strong","",DECK_LABELS[key]));
-   row.appendChild(safeElement("span","",cards.length+" kártya"));
-   $("deckStats").appendChild(row);
+  $("deckStats").replaceChildren();Object.entries(DECKS).forEach(([key,cards])=>{
+   const row=safeElement("div","deck-row");row.appendChild(safeElement("strong","",DECK_LABELS[key]));row.appendChild(safeElement("span","",cards.length+" kártya"));$("deckStats").appendChild(row);
   });
-  const total=Object.values(DECKS).reduce((sum,cards)=>sum+cards.length,0);
-  $("deckTotal").textContent=total+" kártya";
-  const saved=loadSaved();
-  $("resumeBtn").classList.toggle("hidden",!saved||saved.status==="done");
+  const total=Object.values(DECKS).reduce((sum,cards)=>sum+cards.length,0);$("deckTotal").textContent=total+" kártya";
+  const saved=loadSaved();$("resumeBtn").classList.toggle("hidden",!saved||saved.status==="done");
  }
  function startGame(){
-  const n=Number($("players").value),rounds=Number($("rounds").value);
-  let names=$("names").value.split(",").map(s=>s.trim()).filter(Boolean);
-  while(names.length<n)names.push("Játékos "+(names.length+1));
-  names=names.slice(0,n);
-  const theme=$("theme").value;
-  const used={};Object.keys(DECKS).forEach(key=>used[key]=[]);
-  game={status:"playing",players:names,rounds,theme,turn:0,round:0,start:pick("starts",theme,used.starts),tool:pick("tech","all",used.tech),history:[],used,timer:$("timerToggle").checked,notes:"",created:new Date().toISOString(),version:2};
+  const n=Number($("players").value),rounds=Number($("rounds").value);let names=$("names").value.split(",").map(s=>s.trim()).filter(Boolean);
+  while(names.length<n)names.push("Játékos "+(names.length+1));names=names.slice(0,n);
+  const theme=$("theme").value,used={};Object.keys(DECKS).forEach(key=>used[key]=[]);
+  game={status:"playing",players:names,rounds,theme,turn:0,round:0,start:pick("starts",theme,used.starts),tool:pick("tech","all",used.tech),history:[],used,timer:$("timerToggle").checked,notes:"",created:new Date().toISOString(),version:3};
   renderTurn();save();show("game");
  }
  function currentPlayer(){return game.players[game.turn%game.players.length];}
  function renderTurn(keepCards=false){
-  ensureGameState();
-  const setup=game.round===0;
+  ensureGameState();const setup=game.round===0;
   $("roundLabel").textContent=setup?"0. kör · Közös kezdés":`${game.round}. forduló / ${game.rounds}`;
   $("playerLabel").textContent=setup?"A történet közös előkészítése":currentPlayer()+" következik";
   $("progressBar").style.width=(setup?0:(game.round/game.rounds*100))+"%";
   $("gameHint").textContent=setup?"Olvassátok el a kezdőhelyzetet, és válasszátok ki a rajzeszközt. Ez a beállítás az egész játékra érvényes.":phaseHint();
-  $("startPrompt").classList.toggle("hidden",!setup);
-  $("startTitle").textContent=game.start.title;$("startText").textContent=game.start.text;
-  $("cardsArea").classList.remove("hidden");
-  const techPrompt=$("cardsArea").querySelector(".prompt.tech");
-  const storyPrompt=$("cardsArea").querySelector(".prompt.story");
+  $("startPrompt").classList.toggle("hidden",!setup);$("startTitle").textContent=game.start.title;$("startText").textContent=game.start.text;
+  $("cardsArea").classList.remove("hidden");const techPrompt=$("cardsArea").querySelector(".prompt.tech");
   if(setup){
-   storyPrompt.classList.add("hidden");techPrompt.classList.remove("hidden");
+   $("pairArea").classList.add("hidden");$("pairResult").classList.add("hidden");techPrompt.classList.remove("hidden");
    $("techTitle").textContent=game.tool.title;$("techText").textContent=game.tool.text;
    $("cardsArea").querySelector(".prompt.tech .tag").textContent="A JÁTÉK TELJES IDŐTARTAMÁRA · RAJZESZKÖZ";
-   $("extraArea").replaceChildren();
-   $("drawCount").textContent="Kezdőhelyzet + 1 állandó rajzeszköz";
-   $("redrawBtn").disabled=true;
-   $("nextBtn").textContent="Kezdő kör lezárása →";
+   $("extraArea").replaceChildren();$("drawCount").textContent="Kezdőhelyzet + 1 állandó rajzeszköz";
+   $("redrawBtn").disabled=true;$("redrawBtn").textContent="↻ Kártyapár újrahúzása";$("nextBtn").textContent="Kezdő kör lezárása →";
   }else{
-   storyPrompt.classList.remove("hidden");techPrompt.classList.add("hidden");
-   $("nextBtn").textContent="Elkészültem – következő játékos";
+   $("pairArea").classList.remove("hidden");$("pairResult").classList.remove("hidden");techPrompt.classList.add("hidden");$("nextBtn").textContent="Elkészültem – következő játékos";
    if(!keepCards||!game.currentCards)game.currentCards=drawRoundCards();
-   const cards=game.currentCards;
-   const first=cards[0];
-   $("storyTitle").textContent=first.title;$("storyText").textContent=displayCardText(first);
-   storyPrompt.querySelector(".tag").textContent=(DECK_LABELS[first.category]||"Történetkártya").toUpperCase()+" · KÁRTYA";
-   renderExtraCards(cards.slice(1));
-   $("drawCount").textContent=cards.length+" feladatkártya";
-   $("redrawBtn").disabled=!!game.redrawn;
+   const cards=game.currentCards,base=cards[0],modifier=cards[1];
+   $("baseKind").textContent=base.kind||"Kiinduló elem";$("baseTitle").textContent=base.title;$("baseText").textContent=base.text;
+   $("modifierKind").textContent=modifier.kind||"Váratlan feltétel";$("modifierTitle").textContent=modifier.title;$("modifierText").textContent=modifier.text;
+   $("pairInstruction").textContent=base.title+", "+modifier.title+".";
+   renderExtraCards(cards.slice(2));$("drawCount").textContent=cards.length+" kártya · 1 összekapcsolt történethelyzet";
+   $("redrawBtn").disabled=!!game.redrawn;$("redrawBtn").textContent="↻ Kártyapár újrahúzása";
   }
-  $("timerBox").classList.toggle("hidden",!game.timer||setup);stopTimer();timerLeft=90;updateTimer();
-  save();
+  $("timerBox").classList.toggle("hidden",!game.timer||setup);stopTimer();timerLeft=90;updateTimer();save();
  }
+
  function redrawOne(){
   if(game.redrawn||game.round===0)return;
-  const old=game.currentCards[0];
-  const excluded=game.currentCards.map(card=>card.category);
-  const key=chooseCategory(PLOT_POOLS,currentPhase(),excluded);
-  game.currentCards[0]=pick(key,game.theme,game.used[key]);
-  game.redrawn=true;renderTurn(true);toast("Az első kártyát újrahúztátok.");save();
+  const extras=(game.currentCards||[]).slice(2);game.currentCards=[...drawPair(),...extras];
+  game.redrawn=true;renderTurn(true);toast("Az összetartozó kártyapárt újrahúztátok.");save();
  }
+
  function addHistory(){
   if(game.round===0){
    game.history.push({round:0,player:"Közös kezdés",cards:[game.start,game.tool]});
