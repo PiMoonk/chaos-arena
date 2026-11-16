@@ -1,314 +1,689 @@
-<!DOCTYPE html>
-<html lang="hu">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#211d20">
-<meta name="description" content="MIRROR – humoros, merész, ijesztő és elgondolkodtató társas tükörjáték.">
-<title>MIRROR — A te tükröd</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
-:root{--bg:#171519;--bg2:#211c22;--panel:#29232b;--panel2:#332a34;--gold:#b18a56;--gold2:#d0ad79;--ivory:#f2ebdd;--muted:#b8aeb2;--line:rgba(208,173,121,.22);--shadow:0 22px 70px rgba(0,0,0,.38);--radius:22px;--green:#8ea38d;--red:#b47c83}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;color:var(--ivory);font-family:'DM Sans',sans-serif;background:radial-gradient(ellipse at 15% 8%,rgba(130,84,95,.16),transparent 35%),radial-gradient(ellipse at 88% 80%,rgba(177,138,86,.10),transparent 34%),var(--bg)}button,input,select,textarea{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}button:disabled{opacity:.4;cursor:not-allowed;transform:none!important;box-shadow:none!important}#app{width:min(100%,980px);min-height:100vh;margin:auto;padding:22px;display:flex;flex-direction:column}.topbar{height:48px;display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}.brand{display:flex;align-items:center;gap:11px;letter-spacing:.25em;font-size:13px;font-weight:700}.brandmark{width:31px;height:31px;border:1px solid var(--gold);border-radius:50%;display:grid;place-items:center;color:var(--gold2);font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;position:relative}.brandmark:after{content:"";position:absolute;left:6px;right:6px;bottom:8px;height:1px;background:var(--gold);transform:rotate(-13deg)}.topactions{display:flex;gap:8px}.iconbtn{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:50px;padding:8px 12px;font-size:11px}.iconbtn:hover{border-color:var(--gold);color:var(--ivory)}main{flex:1;display:flex;align-items:center;justify-content:center}.screen{width:100%;animation:appear .32s ease both}.hidden{display:none!important}@keyframes appear{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}.eyebrow{text-transform:uppercase;letter-spacing:.23em;color:var(--gold2);font-size:10px;font-weight:700;margin:0 0 14px}h1,h2,h3,.serif{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500}h1{font-size:clamp(55px,11vw,96px);line-height:.88;letter-spacing:.14em;margin:0 0 19px}h1 span{color:var(--gold2)}h2{font-size:clamp(34px,7vw,54px);line-height:1.02;margin:0 0 13px}h3{font-size:24px;margin:0 0 10px}.lead{font-size:15px;line-height:1.75;color:var(--muted);max-width:640px;margin:0 auto}.center{text-align:center}.hero{max-width:790px;margin:auto;text-align:center;padding:22px 0 35px}.mirror-art{width:145px;height:174px;margin:0 auto 27px;position:relative;display:grid;place-items:center}.mirror-halo{position:absolute;inset:0;border:1px solid rgba(177,138,86,.29);border-radius:48% 48% 45% 45%;box-shadow:0 0 55px rgba(177,138,86,.10),inset 0 0 35px rgba(177,138,86,.07);transform:rotate(2deg)}.mirror-frame{position:relative;width:98px;height:133px;border:2px solid var(--gold);border-radius:48% 48% 43% 43%;background:linear-gradient(145deg,rgba(208,173,121,.22),rgba(53,43,51,.34) 55%,rgba(177,138,86,.08));box-shadow:inset 0 0 0 5px rgba(177,138,86,.09),0 12px 38px rgba(0,0,0,.3)}.mirror-frame:before{content:"";position:absolute;inset:8px;border:1px solid rgba(208,173,121,.42);border-radius:48% 48% 43% 43%}.mirror-frame:after{content:"";position:absolute;left:50%;top:20px;width:1px;height:75px;background:linear-gradient(transparent,rgba(242,235,221,.42),transparent);transform:rotate(18deg)}.mirror-stem{position:absolute;bottom:3px;width:8px;height:27px;border:1px solid var(--gold);border-radius:0 0 7px 7px;background:#282229}.mirror-base{position:absolute;bottom:0;width:45px;height:5px;border:1px solid var(--gold);border-radius:50%}.hero .lead{margin-bottom:28px}.actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:25px}.btn{border:1px solid var(--gold);border-radius:999px;padding:14px 22px;background:var(--gold);color:#211d20;font-weight:700;font-size:11px;letter-spacing:.09em;text-transform:uppercase;transition:.18s;min-height:46px}.btn:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 10px 24px rgba(177,138,86,.16)}.btn.secondary{background:transparent;color:var(--ivory);border-color:var(--line)}.btn.secondary:hover{border-color:var(--gold);background:rgba(177,138,86,.08)}.btn.ghost{background:transparent;border-color:transparent;color:var(--muted);text-transform:none;letter-spacing:0}.btn.smallbtn{min-height:36px;padding:9px 14px;font-size:10px}.homefoot{font-size:11px;color:#8f858b;letter-spacing:.04em;margin-top:25px}.mode-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin:28px auto 0;max-width:760px;text-align:left}.mode-card{border:1px solid var(--line);border-radius:18px;padding:21px;background:linear-gradient(145deg,rgba(57,47,55,.87),rgba(33,29,32,.82));color:var(--ivory);text-align:left;min-height:142px;transition:.18s}.mode-card:hover{border-color:var(--gold);transform:translateY(-2px);background:linear-gradient(145deg,rgba(69,55,65,.95),rgba(39,31,39,.94))}.mode-icon{font:500 30px 'Cormorant Garamond',serif;color:var(--gold2);margin-bottom:8px}.mode-card strong{display:block;font:500 25px 'Cormorant Garamond',serif;margin-bottom:5px}.mode-card span{font-size:11px;line-height:1.55;color:var(--muted)}.panel{background:linear-gradient(145deg,rgba(57,47,55,.94),rgba(35,29,37,.98));border:1px solid var(--line);border-radius:var(--radius);padding:clamp(22px,5vw,38px);box-shadow:var(--shadow)}.narrow{max-width:720px;margin:auto}.sectionhead{margin-bottom:24px}.sectionhead .lead{margin:0}.field{margin:19px 0}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:8px}.input{width:100%;background:#19161a;border:1px solid var(--line);border-radius:12px;padding:14px 15px;color:var(--ivory);font-size:14px}.input::placeholder{color:#766d72}textarea.input{resize:vertical;line-height:1.55}.length-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.length-choice{border:1px solid var(--line);border-radius:14px;padding:14px 12px;text-align:left;background:rgba(33,29,32,.45);color:var(--ivory);transition:.18s}.length-choice:hover,.length-choice.active{border-color:var(--gold);background:rgba(177,138,86,.1)}.length-choice strong{display:block;font:500 24px 'Cormorant Garamond',serif}.length-choice span{font-size:10px;color:var(--muted)}.notice{border-left:2px solid var(--gold);padding:11px 14px;background:rgba(177,138,86,.07);color:var(--muted);font-size:11px;line-height:1.7;margin:17px 0}.inline{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.playerlist{display:grid;gap:9px;margin:17px 0}.playerrow{display:flex;align-items:center;gap:10px;background:rgba(33,29,32,.45);padding:10px 12px;border:1px solid var(--line);border-radius:12px}.playerrow .num{color:var(--gold2);font-size:11px;width:20px}.playerrow input{flex:1;min-width:0;background:transparent;border:0;color:var(--ivory);padding:5px}.remove{background:transparent;border:0;color:#9b8d94;font-size:18px;padding:4px 8px}.small{font-size:11px;color:var(--muted);line-height:1.6}.pill{display:inline-flex;padding:6px 10px;border:1px solid var(--line);border-radius:50px;color:var(--gold2);font-size:10px;letter-spacing:.1em;text-transform:uppercase}.progress{height:4px;background:#4a3d46;border-radius:5px;overflow:hidden;margin:0 0 24px}.progress>span{height:100%;display:block;background:var(--gold);transition:width .3s}.qmeta{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px}.qcard{background:linear-gradient(140deg,#382f37,#211d23);border:1px solid var(--line);border-radius:22px;padding:clamp(23px,5vw,39px);box-shadow:var(--shadow)}.question{font:500 clamp(30px,6vw,44px)/1.13 'Cormorant Garamond',Georgia,serif;margin:0 0 22px}.options{display:grid;gap:10px}.option{display:flex;gap:12px;align-items:center;text-align:left;padding:15px 16px;border:1px solid rgba(208,173,121,.2);border-radius:13px;background:rgba(33,29,32,.45);color:var(--ivory);line-height:1.45;transition:.16s;width:100%;font-size:13px}.option:hover{border-color:var(--gold);background:rgba(177,138,86,.08)}.option.selected{border-color:var(--gold2);background:rgba(177,138,86,.15)}.letter{width:25px;height:25px;flex:0 0 25px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;color:var(--gold2);font-size:10px}.option.selected .letter{background:var(--gold);color:#211d20;border-color:var(--gold)}.gamehint{font-size:11px;color:var(--muted);line-height:1.6;margin:15px 0 0}.gameactions{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:16px}.divider{height:1px;background:var(--line);margin:23px 0}.barlist{display:grid;gap:14px;margin:20px 0}.barrow{display:grid;grid-template-columns:minmax(125px,1fr) minmax(100px,2fr) 32px;gap:12px;align-items:center}.barlabel{font-size:12px;color:var(--ivory)}.track{height:8px;background:#4a3d46;border-radius:20px;overflow:hidden}.track span{height:100%;display:block;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:20px}.barvalue{text-align:right;font-size:11px;color:var(--gold2);font-variant-numeric:tabular-nums}.resultcard{background:rgba(33,29,32,.48);border:1px solid var(--line);border-radius:16px;padding:18px;margin:14px 0;text-align:left}.resultcard p{font-size:13px;line-height:1.7;color:var(--muted);margin:8px 0 0}.resulttitle{font:500 27px 'Cormorant Garamond',serif;color:var(--gold2)}.answer-review{margin-top:20px}.answer-review summary{cursor:pointer;color:var(--gold2);font-size:12px;letter-spacing:.06em;padding:12px 0}.review-item{padding:12px 0;border-top:1px solid var(--line);text-align:left}.review-item strong{display:block;font:500 20px 'Cormorant Garamond',serif;margin-bottom:5px}.review-item span{font-size:12px;color:var(--muted);line-height:1.6}.scorelist{display:grid;gap:9px;margin:20px 0}.scorerow{display:flex;justify-content:space-between;align-items:center;padding:13px 15px;background:rgba(33,29,32,.48);border-radius:12px;border:1px solid var(--line);gap:12px}.scorerow strong{font-size:13px}.scorerow span{font-size:12px;color:var(--gold2);text-align:right}.footer{display:flex;justify-content:space-between;align-items:center;color:#857a80;font-size:10px;margin-top:30px;gap:12px}.footer button{background:none;border:0;color:#a79ba1;font-size:10px}.modalback{position:fixed;inset:0;background:rgba(0,0,0,.76);display:grid;place-items:center;padding:20px;z-index:10}.modal{max-width:560px;width:100%;max-height:85vh;overflow:auto;background:#302930;border:1px solid var(--line);border-radius:20px;padding:26px;box-shadow:var(--shadow)}.modal p{color:var(--muted);font-size:13px;line-height:1.7}.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#eee4d4;color:#211d20;padding:11px 17px;border-radius:30px;font-size:12px;box-shadow:var(--shadow);z-index:20;max-width:90vw;text-align:center}.result-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}.subtle{color:var(--muted);font-size:12px;line-height:1.6}.linkbox{display:grid;gap:10px;background:#19161a;border:1px solid var(--line);border-radius:14px;padding:14px;margin:16px 0}.linkbox input{width:100%;background:transparent;color:var(--gold2);border:0;outline:none;font-size:12px}.tag{display:inline-block;padding:5px 9px;border:1px solid var(--line);border-radius:20px;color:var(--gold2);font-size:10px;letter-spacing:.07em}.library-item{padding:15px;border:1px solid var(--line);border-radius:14px;background:rgba(33,29,32,.4);margin:10px 0}.library-item strong{font:500 21px 'Cormorant Garamond',serif}.library-item p{font-size:11px;color:var(--muted);line-height:1.6}.choice-row{display:flex;gap:8px;flex-wrap:wrap}.choice-chip{padding:10px 15px;border:1px solid var(--line);background:#211d20;border-radius:22px;color:var(--ivory);font-size:12px}.choice-chip.active{border-color:var(--gold);background:rgba(177,138,86,.12);color:var(--gold2)}.hidden{display:none!important}
-@media(max-width:600px){#app{padding:15px 14px 26px}.topbar{margin-bottom:12px}.topactions{gap:5px}.iconbtn{padding:7px 9px;font-size:10px}.hero{padding:20px 0 30px}.mode-grid{grid-template-columns:1fr}.mode-card{min-height:unset;padding:17px}.length-grid{grid-template-columns:1fr}.length-choice{display:flex;justify-content:space-between;align-items:center}.btn{width:100%}.actions{gap:8px}.gameactions{flex-direction:column-reverse;align-items:stretch}.gameactions .btn{width:100%}.footer{flex-wrap:wrap}.qcard{padding:21px}.barrow{grid-template-columns:105px 1fr 25px;gap:8px}.brand{font-size:12px}}
+<!doctype html>
+ <html lang="hu">
+ <head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="theme-color" content="#24364b">
+ <title>Folytasd a rajzot! – közös történetalkotó játék</title>
+ <style>
+ :root{
+  --ink:#24364b;--muted:#64748b;--paper:#fffdf8;--bg:#f3f5f7;--line:#e3e8ee;
+  --blue:#e7f0ff;--blue-ink:#214e87;--peach:#fff0df;--peach-ink:#92551e;
+  --lilac:#f2eafa;--lilac-ink:#704493;--green:#e8f4eb;--green-ink:#28633c;
+  --red:#fbe9e8;--red-ink:#9b3934;--gold:#fff5d9;--gold-ink:#86611a;
+ }
+ *{box-sizing:border-box}html{min-height:100%;overflow-y:auto;scroll-behavior:smooth}body{min-height:100vh;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y}button{touch-action:manipulation; -webkit-tap-highlight-color:transparent}
+ body{margin:0;background:var(--bg);color:#202a36;font-family:ui-rounded,"Segoe UI",system-ui,-apple-system,sans-serif;line-height:1.45}
+ button,input,select{font:inherit}
+ button{cursor:pointer;border:0;border-radius:13px;padding:12px 16px;font-weight:700;transition:transform .08s,opacity .15s}
+ button:active{transform:scale(.98)}
+ button:disabled{opacity:.45;cursor:not-allowed}
+ .primary{background:var(--ink);color:white}
+ .secondary{background:#e9eef3;color:var(--ink)}
+ .ghost{background:transparent;color:var(--muted);border:1px solid var(--line)}
+ .danger{background:var(--red);color:var(--red-ink)}
+ .wrap{width:min(920px,100%);margin:0 auto;padding:20px 16px 48px}
+ header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 0 22px}
+ .brand{display:flex;align-items:center;gap:11px;color:var(--ink);font-weight:900;letter-spacing:.02em}
+ .logo{width:43px;height:43px;border-radius:14px;background:var(--ink);color:white;display:grid;place-items:center;font-size:23px}
+ .brand small{display:block;font-size:10px;color:var(--muted);letter-spacing:.13em;font-weight:800}
+ h1,h2,h3,p{margin-top:0}
+ h1{font-size:clamp(30px,7vw,49px);line-height:1.02;letter-spacing:-.045em;margin-bottom:12px;color:var(--ink)}
+ h2{font-size:24px;letter-spacing:-.025em;color:var(--ink);margin-bottom:8px}
+ h3{font-size:17px;margin-bottom:5px}
+ p{color:#526071}
+ .card{background:white;border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:0 8px 28px #25364a0a}
+ .hero{background:var(--ink);color:white;border-radius:25px;padding:clamp(24px,6vw,48px);overflow:hidden;position:relative}
+ .hero h1{color:white;max-width:650px}
+ .hero p{color:#d8e1eb;max-width:570px;font-size:17px}
+ .hero .scribble{font-size:78px;position:absolute;right:24px;bottom:2px;opacity:.13;transform:rotate(-14deg)}
+ .kicker{font-size:11px;text-transform:uppercase;letter-spacing:.16em;font-weight:900;color:#d7bd8c;margin-bottom:13px}
+ .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+ .between{justify-content:space-between}
+ .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+ .field{display:flex;flex-direction:column;gap:7px;margin:13px 0}
+ label{font-size:13px;font-weight:800;color:#435164}
+ input,select{width:100%;border:1px solid #d9e0e7;border-radius:12px;padding:12px;background:white;color:#253448}
+ input:focus,select:focus{outline:3px solid #dce9fb;border-color:#7298c7}
+ .pill{display:inline-flex;align-items:center;border-radius:999px;padding:5px 10px;font-size:11px;font-weight:900;letter-spacing:.04em;background:#eef2f6;color:#526071}
+ .pill.blue{background:var(--blue);color:var(--blue-ink)}
+ .pill.peach{background:var(--peach);color:var(--peach-ink)}
+ .pill.lilac{background:var(--lilac);color:var(--lilac-ink)}
+ .pill.green{background:var(--green);color:var(--green-ink)}
+ .pill.gold{background:var(--gold);color:var(--gold-ink)}
+ .muted{color:var(--muted);font-size:13px}
+ .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}
+ .section{margin-top:18px}
+ .hidden{display:none!important}
+ .progress{height:8px;background:#e8edf2;border-radius:99px;overflow:hidden;margin:10px 0 18px}
+ .progress>span{height:100%;display:block;background:#7394bb;border-radius:99px;transition:width .2s}
+ .turn-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px}
+ .prompt{border-radius:18px;padding:20px;margin:12px 0}
+ .prompt h2{font-size:25px;margin:7px 0 8px}
+ .prompt p{font-size:16px;margin:0;color:inherit}
+ .prompt.story{background:var(--blue);color:var(--blue-ink)}
+ .prompt.story h2{color:#173e78}
+ .prompt.tech{background:var(--peach);color:var(--peach-ink)}
+ .prompt.tech h2{color:#824514}
+ .prompt.extra{background:var(--lilac);color:var(--lilac-ink)}
+ .prompt.extra h2{color:#60367e}
+ .prompt.special{background:var(--gold);color:var(--gold-ink)}
+ .prompt.special h2{color:#765413}
+ .prompt.end{background:var(--green);color:var(--green-ink)}
+ .prompt.end h2{color:#205a35}
+ .prompt .tag{font-size:10px;text-transform:uppercase;letter-spacing:.12em;font-weight:900;opacity:.8}
+ .step{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line)}
+ .step:last-child{border:0}
+ .num{flex:0 0 27px;height:27px;border-radius:50%;background:#edf1f5;color:var(--ink);display:grid;place-items:center;font-weight:900;font-size:12px}
+ .history-item{padding:12px 0;border-bottom:1px solid var(--line)}
+ .history-item:last-child{border:0}
+ .history-item strong{display:block;color:var(--ink);font-size:13px}
+ .history-item p{font-size:13px;margin:4px 0 0}
+ .stat{background:#f6f8fa;border-radius:14px;padding:12px}
+ .stat b{display:block;font-size:23px;color:var(--ink)}
+ .stat span{font-size:11px;color:var(--muted);font-weight:800}
+ .deck-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .deck-row{display:flex;justify-content:space-between;gap:10px;border:1px solid var(--line);padding:12px;border-radius:13px;background:white}
+ .deck-row strong{font-size:13px}
+ .deck-row span{font-size:12px;color:var(--muted)}
+ footer{text-align:center;color:#8a96a5;font-size:11px;margin-top:28px}
+ .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#172638;color:white;padding:11px 16px;border-radius:12px;box-shadow:0 8px 25px #0003;z-index:5;font-size:13px}
+ @media(max-width:620px){.wrap{padding:13px 12px 34px}.grid,.deck-list{grid-template-columns:1fr}.card{padding:17px}.hero .scribble{font-size:54px;right:10px}.turn-head{align-items:flex-start;flex-direction:column}}
+ </style>
+ </head>
+ <body>
+ <div class="wrap">
+ <header>
+  <div class="brand"><div class="logo">✎</div><div>FOLYTASD A RAJZOT!<small>KÖZÖS TÖRTÉNETALKOTÓ JÁTÉK</small></div></div>
+  <button class="ghost" id="rulesTop" type="button">Játékszabály</button>
+ </header>
 
-/* MIRROR responsive wordmark and optional 18+ controls */
-.hero-wordmark{display:block;width:100%;max-width:100%;white-space:nowrap;overflow:visible;font-size:clamp(48px,14vw,96px);letter-spacing:.085em;line-height:.96;transform:none;margin-left:auto;margin-right:auto;padding-left:.04em;padding-right:.04em}
-.category-strip{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin:20px auto 0;max-width:720px}
-.category-strip span{font-size:9px;letter-spacing:.11em;color:var(--gold2);border:1px solid var(--line);border-radius:30px;padding:6px 9px;background:rgba(177,138,86,.035)}
-.adult-toggle{margin:18px 0;padding:13px 14px;border:1px solid rgba(180,124,131,.4);border-radius:14px;background:rgba(180,124,131,.07)}
-.adult-toggle label{display:flex;align-items:flex-start;gap:11px;cursor:pointer;color:var(--ivory);font-size:12px;line-height:1.5}
-.adult-toggle input{accent-color:var(--gold2);width:17px;height:17px;flex:0 0 17px;margin:2px 0 0}
-.adult-toggle strong{display:block;color:#e1b7bb;font-size:10px;letter-spacing:.1em}
-.adult-toggle small{display:block;color:var(--muted);font-size:11px;margin-top:3px}
-.fullscreen-toggle{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:60;width:44px;height:44px;border:1px solid rgba(208,173,121,.55);border-radius:50%;background:rgba(35,29,37,.94);color:var(--gold2);font-size:24px;line-height:1;display:grid;place-items:center;box-shadow:0 7px 25px rgba(0,0,0,.35);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
-.fullscreen-toggle:active{transform:scale(.96)}
-:fullscreen{background:var(--bg)}
-:fullscreen body{min-height:100dvh}
-:fullscreen #app{width:min(100%,1120px);min-height:100dvh;padding-top:max(16px,env(safe-area-inset-top));padding-bottom:max(16px,env(safe-area-inset-bottom))}
-body.mirror-fullscreen-fallback{min-height:100dvh}
-body.mirror-fullscreen-fallback #app{width:100%;min-height:100dvh;padding: max(14px,env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) max(14px,env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left))}
-body.mirror-fullscreen-fallback .fullscreen-toggle{background:var(--gold);color:#211d20}
-@media(max-width:600px){.hero-wordmark{font-size:clamp(46px,14vw,68px);letter-spacing:.075em}.category-strip{gap:5px;margin-top:16px}.category-strip span{font-size:8px;padding:5px 7px}.fullscreen-toggle{right:11px;bottom:calc(11px + env(safe-area-inset-bottom));width:42px;height:42px}.adult-toggle{padding:12px}.hero{padding-top:16px}}
-@media(max-width:360px){.hero-wordmark{font-size:clamp(43px,13.5vw,54px);letter-spacing:.06em}.brand{letter-spacing:.12em}.topactions{gap:4px}.iconbtn{padding:6px 7px;font-size:9px}}
-
-</style>
-</head>
-<body>
-<button id="fullscreenToggle" class="fullscreen-toggle" type="button" aria-label="Teljes képernyő" aria-pressed="false" title="Teljes képernyő">⛶</button>
-<div id="app">
-<header class="topbar"><div class="brand"><span class="brandmark">M</span><span>MIRROR</span></div><div class="topactions"><button class="iconbtn" id="howBtn">Hogyan működik?</button><button class="iconbtn" id="privacyBtn">Adatvédelem</button></div></header>
 <main>
-<section class="screen" id="home"><div class="hero"><div class="mirror-art"><div class="mirror-halo"></div><div class="mirror-frame"></div><div class="mirror-stem"></div><div class="mirror-base"></div></div><p class="eyebrow">A social reflection game</p><h1 class="hero-wordmark">MIRROR</h1><p class="lead">Amit magadról gondolsz. Amit mások látnak. És ami a kettő között van.</p><div class="mode-grid">
-<button class="mode-card" id="soloStart"><div class="mode-icon">01</div><strong>Saját tükör</strong><span>12, 20 vagy 24 helyzet. Váltakozó humoros, merész, ijesztő és elgondolkodtató helyzetek. A pikáns kérdések külön kapcsolhatók be.</span></button>
-<button class="mode-card" id="groupStart"><div class="mode-icon">02</div><strong>Közös tükör</strong><span>2–8 játékos. Válaszoljatok, tippeljetek, majd nézzétek meg, mennyire ismeritek egymást.</span></button>
-<button class="mode-card" id="sendStart"><div class="mode-icon">03</div><strong>Küldött tükör</strong><span>Készíts 1, 5 vagy 10 kérdéses meghívást. A másik válaszol, te tippelsz, végül közösen megnézhetitek az eredményt.</span></button>
-<button class="mode-card" id="libraryStart"><div class="mode-icon">04</div><strong>Tükörgyűjtemény</strong><span>Az ezen az eszközön elmentett kártyák, megosztások és eredményhivatkozások.</span></button>
-</div><div class="category-strip" aria-label="A MIRROR témái"><span>HUMOR</span><span>HORROR</span><span>KÁOSZ</span><span>KÍNOS</span><span>KAPCSOLAT</span><span>ÖNREFLEXIÓ</span><span>18+</span></div><p class="homefoot">Nincs jó vagy rossz válasz. Csak a saját nézőpontod.</p></div></section>
-<section class="screen hidden" id="soloSetup"><div class="panel narrow"><div class="sectionhead"><p class="eyebrow">01 / Saját tükör</p><h2>Ez most rólad szól.</h2><p class="lead">Humoros, kínos, abszurd, hátborzongató és kapcsolati helyzetek váltják egymást. A pikáns kérdések külön engedélyezhetők.</p></div><div class="field"><label for="soloName">Becenév</label><input class="input" id="soloName" maxlength="24" placeholder="Hogyan szólítsunk?"></div><div class="field"><label>Játék hossza</label><div class="length-grid" id="soloLengths"><button class="length-choice" data-length="12"><strong>12 kérdés</strong><span>Rövid menet · kb. 5 perc</span></button><button class="length-choice active" data-length="20"><strong>20 kérdés</strong><span>Teljes játék · kb. 10 perc</span></button><button class="length-choice" data-length="24"><strong>24 kérdés</strong><span>Mélyebb menet · kb. 12 perc</span></button></div></div><div class="adult-toggle"><label><input type="checkbox" id="soloAdult"> <span><strong>18+ PIKÁNS TÜKÖR</strong><small>Elmúltam 18 éves, és kérem a flörtös, pikáns kérdéseket.</small></span></label></div><div class="notice">Hét hangulat váltakozik: humor, pikáns témák (külön engedéllyel), horror, abszurd káosz, kínos pillanatok, kapcsolatok és őszinte önreflexió. A játékos összegzés nem személyiségteszt és nem diagnózis.</div><div class="inline"><button class="btn" id="beginSolo">Játék indítása</button><button class="btn ghost" data-home>Vissza</button></div></div></section>
-<section class="screen hidden" id="groupSetup"><div class="panel narrow"><div class="sectionhead"><p class="eyebrow">01 / Közös tükör</p><h2>Ki ül az asztalnál?</h2><p class="lead">2–8 játékos. Két főnél mindketten válaszoltok és egymásra tippeltek. Három–nyolc főnél körönként egy játékos válaszol, a többiek tippelnek.</p></div><div class="field"><label for="groupTitle">A társaság neve <span class="small">(opcionális)</span></label><input class="input" id="groupTitle" maxlength="32" placeholder="Péntek esti társaság"></div><div class="field"><label>Játékosok beceneve</label><div class="playerlist" id="playerList"></div><div class="inline"><button class="btn secondary" id="addPlayer">+ Játékos hozzáadása</button><span class="small" id="playerCount">2 / 8 játékos</span></div></div><div class="adult-toggle"><label><input type="checkbox" id="groupAdult"> <span><strong>18+ PIKÁNS TÜKÖR</strong><small>Minden résztvevő elmúlt 18 éves, és beleegyezik a pikáns kérdésekbe.</small></span></label></div><div class="notice">A hét témakör között humoros, kínos, horror- és abszurd helyzetek is vannak. Minden kérdés kihagyható. A pikáns kategória csak külön engedéllyel kerülhet a játékba.</div><div class="inline"><button class="btn" id="beginGroup">Tovább</button><button class="btn ghost" data-home>Vissza</button></div></div></section>
-<section class="screen hidden" id="category"><div class="panel narrow"><div class="sectionhead"><p class="eyebrow">02 / Játékmenet</p><h2>Indulhat a társaság?</h2><p class="lead" id="groupModeDescription">Válasszátok ki a körök számát.</p></div><div class="field"><label for="roundCount">Kérdések / körök száma</label><select class="input" id="roundCount"><option value="5">5 kör — gyors bemelegítés</option><option value="8" selected>8 kör — teljesebb játék</option><option value="12">12 kör — hosszabb este</option></select></div><div class="notice" id="groupRuleNotice">Két játékosnál mindketten válaszolnak és tippelnek minden kérdésnél.</div><div class="inline"><button class="btn" id="startGroupGame">Játék indítása</button><button class="btn ghost" data-screen="groupSetup">Vissza</button></div></div></section>
-<section class="screen hidden" id="createSetup"><div class="panel narrow"><div class="sectionhead"><p class="eyebrow">03 / Küldött tükör</p><h2>Készíts egy tükröt valakinek.</h2><p class="lead">A címzett a saját eszközén válaszol, majd visszaküldi a válaszlinket. Te tippelsz, végül megoszthatjátok az eredményt.</p></div><div class="field"><label for="senderName">A te beceneved</label><input class="input" id="senderName" maxlength="24" placeholder="Aki a tükröt küldi"></div><div class="field"><label>Kérdések száma</label><div class="length-grid" id="mirrorLengths"><button class="length-choice active" data-count="1"><strong>1 kérdés</strong><span>Gyors, spontán tükör</span></button><button class="length-choice" data-count="5"><strong>5 kérdés</strong><span>Rövid összehasonlítás</span></button><button class="length-choice" data-count="10"><strong>10 kérdés</strong><span>Részletesebb értékelés</span></button></div></div><div class="field"><label for="questionSource">Kártya típusa</label><select class="input" id="questionSource"><option value="bank">Kérdések a MIRROR kérdésbankból</option><option value="custom">Saját kérdéskártya</option></select></div><div id="customQuestionFields" class="hidden"><div class="field"><label for="customCategory">Kategória</label><select class="input" id="customCategory"><option value="humor">Nevessünk!</option><option value="spicy">Pikáns tükör · 18+</option><option value="horror">A sötét tükör</option><option value="chaos">Teljes káosz</option><option value="awkward">Kínos pillanatok</option><option value="relationships">Kapcsolati aknamező</option><option value="truth">Amit nem mondanál ki</option></select></div><div class="field"><label for="customQuestion">Kérdés</label><textarea class="input" id="customQuestion" rows="3" maxlength="360" placeholder="Írd le a helyzetet…"></textarea></div><div class="field"><label>4 válaszlehetőség</label><input class="input custom-option" maxlength="180" placeholder="A válasz"/><input class="input custom-option" maxlength="180" placeholder="B válasz" style="margin-top:8px"/><input class="input custom-option" maxlength="180" placeholder="C válasz" style="margin-top:8px"/><input class="input custom-option" maxlength="180" placeholder="D válasz" style="margin-top:8px"/></div><div class="notice">Saját kártyából egykérdéses meghívás készül. A kérdés szövege és a válaszok egyediek lesznek; a címkék csak a játékbeli mintázat összesítését szolgálják.</div></div><div class="adult-toggle"><label><input type="checkbox" id="sendAdult"> <span><strong>18+ PIKÁNS KÉRDÉSEK ENGEDÉLYEZÉSE</strong><small>A meghívás pikáns kategóriát is tartalmazhat; csak felnőttnek küldd el.</small></span></label></div><div class="field"><label for="publicBase">A MIRROR nyilvános webcíme</label><input class="input" id="publicBase" placeholder="https://sajat-domain.hu/mirror.html" inputmode="url"><p class="small">Ha a fájlt már webtárhelyre feltöltötted, automatikusan felismerjük a címet. A helyi fájlból készített link más eszközön nem nyitható meg.</p></div><div class="notice">A megosztás ebben az önálló HTML-verzióban a linkbe csomagolt játékadatokkal működik. A linket csak azzal oszd meg, akinek szánod. Ez prototípus: nincs szerveroldali, valódi privát adattárolás.</div><div class="inline"><button class="btn" id="createInvite">Meghívólink létrehozása</button><button class="btn ghost" data-home>Vissza</button></div></div></section>
-<section class="screen hidden" id="shareCreated"><div class="panel narrow"><p class="eyebrow">Küldött tükör · meghívó kész</p><h2>A tükröd készen áll.</h2><p class="lead">Másold ki a linket, és küldd el annak, akit szeretnél megkérdezni.</p><div class="linkbox"><span class="small">MEGHÍVÓLINK</span><input id="inviteLinkOutput" readonly aria-label="Meghívólink"><div class="inline"><button class="btn" id="copyInvite">Link másolása</button><button class="btn secondary" id="shareInvite">Megosztás…</button></div></div><div class="notice" id="inviteLinkNotice">A címzett megnyitja a linket, megad egy becenevet, válaszol, majd visszaküldi neked a válaszlinket.</div><button class="btn ghost" data-home>Vissza a főoldalra</button></div></section>
-<section class="screen hidden" id="inviteAnswer"><div class="panel narrow"><div class="qmeta"><span class="pill">MIRROR · MEGHÍVÁS</span><span class="small" id="inviteProgress">1 / 1</span></div><div class="progress"><span id="inviteProgressBar" style="width:0%"></span></div><div id="inviteIntro"><p class="eyebrow">Valaki tükröt küldött neked</p><h2 id="inviteTitle">Nézz bele a tükörbe.</h2><p class="lead" id="inviteLead"></p><div class="field"><label for="recipientName">A beceneved</label><input class="input" id="recipientName" maxlength="24" placeholder="Hogyan szólítsunk?"></div><div class="adult-toggle hidden" id="inviteAdultGate"><label><input type="checkbox" id="inviteAdultConfirm"> <span><strong>18 ÉVEN FELÜLI VAGYOK</strong><small>Megerősítem, hogy elmúltam 18 éves, és kérem a pikáns kérdéseket.</small></span></label></div><div class="notice">A válaszaidat a meghívó készítője nem látja addig, amíg le nem adta a tippjeit. Bármelyik kérdést kihagyhatod.</div><button class="btn" id="startInviteAnswers">Válaszolok</button></div><div id="inviteQuestionArea" class="hidden"><p class="eyebrow" id="inviteCategory">HELYZET</p><h2 class="question" id="inviteQuestion"></h2><div class="options" id="inviteOptions"></div><p class="gamehint">Válaszd azt, ami most a legközelebb áll hozzád. Kihagyhatod a kérdést.</p><div class="gameactions"><button class="btn ghost" id="inviteSkip">Kihagyom</button><button class="btn" id="inviteNext" disabled>Válasz rögzítése</button></div></div></div></section>
-<section class="screen hidden" id="returnReady"><div class="panel narrow"><p class="eyebrow">Küldött tükör · válasz elkészült</p><h2>A válaszaid készen vannak.</h2><p class="lead">Most küldd vissza ezt a linket annak, aki a tükröt készítette. Ő először megtippeli a válaszaidat, és csak utána jelenik meg az eredmény.</p><div class="linkbox"><span class="small">VISSZAKÜLDENDŐ VÁLASZLINK</span><input id="returnLinkOutput" readonly aria-label="Válaszlink"><div class="inline"><button class="btn" id="copyReturn">Link másolása</button><button class="btn secondary" id="shareReturn">Megosztás…</button></div></div><button class="btn ghost" data-home>Bezárás</button></div></section>
-<section class="screen hidden" id="senderGuess"><div class="panel narrow"><div class="qmeta"><span class="pill">MIRROR · TE TIPPESZ</span><span class="small" id="guessProgress">1 / 5</span></div><div class="progress"><span id="guessProgressBar" style="width:0%"></span></div><p class="eyebrow" id="guessCategory">HELYZET</p><h2 class="question" id="guessQuestion"></h2><p class="lead" id="guessLead"></p><div class="options" id="guessOptions"></div><p class="gamehint">Mit választott szerinted a másik? A tényleges válasz még rejtve marad.</p><div class="gameactions"><button class="btn ghost" id="guessSkip">Nem tudom megtippelni</button><button class="btn" id="guessNext" disabled>Tipp rögzítése</button></div></div></section>
-<section class="screen hidden" id="resultLinkReady"><div class="panel narrow"><p class="eyebrow">MIRROR · közös eredmény</p><h2>Elkészült a közös tükrötök.</h2><p class="lead">A saját eredményedet most megnézheted. A másik félnek az alábbi eredménylinket küldheted el, hogy ő is lássa ugyanazt az összegzést.</p><div class="linkbox"><span class="small">EREDMÉNYLINK</span><input id="resultLinkOutput" readonly aria-label="Eredménylink"><div class="inline"><button class="btn" id="copyResultLink">Link másolása</button><button class="btn secondary" id="shareResultLink">Megosztás…</button></div></div><div id="senderResultSummary"></div><button class="btn ghost" data-home>Főoldal</button></div></section>
-<section class="screen hidden" id="game"><div class="qmeta"><span class="pill" id="modePill">MIRROR</span><span class="small" id="roundLabel">1 / 20</span></div><div class="progress"><span id="progressBar" style="width:0%"></span></div><div class="qcard"><p class="eyebrow" id="categoryLabel">HELYZET</p><h2 class="question" id="questionText"></h2><div id="gamePrompt" class="small"></div><div class="options" id="options" style="margin-top:18px"></div><p class="gamehint" id="gameHint">Válaszd azt, ami a legközelebb áll hozzád. Nincs jó vagy rossz válasz.</p></div><div class="gameactions"><button class="btn ghost" id="skipQuestion">Kihagyom</button><button class="btn" id="submitAnswer" disabled>Válasz rögzítése</button></div></section>
-<section class="screen hidden" id="handoff"><div class="panel narrow center"><p class="eyebrow">Privát válasz</p><div class="mirror-art" style="width:90px;height:105px;margin-bottom:15px"><div class="mirror-halo"></div><div class="mirror-frame" style="transform:scale(.68)"></div></div><h2 id="handoffTitle">Add át a készüléket.</h2><p class="lead" id="handoffText">Csak az lássa a kérdést, akinek szól.</p><div class="notice">A válasz a felfedésig rejtve marad. Ha nem szeretnél válaszolni, válaszd a kihagyást.</div><div class="actions"><button class="btn" id="handoffContinue">Készen állok</button></div></div></section>
-<section class="screen hidden" id="reveal"><div class="panel narrow"><p class="eyebrow">Felfedés</p><h2 id="revealTitle">Most kiderül.</h2><p class="lead" id="revealLead"></p><div class="divider"></div><div id="revealContent"></div><div class="inline" style="margin-top:22px"><button class="btn" id="nextRound">Következő kör</button></div></div></section>
-<section class="screen hidden" id="results"><div class="panel narrow"><div class="center"><p class="eyebrow" id="resultsEyebrow">A játék véget ért</p><h2 id="resultsTitle">Ami láthatóvá vált.</h2><p class="lead" id="resultsLead"></p></div><div id="resultsBody"></div><div class="divider"></div><div class="result-actions"><button class="btn" id="playAgain">Új játék</button><button class="btn secondary" id="homeAgain">Főoldal</button><button class="btn ghost hidden" id="copyResult">Összegzés másolása</button></div></div></section>
-<section class="screen hidden" id="library"><div class="panel narrow"><div class="sectionhead"><p class="eyebrow">MIRROR / Gyűjtemény</p><h2>A te tükrök gyűjteménye.</h2><p class="lead">A böngészőben ezen az eszközön elmentett meghívó- és eredményhivatkozások.</p></div><div id="libraryItems"></div><div class="notice">A gyűjtemény helyi böngészőadat. Nem szinkronizálódik automatikusan más eszközök között. Fontos linkeket külön is ments el.</div><div class="inline"><button class="btn ghost" data-home>Vissza</button><button class="btn secondary" id="clearLibrary">Gyűjtemény ürítése</button></div></div></section>
-</main>
-<footer class="footer"><span>MIRROR · BÉTA VERZIÓ</span><span>A különbségek beszélgetéseket nyitnak.</span><button id="resetGame">Játék újrakezdése</button></footer>
-</div><div id="modalRoot"></div>
-<script>
-'use strict';
-const $=id=>document.getElementById(id);
-const SCREENS=['home','soloSetup','groupSetup','category','createSetup','shareCreated','inviteAnswer','returnReady','senderGuess','resultLinkReady','game','handoff','reveal','results','library'];
-function show(id){SCREENS.forEach(s=>$(s)?.classList.toggle('hidden',s!==id));window.scrollTo({top:0,behavior:'smooth'});}
-const CATS=[
- {id:"humor",name:"Nevessünk!",icon:"01"},
- {id:"spicy",name:"Pikáns tükör · 18+",icon:"02"},
- {id:"horror",name:"A sötét tükör",icon:"03"},
- {id:"chaos",name:"Teljes káosz",icon:"04"},
- {id:"awkward",name:"Kínos pillanatok",icon:"05"},
- {id:"relationships",name:"Kapcsolati aknamező",icon:"06"},
- {id:"truth",name:"Amit nem mondanál ki",icon:"07"}
+ <section id="home">
+  <div class="hero">
+   <div class="kicker">Papír • ceruza • képzelet</div>
+   <h1>Egy rajz. Egy új fordulat. Egy közös történet.</h1>
+   <p>Minden forduló új eseményt, konfliktust vagy fordulatot hozhat. Rajzoljatok egymás után ugyanarra a papírra, és építsetek közösen egy kiszámíthatatlan történetet!</p>
+   <div class="scribble">✧</div>
+  </div>
+  <div class="card section">
+   <h2>Kezdjünk egy új történetet!</h2>
+   <p class="muted">A weboldal a kártyákat és a fordulókat kezeli. A rajzot valódi papírra készítsétek.</p>
+   <div class="grid">
+    <div class="field"><label for="players">Játékosok száma</label><select id="players"><option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option></select></div>
+    <div class="field"><label for="rounds">Fordulók száma</label><select id="rounds"><option value="6">6 – rövid</option><option value="8" selected>8 – normál</option><option value="10">10 – hosszú</option></select></div>
+   </div>
+   <div class="field"><label for="theme">Témakör</label><select id="theme"><option value="all">Vegyes – mindenféle történet</option><option value="adventure">Kaland és felfedezés</option><option value="fantasy">Mesevilág és fantasy</option><option value="mystery">Rejtély és nyomozás</option><option value="funny">Vicces és abszurd</option><option value="animals">Állati kalandok</option><option value="space">Űrkaland</option></select></div>
+   <div class="field"><label for="names">Játékosnevek (vesszővel elválasztva, opcionális)</label><input id="names" placeholder="Anna, Bence, Lili, Marci"></div>
+   <div class="row">
+    <label style="display:flex;gap:8px;align-items:center;font-weight:600"><input id="timerToggle" type="checkbox" style="width:auto"> Időzítő bekapcsolása (90 mp)</label>
+   </div>
+   <div class="actions"><button type="button" class="primary" id="startBtn">Játék indítása →</button><button type="button" class="secondary hidden" id="resumeBtn">Mentett játék folytatása</button></div>
+  </div>
+  <div class="card section">
+   <div class="row between"><div><h2>A pakli tartalma</h2><p class="muted">Kezdőhelyzetek, karakterek, helyszínek, konfliktusok, események, bonyodalmak, fordulatok, következmények és rajzos kihívások.</p></div><span class="pill green" id="deckTotal">Kártyák</span></div>
+   <div class="deck-list" id="deckStats"></div>
+  </div>
+ </section>
+
+<section id="game" class="hidden">
+  <div class="card">
+   <div class="turn-head"><div><span class="pill blue" id="roundLabel">1. forduló</span><h2 id="playerLabel" style="margin:9px 0 0">Anna következik</h2></div><button type="button" class="ghost" id="quitBtn">Kilépés</button></div>
+   <div class="progress"><span id="progressBar" style="width:0%"></span></div>
+   <p class="muted" id="gameHint">Nézzétek meg az eddigi rajzot, majd húzzátok fel a történet következő kártyáit.</p>
+   <div class="prompt special" id="startPrompt"><div class="tag">A TÖRTÉNET KIINDULÓHELYZETE</div><h2 id="startTitle"></h2><p id="startText"></p></div>
+   <div id="cardsArea">
+    <div class="prompt story"><div class="tag">MIT rajzolj? · Történetkártya</div><h2 id="storyTitle"></h2><p id="storyText"></p></div>
+    <div class="prompt tech"><div class="tag">HOGYAN rajzolj? · Rajztechnikakártya</div><h2 id="techTitle"></h2><p id="techText"></p></div>
+    <div id="extraArea"></div>
+   </div>
+   <div class="row between" style="margin-top:16px">
+    <span class="muted" id="drawCount">Kártyák: 2</span>
+    <button type="button" class="secondary" id="redrawBtn">↻ Egy kártya újrahúzása</button>
+   </div>
+   <div class="actions">
+    <button type="button" class="primary" id="nextBtn">Elkészültem – következő játékos</button>
+    <button type="button" class="ghost" id="historyBtn">Eddigi történet</button>
+   </div>
+   <div id="timerBox" class="stat section hidden"><div class="row between"><span>Rajzolási idő</span><b id="timerText">01:30</b></div><div class="progress"><span id="timerBar" style="width:100%"></span></div><div class="row"><button type="button" class="secondary" id="timerStart">Indítás</button><button type="button" class="ghost" id="timerReset">Újraindítás</button></div></div>
+  </div>
+  <div class="card section hidden" id="historyPanel"><div class="row between"><h2>Az eddigi történet</h2><button type="button" class="ghost" id="closeHistory">Bezárás</button></div><div id="historyList"></div></div>
+ </section>
+
+<section id="recap" class="hidden">
+  <div class="hero">
+   <div class="kicker">Vége a rajzolásnak</div><h1>Most meséljétek el!</h1>
+   <p>A rajz elkészült. Most jön a legfontosabb rész: idézzétek fel közösen, mi történt az első eseménytől a befejezésig.</p>
+  </div>
+  <div class="card section">
+   <h2>A kezdőtörténet</h2><p id="recapStart"></p>
+   <h2 class="section">Emlékezzetek vissza!</h2>
+   <div id="recapQuestions"></div>
+   <div class="field section"><label for="storyNotes">A közösen rekonstruált történet (opcionális jegyzet)</label><textarea id="storyNotes" rows="5" placeholder="Egészítsétek ki egymás történetét..."></textarea></div>
+   <div class="actions"><button type="button" class="primary" id="finishBtn">Játék lezárása és mentés</button><button type="button" class="secondary" id="showHistoryRecap">Kártyák áttekintése</button></div>
+  </div>
+  <div class="card section hidden" id="finalHistory"></div>
+ </section>
+
+<section id="done" class="hidden">
+  <div class="card" style="text-align:center;padding:34px 22px">
+   <div style="font-size:52px">🎉</div><span class="pill green">Játék befejezve</span><h1 style="margin-top:15px">Kész a történetetek!</h1>
+   <p>Őrizzétek meg a rajzot, és adjatok neki címet. Ez a történet csak egyszer születhetett meg így.</p>
+   <div class="field"><label for="storyTitleInput">A történet címe</label><input id="storyTitleInput" placeholder="Például: A dinoszaurusz utolsó űrutazása"></div>
+   <div class="actions" style="justify-content:center"><button type="button" class="primary" id="saveStoryBtn">Történet mentése</button><button type="button" class="secondary" id="newGameBtn">Új játék</button></div>
+   <div id="savedMessage" class="muted section"></div>
+  </div>
+  <div class="card section"><h2>Játékösszefoglaló</h2><div id="doneSummary"></div><div class="actions"><button type="button" class="secondary" id="exportBtn">Összefoglaló letöltése (.txt)</button></div></div>
+ </section>
+
+<section id="rules" class="hidden">
+  <div class="card">
+   <div class="row between"><h1 style="font-size:32px">Játékszabály</h1><button type="button" class="ghost" id="backHome">Vissza</button></div>
+   <p><strong>A cél:</strong> közösen létrehozni egy összefüggő történetet egyetlen papírlapon, majd emlékezetből elmesélni.</p>
+   <div class="step"><span class="num">1</span><div><strong>Készüljetek elő!</strong><p class="muted">Tegyetek az asztalra egy A3-as lapot és többféle rajzeszközt. Üljetek úgy, hogy mindenki lássa a rajzot.</p></div></div>
+   <div class="step"><span class="num">2</span><div><strong>Válasszatok kezdőhelyzetet!</strong><p class="muted">A weboldal ad egy kiinduló szituációt. Az első játékos ezt rajzolja le a kapott kártyák szerint.</p></div></div>
+   <div class="step"><span class="num">3</span><div><strong>Húzzatok két kártyát!</strong><p class="muted">Az egyik megmondja, mit vigyél tovább a történetben, a másik pedig azt, milyen eszközzel vagy technikával rajzolj.</p></div></div>
+   <div class="step"><span class="num">4</span><div><strong>Folytassátok a közös rajzot!</strong><p class="muted">Minden játékos a teljes képet nézve kapcsolódjon legalább egy korábbi szereplőhöz vagy eseményhez. Ne különálló képeket készítsetek.</p></div></div>
+   <div class="step"><span class="num">5</span><div><strong>Meséljétek el!</strong><p class="muted">Az utolsó forduló után tegyétek félre a telefont. Közösen idézzétek fel a történetet, majd használjátok a kérdéseket segítségként.</p></div></div>
+   <div class="section"><h3>Fontos közös szabályok</h3><ul class="muted"><li>A rajz nem verseny: nem a szépsége, hanem a történet számít.</li><li>A rajzoló csak röviden magyarázhat, ne mesélje el előre a teljes ötletét.</li><li>Ha egy kártya nem teljesíthető a rendelkezésre álló eszközökkel, egyszer újrahúzható.</li><li>Az időzítő opcionális; kikapcsolt állapotban nincs időkorlát.</li><li>Ha egy kártya kellemetlen vagy nem megfelelő, közösen cseréljétek le.</li></ul></div>
+  </div>
+ </section>
+ </main>
+ <footer>FOLYTASD A RAJZOT! · Egy papír, sok képzelet · A játék offline is használható</footer>
+ </div>
+ <div id="toast" class="toast hidden" role="status"></div>
+ <script>
+ "use strict";
+ const STARTS = [
+ ["A meteor napja","Egy fényes meteor csapódik a város melletti mezőbe.","all"],["Az eltűnt torta","A születésnapi bulin eltűnik a hatalmas torta.","funny"],["A pincei fennakadás","Egy családi ház pincéjében váratlanul elromlik valami, és több embernek össze kell fognia, hogy megoldja a helyzetet.","all"],["A szökött állatok","Az állatkert összes állata kiszabadul egy éjszaka.","animals"],["A különös csomag","Egy névtelen csomag érkezik, amely furcsán mozog.","mystery"],["A sárkány a kertben","Egy apró sárkány landol egy családi kertben.","fantasy"],["Az időgép","Egy rozsdás szerkezet váratlanul bekapcsol a garázsban.","adventure"],["A víz alatti város","Egy búvár egy rejtett városra bukkan a tó mélyén.","adventure"],["A beszélő macska","Egy macska egyszer csak megszólal, és segítséget kér.","animals"],["A bolygóközi posta","Egy űrhajós rossz bolygóra kézbesít egy csomagot.","space"],["A fordított nap","Egy reggel minden a feje tetejére áll a városban.","funny"],["Az elvarázsolt erdő","Az erdő fái éjjel vándorolni kezdenek.","fantasy"],["A múzeumi rejtély","Egy híres kiállítási tárgy nyomtalanul eltűnik.","mystery"],["A kalóz térképe","Egy palackban talált térkép kincset ígér.","adventure"],["A Holdon ragadt robot","Egy kis robot egyedül marad a Holdon.","space"],["A dzsungel titka","Egy expedíció furcsa lábnyomokat talál a dzsungelben.","animals"],["A láthatatlan vendég","Valaki beköltözik a házba, de senki sem látja.","mystery"],["A varázsló vizsgája","Egy kezdő varázslónak egyetlen nap alatt kell bizonyítania.","fantasy"],["A világ legfurcsább versenye","A városban versenyt rendeznek, de a szabályok folyton változnak.","funny"],["Az idegen jel","Egy ismeretlen jel jelenik meg az égbolton.","space"]
+ ];
+ const STORY = [
+ ["Új szereplő érkezik","Rajzolj egy új szereplőt, aki valamilyen módon belekeveredik az eddigi eseményekbe.","all"],
+ ["Váratlan segítség","Valaki megjelenik, és segít a főszereplőnek.","all"],
+ ["Bajba kerül","A történet egyik szereplője komoly bajba kerül.","all"],
+ ["Fontos tárgy","Kerüljön a történetbe egy tárgy, amely később fontos lehet.","all"],
+ ["Új helyszín","A szereplőknek egy új helyszínre kell jutniuk.","adventure"],
+ ["Titkos üzenet","Valaki titkos üzenetet vagy jelet talál.","mystery"],
+ ["Menekülés","Valakinek gyorsan el kell menekülnie valami elől.","all"],
+ ["Mentőakció","Rajzolj egy mentőakciót: valakit vagy valamit ki kell szabadítani.","all"],
+ ["Különös jármű","Megjelenik egy szokatlan közlekedési eszköz.","all"],
+ ["Új képesség","Valaki váratlan különleges képességre tesz szert.","fantasy"],
+ ["Furcsa étel","Valaki megkóstol egy különös ételt, aminek hatása lesz.","funny"],
+ ["Segítség a természetből","Egy állat vagy növény segít a szereplőknek.","animals"],
+ ["Elveszett valami","Egy fontos dolog eltűnik. Rajzold le, ki veszi észre!","all"],
+ ["Nagy akadály","Egy nehezen leküzdhető akadály állja az útjukat.","adventure"],
+ ["Új szövetséges","Két korábbi szereplő összefog valamiért.","all"],
+ ["Különös találmány","Valaki bemutat egy saját készítésű szerkezetet.","all"],
+ ["Közeledik a vihar","Az időjárás megváltozik, és ez hatással lesz a történetre.","all"],
+ ["Valaki megsérül","Egy szereplőnek segítségre vagy gyógyításra van szüksége.","all"],
+ ["Nyomokat találnak","Rajzolj legalább két nyomot, amelyek elvezethetnek valahová.","mystery"],
+ ["Titkos rejtekhely","Felfedeznek egy elrejtett helyet.","mystery"],
+ ["Félreértés","Két szereplő félreérti egymást, és ebből bonyodalom lesz.","funny"],
+ ["Nagy találkozás","Két olyan szereplő találkozik, akik eddig nem ismerték egymást.","all"],
+ ["Veszélyes kísérlet","Valaki kipróbál valamit, ami nem egészen úgy sül el, ahogy tervezte.","all"],
+ ["Különös vendég","Egy szokatlan vendég kér bebocsátást.","fantasy"],
+ ["Verseny indul","A szereplők versenybe vagy kihívásba keverednek.","all"],
+ ["Valaki eltéved","Egy szereplő rossz helyre jut, és segítséget kell találnia.","all"],
+ ["A természet visszavág","A környezet váratlanul megnehezíti a szereplők dolgát.","animals"],
+ ["Egy régi barát","Visszatér valaki a történet korábbi részéből.","all"],
+ ["Váratlan ajándék","Valaki kap egy ajándékot, amelynek jelentősége lehet.","all"],
+ ["Közös terv","A szereplők tervet készítenek egy probléma megoldására.","all"],
+ ["Különös hang","Valaki hangot hall egy olyan helyről, ahonnan nem kellene jönnie.","mystery"],
+ ["Átalakulás","Egy szereplő vagy tárgy valamilyen módon átalakul.","fantasy"],
+ ["Elromlik valami","Egy fontos gép, jármű vagy szerkezet felmondja a szolgálatot.","all"],
+ ["Új szabály","A történet világában hirtelen új szabály lép életbe.","funny"],
+ ["Kincs vagy jutalom","Valaki értékes dolgot talál vagy nyer.","adventure"],
+ ["Titkos napló","Előkerül egy napló, amely fontos információt rejt.","mystery"],
+ ["Állati üzenet","Egy állat valamilyen módon üzenetet ad át.","animals"],
+ ["Űrbéli felfedezés","A szereplők valami ismeretlent találnak az űrben.","space"],
+ ["Varázslatos segítség","Egy varázslat vagy mágikus tárgy segít a bajban.","fantasy"],
+ ["Valaki gyanússá válik","Egy szereplő viselkedése kérdéseket vet fel.","mystery"],
+ ["Meg kell javítani","Valamit helyre kell hozni, mielőtt túl késő lenne.","all"],
+ ["Meglepetés a csomagban","Egy kinyitott csomagból valami egészen váratlan kerül elő.","all"],
+ ["A terv félresikerül","A szereplők terve nem úgy működik, ahogy elképzelték.","all"],
+ ["Új barátság","Két szereplő között váratlan barátság szövődik.","all"],
+ ["Furcsa nyom","Valaki olyan nyomot talál, amely elsőre értelmetlennek tűnik.","mystery"],
+ ["Vissza kell fordulni","A szereplőknek vissza kell térniük egy korábbi helyszínre.","adventure"],
+ ["Valaki eltitkol valamit","Rajzolj egy szereplőt, aki titkot őriz.","mystery"],
+ ["A legkisebb hős","Egy apró vagy jelentéktelennek tűnő szereplő lesz a kulcsfigura.","all"],
+ ["Mindenki összefog","A probléma megoldásához mindenkinek együtt kell működnie.","all"],
+ ["Különös felfedezés","A szereplők olyasmit fedeznek fel, amiről eddig senki sem tudott.","all"],
+ ["A következő lépés","Rajzold le, hogyan halad tovább a történet az eddigi események után.","all"]
+ ];
+ const TECH = [
+ ["Golyóstoll","Kizárólag golyóstollal rajzolhatsz. Ne használj radírt."],["Grafitceruza","Csak grafitceruzát használhatsz."],["Színes ceruza","Színes ceruzával készítsd el a rajzodat."],["Három szín","Legalább három különböző színt használj."],["Árnyékolás","A rajzod legalább egy részét árnyékold be ceruzával."],["Kontúrvonal","Csak a körvonalakat rajzold meg, kitöltés nélkül."],["Filc és ceruza","Először filccel rajzolj, majd ceruzával egészítsd ki."],["Színátmenet","Egy részen próbálj világosból sötétbe átmenetet készíteni."],["Apró részletek","Adj a rajzodhoz legalább öt apró részletet."],["Nagy formák","Egyszerű, nagy formákból építsd fel a rajzodat."],["Pöttyözés","A rajzod egy részét pontokból alakítsd ki."],["Satírozás","Használj satírozást a felületek vagy árnyékok megjelenítéséhez."],["Csak egy szín","Egyetlen színnel dolgozz, a fekete vagy grafit mellett."],["Váltott eszköz","A rajz egyik részét tollal, a másikat ceruzával készítsd."],["Vastag kontúr","Hangsúlyos, vastag körvonalakkal rajzolj."],["Mintázat","Legalább egy felületet ismétlődő mintával tölts ki."],["Fény és árnyék","Jelölj meg egy fényforrást, és ehhez igazítsd az árnyékot."],["Színes részlet","A rajz nagy része maradjon egyszerű, de egy részét színezd ki."],["Vonalrajz","A formákat különböző vonalakkal, satírozás nélkül ábrázold."],["Kombinált technika","Kombinálj legalább két eszközt: például tollat és színes ceruzát."],["Keresztárnyékolás","Kereszteződő vonalakkal adj árnyékot."],["Keret a rajz körül","Készíts egyszerű keretet vagy hátteret a rajzod köré."],["Textúra","Mutasd meg vonalakkal vagy mintákkal, milyen tapintású valami."],["Vázlatos stílus","Gyors, könnyed vázlatként készítsd el a rajzodat."],["Részletes kidolgozás","Egyetlen fontos részletet dolgozz ki különösen alaposan."],["Sziluett","Egy szereplőt vagy tárgyat sötét sziluettként ábrázolj."],["Csak körök és vonalak","A rajzod fő formái körökből és egyenes vonalakból álljanak."],["Kétféle vonal","Használj vékony és vastag vonalakat is."],["Színes árnyék","Az árnyékot ne feketével, hanem egy választott színnel jelöld."],["Szabad kombináció","Válassz két különböző rajzeszközt, és használd mindkettőt."]
+ ];
+ const CHALLENGE = [
+ ["Nem domináns kéz","A rajzodat a nem domináns kezeddel készítsd el."],["Öt vonal","Próbáld meg legfeljebb öt hosszú vonallal megoldani a rajzot."],["Ceruza felemelése nélkül","Egy fontos alakot úgy rajzolj meg, hogy közben nem emeled fel a ceruzát."],["Csukott szem","Egy apró részletet csukott szemmel rajzolj meg."],["Harminc másodperc","A rajz első vázlatára csak 30 másodperced van."],["Rejtett részlet","Rejts el egy apró, vicces részletet a rajzodban."],["Két régi elem","Kapcsolj össze legalább két korábban lerajzolt elemet."],["Szokatlan nézőpont","Rajzold le a jelenetet madártávlatból vagy egészen alulról."],["Miniatűr","A rajzod legyen kisebb egy tenyérnél."],["Óriási elem","A rajzod egyik eleme foglaljon el feltűnően nagy helyet."],["Fordított kéz","Ha kényelmes, a szokásos kéztartásodtól eltérően rajzolj."],["Képi hasonlat","Egy érzést vagy fogalmat képpel, ne felirattal mutass meg."],["Kétértelmű rajz","Rajzolj valamit, amit elsőre többféleképpen lehet értelmezni."],["Mozgásban","A rajzod mutasson mozgást vagy gyorsaságot."],["Kicsi és nagy","Jeleníts meg egy apró és egy hatalmas dolgot egymás mellett."],["Titkos jel","Tegyél a rajzba egy jelet, amelynek jelentése csak később derül ki."],["Folytasd a vonalat","Kapcsolódj egy korábbi rajz vonalához vagy formájához."],["Háttér is kell","A szereplő mellett a környezetből is rajzolj valamit."],["Képregényes pillanat","Egyetlen képben mutass be egy akciódús pillanatot."],["Néma rajzolás","A rajzolás alatt senki nem beszélhet."]
+ ];
+ const TWISTS = [
+ ["Minden másképp van","Kiderül, hogy az eddigi események egy része félreértés volt."],["Ellenségből barát","A korábbi ellenfél váratlanul segíteni kezd."],["Titkos ikertestvér","Az egyik szereplőnek előkerül egy eddig ismeretlen ikertestvére."],["Időugrás","Ugorjatok előre tíz évet, és mutassátok meg, mi változott."],["Vissza a múltba","Derüljön ki valami fontos egy korábbi eseményről."],["A tárgy a kulcs","Egy korábban jelentéktelen tárgy nélkülözhetetlenné válik."],["Szerepcsere","Két szereplő helyet vagy feladatot cserél."],["Nem az, akinek látszik","Valakiről kiderül, hogy egészen más, mint gondoltátok."],["Álomban történt?","A történet egy része talán csak álom volt – de mi az igazság?"],["Új törvény","A történet világában egy különös új szabály lép életbe."],["A kicsi irányít","A legkisebb szereplő kezébe kerül az irányítás."],["Dupla meglepetés","Egy váratlan esemény után rögtön egy másik is történik."],["A helyszín titka","A helyszínről kiderül, hogy valami egészen más, mint hittétek."],["Minden összefügg","Két korábban különálló eseményről kiderül, hogy kapcsolatban állnak."],["A veszély belülről jön","A probléma forrása valaki vagy valami a csapat közelében."],["Fordított nap","Egy szereplőnek az ellenkezőjét kell tennie annak, amit szeretne."],["A jövő üzenete","Valaki üzenetet kap a jövőből."],["Eltűnik a gravitáció","A világ egy fontos természeti szabálya megváltozik."],["A valódi cél","Kiderül, hogy a küldetés valódi célja egészen más."],["Váratlan csere","Valami fontosat elcserélnek, és vissza kell szerezni."]
+ ];
+ const SPECIAL = [
+ ["Közös rajz","A következő játékosoddal együtt készítsetek el egyetlen közös elemet."],["Néma forduló","A következő rajzoló nem beszélhet, és nem magyarázhat."],["Titkos részlet","Rajzolj elrejtve egy apró részletet, amit a történetmeséléskor kell felfedezni."],["Kérdezni szabad","A következő játékos legfeljebb három kérdést tehet fel a rajzolás előtt."],["Csak folytatás","Nem kezdhetsz új szereplőt: egy már meglévő elemet kell továbbrajzolnod."],["Válassz eszközt","A következő játékos szabadon választhatja meg a rajzeszközt."],["Közös ötlet","Mindenki mondhat egy ötletet, de csak egyet rajzolhatsz meg."],["Váratlan segítség","Válassz egy korábbi szereplőt, és rajzold meg, hogyan segít most."],["Két részből","A rajzodnak két, egymással összefüggő részből kell állnia."],["Nincs felirat","A következő rajzon nem szerepelhet betű vagy szám."],["Mesélői titok","A rajzoló egy dolgot tud a rajzáról, amit nem árulhat el a végéig."],["Kéz a kézben","Két játékos felváltva húzhat egy-egy vonalat ugyanahhoz az elemhez."],["Visszatérő motívum","Hozz vissza egy korábban megjelent tárgyat vagy szereplőt."],["Kép a képben","A rajzodban jeleníts meg egy apró képet vagy jelenetet."],["Mindenki nyomot hagy","Minden játékos tegyen hozzá egy apró részletet a következő közös rajzhoz."]
+ ];
+ const ENDINGS = [
+ ["A nagy megoldás","Rajzold le, hogyan oldódik meg a történet legnagyobb problémája."],["Boldog befejezés","Mindenki számára találj ki egy jó befejezést."],["A nagy titok","Derüljön ki a történet legnagyobb titka."],["Váratlan csavar","Zárd le a történetet egy olyan fordulattal, amire senki sem számít."],["Hazatérés","Mutasd meg, hogyan jutnak haza a szereplők."],["Új kezdet","A történet vége egy új kaland kezdetét jelentse."],["Nevetés a végén","Legyen a befejezés vicces vagy abszurd."],["Minden a helyére kerül","Kapcsolj össze legalább két korábbi eseményt a lezárásban."],["A hős döntése","A főszereplőnek fontos döntést kell hoznia."],["Békekötés","A korábbi ellenfelek békét kötnek."],["Az utolsó meglepetés","A legvégén bukkanjon fel még egy váratlan dolog."],["A küldetés jutalma","Mutasd meg, mit kapnak a szereplők a kaland végén."],["Körbeér a történet","A befejezés kapcsolódjon vissza a legelső eseményhez."],["Nyitott vég","Hagyd úgy lezárni a történetet, hogy folytatódhasson."],["A végső kép","Készíts egy utolsó, emlékezetes jelenetet az egész csapatról."]
+ ];
+
+const CHARACTERS = [
+ ["A vonakodó hős","Rajzolj egy szereplőt, aki nem akar kalandba keveredni, mégis fontos feladata lesz."],
+ ["A titokzatos idegen","Érkezik valaki, akiről senki sem tudja, honnan jött."],
+ ["A különc feltaláló","Rajzolj egy feltalálót egy furcsa találmánnyal."],
+ ["A beszélő állat","Egy állat emberi módon kommunikál, és fontos információja van."],
+ ["A régi ellenfél","Tűnjön fel egy korábbi ellenfél, akinek most más tervei vannak."],
+ ["A kis segítő","Egy apró termetű szereplő váratlanul nagy segítséget nyújt."],
+ ["A maszkos alak","Valaki álarc mögé rejti az arcát és a szándékait."],
+ ["A kíváncsi gyerek","Egy kíváncsi szereplő olyan helyre jut, ahová nem kellene."],
+ ["A robot","Rajzolj egy robotot saját személyiséggel és különös képességgel."],
+ ["A vándor","Egy utazó érkezik, aki sok helyet bejárt."],
+ ["A bölcs öreg","Egy idős szereplő ismer egy fontos régi történetet."],
+ ["A félelmetes őr","Valaki egy fontos helyet vagy tárgyat őriz."],
+ ["A titkos társ","A főszereplőnek van egy titkos segítője."],
+ ["A kétbalkezes kalandor","Egy ügyetlen szereplő folyton bajba kerül, de szerencsés."],
+ ["A varázslény","Jelenjen meg egy különleges, mágikus teremtmény."],
+ ["A nyomozó","Valaki kérdéseket tesz fel, és apró jelekből következtet."],
+ ["A pilóta","Egy pilóta különös járművel érkezik."],
+ ["A cserfes szomszéd","Egy sokat beszélő szereplő többet tud, mint elsőre látszik."],
+ ["A rejtőzködő figura","Valaki a háttérből figyeli az eseményeket."],
+ ["A váratlan rokon","Egy szereplő rég nem látott rokona bukkan fel."]
+ ];
+ const LOCATIONS = [
+ ["Régi pince","A ház alatti pince tele van polcokkal, befőttekkel és régi használati tárgyakkal. Valami miatt most mindenki ide gyűlik."],
+ ["Föld alatti alagút","Egy hosszú, visszhangos alagútban kell eligazodniuk. A falak és a hangok különös hangulatot adnak a jelenetnek."],
+ ["Lebegő sziget","Egy apró sziget lassan sodródik az égben. A rajta lévőknek alkalmazkodniuk kell a szokatlan körülményekhez."],
+ ["Zsúfolt piac","Árusok, vásárlók és hangos alkudozás tölti meg a teret. Könnyű elkeveredni, félreérteni valamit vagy váratlan segítséget találni."],
+ ["Jégbarlang","A csúszós, hideg barlangban minden mozdulat nehezebb. A jég visszaveri a fényt és a hangokat."],
+ ["Műhelylabor","Egy zsúfolt műhelyben félkész találmányok, szerszámok és kísérleti eszközök hevernek szanaszét."],
+ ["Régi kastély","A kastély nagy termeiben ünnepség, vita vagy éppen költözés zajlik. A helyszín hangulatát a szereplők alakítják."],
+ ["Űrállomás","Egy űrállomás folyosóin és közösségi tereiben a legapróbb meghibásodás is komoly szervezést igényelhet."],
+ ["Sűrű dzsungel","A növények között alig lehet átlátni. A párás levegő, az állathangok és a terep alakítják az eseményeket."],
+ ["Víz alatti kupolaváros","A mélyben egy lakott város működik, ahol a víz nyomása és a különleges közlekedés a mindennapok része."],
+ ["Vidámpark zárás után","A játékok leálltak, a fények egy része még világít, a személyzet pedig a nap utolsó feladatait végzi."],
+ ["Különös könyvtár","A könyvtárban olvasók, könyvtárosok és egymásnak ellentmondó szabályok között kell boldogulni."],
+ ["Sivatagi oázis","A forró sivatag közepén álló oázis pihenőhely, találkozópont és fontos erőforrás a vándoroknak."],
+ ["Felhőváros","A város utcái és terei a felhők között húzódnak. A szél és a változó látási viszonyok befolyásolják a történéseket."],
+ ["Elhagyott vasútállomás","Egy régi állomáson várakozó utasok, csomagok és egy késő vonat körül alakul ki a jelenet."],
+ ["Óriások kertje","A növények, bútorok és kerti szerszámok hatalmasra nőttek, ezért az apró szereplőknek új módszereket kell találniuk."],
+ ["Társasházi pince","Biciklik, szerszámok, dobozok és a lakók közös holmijai zsúfolják tele a pincét. A helyszín egy hétköznapi vita vagy közös munka színtere is lehet."],
+ ["Vulkán környéke","A meleg talaj, a füst és a szokatlan hangok miatt a szereplőknek figyelniük kell a környezetükre."],
+ ["Tükörterem","A tükrök sokszorozzák a szereplőket és a fényeket. A félrevezető látványból humoros vagy zavarba ejtő helyzet születhet."],
+ ["Holdbázis","A Hold felszínén működő bázison a készletek, a kommunikáció és az alacsony gravitáció mind hatással lehetnek a nap eseményeire."],
+ ["Esős buszmegálló","Többen ugyanarra a buszra várnak, de mindegyikük máshová szeretne eljutni."],
+ ["Iskolai tornaterem","Egy verseny, próba vagy váratlan incidens miatt egyszerre sok embernek kell együttműködnie."],
+ ["Kikötői rakpart","Hajók, kötelek, ládák és sürgő-forgó emberek között könnyen összekeveredhet két küldemény vagy két terv."],
+ ["Hegyi menedékház","A vihar miatt különböző emberek rekednek egy fedél alatt, eltérő célokkal és kevés hellyel."],
+ ["Közösségi kert","A parcellák, szerszámok és növények körül szomszédok dolgoznak, akik nem mindig értenek egyet a teendőkről."]
 ];
-const PATTERNS={
- open:{name:'Nyílt megszólalás',short:'A tisztázás felé mozdulsz',desc:'A válaszaidban gyakran megjelenik az igény, hogy kimondj dolgokat, rákérdezz, vagy tisztázd a helyzetet. Ez segíthet abban, hogy ne maradjon minden a felszín alatt.'},
- care:{name:'Kapcsolatfigyelés',short:'Figyelembe veszed a másik oldalt',desc:'Sok választásodban fontosnak tűnik, hogyan hat a döntésed másokra, és hogyan őrizhető meg a kapcsolat. Ez érzékenységet adhat a helyzetekhez, miközben érdemes figyelned arra is, hogy a saját igényeid ne tűnjenek el.'},
- think:{name:'Mérlegelő hozzáállás',short:'Előbb megérted a helyzetet',desc:'Gyakran választod a kivárást, az információgyűjtést vagy az átgondolást. Ez segíthet, hogy ne reagálj elhamarkodottan; néha viszont érdemes lehet észrevenni, mikor válik a mérlegelés halogatássá.'},
- boundary:{name:'Határőrzés',short:'Véded a saját mozgásteredet',desc:'A válaszaidban többször jelenik meg az önvédelem, a saját tér vagy a határok megtartása. Ez segíthet abban, hogy ne vállalj túl sokat; bizonyos helyzetekben viszont a kapcsolódásnak is érdemes teret hagyni.'}
-};
-// A válaszcímkék játékbeli megközelítések, nem validált pszichológiai mérés.
-const BANK=[
- {"c":"humor","q":"Reggel arra ébredsz, hogy minden gondolatodat hangosan kimondod. Mi az első lépésed?","o":[["Azonnal felhívom azt, akinek a legtöbb tartozom egy őszinte beszélgetéssel.","open"],["Készítek egy túlélési tervet, és megpróbálok csak aludni.","think"],["Úgy teszek, mintha ez egy új podcastformátum lenne.","care"],["Elbújok otthon, amíg vissza nem kapom a belső monológomat.","boundary"]],"r":"A humor mögött az is látszik, hogyan reagálsz, ha kicsúszik a kezedből az irányítás."},
- {"c":"humor","q":"Minden belépésedkor megszólal egy hangosbemondó, amely bemondja, mire gondolsz éppen. Mit választasz?","o":[["Legyen drámai narrátorom, legalább legyen stílusa.","open"],["Kitalálok egy kézjelet, amivel elnémíthatom.","think"],["Megkérem a barátaimat, hogy ők válasszák ki a zenét is.","care"],["Inkább soha többé nem megyek be sehova.","boundary"]],"r":""},
- {"c":"humor","q":"A háziállatod egy napra beszélni kezd, és rögtön véleményezi az életedet. Mit kérdezel tőle?","o":[["„Na, akkor mondd el, mit gondolsz rólam, ne kímélj!”","open"],["Megkérdezem, pontosan mióta tud beszélni, és miért most szólt.","think"],["Megkérdezem, mit szeretne vacsorára, végre megbeszélhetjük.","care"],["Visszaviszem az állatorvoshoz. Ez már túl sok információ.","boundary"]],"r":""},
- {"c":"humor","q":"Egy napig csak énekelve beszélhetsz. Hogyan éled túl?","o":[["Minden vitát musicaljelenetté alakítok.","open"],["Előre összeállítok egy rövid dallamkészletet minden helyzetre.","think"],["A barátaimat is ráveszem, hogy énekeljenek velem.","care"],["Nem szólalok meg egész nap.","boundary"]],"r":""},
- {"c":"humor","q":"Véletlenül elküldesz a családi csoportba egy üzenetet, amit a családi csoportról írtál. Mit teszel?","o":[["Vállalom, és elmagyarázom, miért írtam.","open"],["Előbb megnézem, pontosan ki olvasta már.","think"],["Küldök egy békülős mémcsomagot.","care"],["Új telefonszámot kérek, és elköltözöm.","boundary"]],"r":""},
- {"c":"humor","q":"Egy híres szakács megkóstolja a főztödet, majd hosszú csend után rád néz. Mit mondasz?","o":[["„Mondd ki. Kibírom.”","open"],["Megkérdezem, melyik lépésnél ment félre a recept.","think"],["Felajánlok neki még egy adagot, hátha az első csak balszerencse volt.","care"],["Kijelentem, hogy ez avantgárd konyhaművészet, és lezárom az ügyet.","boundary"]],"r":""},
- {"c":"humor","q":"Egy napig minden hazugságod után konfetti hullik a fejedre. Mit kezdesz ezzel?","o":[["Bevallok mindent, legalább látványos lesz.","open"],["Megpróbálok egész nap csak pontosan fogalmazni.","think"],["A barátaimmal konfetticsatát rendezek.","care"],["Nem találkozom senkivel, és nem beszélek telefonon.","boundary"]],"r":""},
- {"c":"humor","q":"Egy társaságban valaki azt mondja: „Mondj valami érdekeset magadról!” Mi a válaszod?","o":[["Elmesélek egy olyan sztorit, amit eddig senki nem hallott.","open"],["Visszakérdezek: milyen műfajban legyen érdekes?","think"],["Mondok valami kedvesen önironikusat, amin mindenki nevethet.","care"],["Azt mondom: „Most éppen itt vagyok.”","boundary"]],"r":""},
- {"c":"humor","q":"A telefonod automatikusan minden üzeneted végére odateszi: „Szeretettel, a főnököd.” Mit csinálsz?","o":[["Mindenkinek megírom, hogy ez nem véletlen, csak új korszak.","open"],["Megkeresem a beállítást, és azonnal kikapcsolom.","think"],["Küldök egy vicces magyarázatot a barátaimnak.","care"],["Egy napig nem írok senkinek.","boundary"]],"r":""},
- {"c":"humor","q":"A barátaid titokban beneveznek egy tehetségkutatóba. A színpadon állsz, és fogalmad sincs, mi a produkció. Mit teszel?","o":[["Rögtönzök, és úgy teszek, mintha ez lenne a terv.","open"],["Kitalálok egy gyors, egyszerű mutatványt.","think"],["Behívom a barátaimat is, ha már ők intézték.","care"],["Megkérem a műsorvezetőt, hogy tekintsünk el ettől a félreértéstől.","boundary"]],"r":""},
- {"c":"humor","q":"Egy egész napra láthatatlanná válhatsz, de minden tüsszentésed hangosan visszhangzik. Mire használod?","o":[["Megjelenek egy fontos helyen, és mindenkit meglepek.","open"],["Csak előre megtervezett helyzetekben próbálom ki.","think"],["Megviccelem a barátaimat, de senkit nem ijesztek halálra.","care"],["Inkább kihagyom. A tüsszentés túl nagy lebukási kockázat.","boundary"]],"r":""},
- {"c":"humor","q":"Egy napig mindenki látja a fejed fölött az utolsó öt keresésedet. Hogyan reagálsz?","o":[["Kiteszek mellé egy magyarázó táblát is.","open"],["Előző este kitakarítom az előzményeket.","think"],["Nevetek rajta, és megkérdezem másokét is.","care"],["Repülő üzemmód, sapka, napszemüveg, eltűnés.","boundary"]],"r":""},
- {"c":"humor","q":"Egy idegen összetéveszt valakivel, akit nagyon nem kedvel. Mit teszel?","o":[["Közlöm vele, hogy rossz emberrel kezdett.","open"],["Megpróbálom kideríteni, kit keres valójában.","think"],["Eljátszom pár másodpercig, aztán felfedem a tévedést.","care"],["Azonnal másik irányba indulok.","boundary"]],"r":""},
- {"c":"humor","q":"A saját életedből valóságshow készül, és minden nap egyetlen jelenetet visszajátszanak a barátaidnak. Mit kérsz a szerkesztőtől?","o":[["Mutassa a teljes sztorit, ne csak a ciki részeket.","open"],["Kérek előzetes megtekintési jogot.","think"],["Legyen benne blooper-válogatás is, amin együtt nevetünk.","care"],["A szerződésemben legyen benne, hogy bármikor kiszállhatok.","boundary"]],"r":""},
- {"c":"humor","q":"Egy hétig minden alkalommal, amikor kimondod a saját nevedet, tapsolni kezd a környezeted. Mit csinálsz?","o":[["Bemutatkozáskor kihasználom a belépőt.","open"],["Kerülöm a nevem kimondását, ahol lehet.","think"],["Mindenkit megtanítok együtt tapsolni.","care"],["Új becenevet használok egy hétig.","boundary"]],"r":""},
- {"c":"humor","q":"Egy vacsorán csak egyetlen mondatot ismételhetsz egész este. Melyik stratégiát választod?","o":[["A legdrámaibb mondatot, hogy legalább emlékezetes legyen.","open"],["Egy semleges kérdést, amivel minden beszélgetést tovább lehet vinni.","think"],["Egy kedves bókot, amit mindenkinek elmondhatok.","care"],["Azt, hogy „Köszönöm, jól vagyok.”, és túlélni.","boundary"]],"r":""},
- {"c":"humor","q":"A futár rossz csomagot hoz: egy óriási, életnagyságú kartonfigurát rólad. Mi legyen vele?","o":[["Kirakom az ablakba, hadd legyen belőle legenda.","open"],["Megkeresem, ki rendelte, és visszajuttatom.","think"],["Elviszem a barátaimhoz egy meglepetésbulira.","care"],["Nem veszem át. Már a gondolattól is fáradt vagyok.","boundary"]],"r":""},
- {"c":"humor","q":"A baráti társaságod szavazással választ neked új becenevet. Mitől tartasz a legjobban?","o":[["Hogy túl találó lesz, és mindenki használni kezdi.","open"],["Hogy valami teljesen értelmetlen lesz, amit nem tudok megmagyarázni.","think"],["Hogy csak én nem fogom érteni a poént.","care"],["Hogy rajtam ragad örökre.","boundary"]],"r":""},
- {"c":"humor","q":"Egy idegen rád köszön az utcán, te visszaköszönsz, majd kiderül, hogy mögötted állt az ismerőse. Mit teszel?","o":[["Bemutatkozom az ismeretlennek is.","open"],["Úgy teszek, mintha csak a környezetet ellenőriztem volna.","think"],["Nevetek, és bevonom a kínos pillanatba a valódi ismerőst is.","care"],["Gyorsan átmegyek az út túloldalára.","boundary"]],"r":""},
- {"c":"humor","q":"Ha egy hétre kötelező lenne egyetlen ruhadarabot viselned minden eseményen, mit választanál?","o":[["A legfeltűnőbb darabot, hadd legyen rólam szó.","open"],["A legpraktikusabbat, amit mindenhez lehet igazítani.","think"],["Valami vicceset, ami másokat is feldob.","care"],["A legkényelmesebbet, és nem érdekel a dress code.","boundary"]],"r":""},
- {"c":"spicy","q":"Éjfél után üzenetet kapsz egy felnőttől, akivel régóta vibrál köztetek a levegő: „Fent vagy?” Mit teszel?","o":[["Válaszolok, és nem játszom az ártatlant.","open"],["Megvárom, mit ír még, mielőtt eldöntöm.","think"],["Visszaküldök egy kétértelmű, de játékos emojit.","care"],["Elolvasom, leteszem a telefont, majd öt perc múlva újra megnézem.","boundary"]],"r":""},
- {"c":"spicy","q":"A párod megkérdezi, mi az a romantikus vagy pikáns dolog, amit szívesen kipróbálnál, de még sosem mondtál ki. Mi a reakciód?","o":[["Őszintén elmondom, ha mindketten komfortosan vagyunk vele.","open"],["Előbb megbeszélem, mit jelentene ez mindkettőnknek.","think"],["Kérdezek az ő ötleteiről is, és közösen alakítjuk.","care"],["Most nem szeretnék erről beszélni, és ezt jelzem.","boundary"]],"r":""},
- {"c":"spicy","q":"Egy bárban valaki nagyon egyértelműen flörtöl veled, miközben a párod is ott van. Mit teszel?","o":[["Játékosan reagálok, de egyértelmű keretek között.","open"],["Előbb felmérem, hogy tényleg flört-e vagy csak kedvesség.","think"],["Bevonom a páromat a beszélgetésbe, ha neki is jólesik.","care"],["Lezárom a helyzetet, mert nem kérek ebből.","boundary"]],"r":""},
- {"c":"spicy","q":"Egy páros programon a kérdés ez: „Mi volt az első gondolatod rólam, amikor megismerkedtünk?” Mit választasz?","o":[["Kimondom az igazi első benyomásomat.","open"],["Kicsit megszűröm, hogy ne legyen félreérthető.","think"],["Viccesen mesélem el, hogy mindketten nevessünk.","care"],["Passzolok, ha túl személyesnek érzem.","boundary"]],"r":""},
- {"c":"spicy","q":"Egy régi randipartnered azt írja: „Néha eszembe jutsz.” Hogyan válaszolsz?","o":[["Megkérdezem, miért pont most jutottam eszébe.","open"],["Előbb átgondolom, mit szeretnék ettől a beszélgetéstől.","think"],["Kedvesen válaszolok, de nem ígérek semmit.","care"],["Nem nyitom újra ezt az ajtót.","boundary"]],"r":""},
- {"c":"spicy","q":"A párod felveti, hogy legyen egy telefonmentes, kettesben töltött estétek, mindenféle előre eltervezett program nélkül. Mit gondolsz?","o":[["Pont erre vágytam, legyen spontán.","open"],["Kitalálok egy laza tervet, hogy ne legyen kínos csend.","think"],["Azt szeretném, hogy mindkettőnknek jó legyen, ezért együtt találjuk ki.","care"],["Jó ötlet, de előbb szükségem van egy kis saját időre.","boundary"]],"r":""},
- {"c":"spicy","q":"Egy társaságban valaki felteszi: „Mi az, amitől azonnal vonzóbb lesz számodra valaki?” Mit felelsz?","o":[["Kimondom a konkrét választ, kertelés nélkül.","open"],["Mondok egy kevésbé nyilvánvaló tulajdonságot.","think"],["Olyasmit említek, ami a másik ember személyiségéről szól.","care"],["Nem adok ki ilyen személyes preferenciát a társaságnak.","boundary"]],"r":""},
- {"c":"spicy","q":"A párod játékosan szerepcserés randit javasol: úgy tesztek, mintha most találkoznátok először. Mit teszel?","o":[["Beleállok, és teljesen újra felszedem.","open"],["Előre megbeszélem, mi fér bele a játékba.","think"],["Kitalálok hozzá vicces karaktereket és történetet.","care"],["Inkább kihagyom, nekem ez nem természetes.","boundary"]],"r":""},
- {"c":"spicy","q":"Egy vonzó ismerősöd megdicséri a megjelenésedet, és hozzáteszi: „Ezt még folytathatnánk kettesben.” Mi a válaszod?","o":[["Visszakérdezek, mire gondol pontosan.","open"],["Megnézem, milyen helyzetben hangzott el, és csak utána reagálok.","think"],["Kedvesen elütöm, ha nem szeretném kellemetlenné tenni.","care"],["Egyértelműen jelzem, ha nem érdekel.","boundary"]],"r":""},
- {"c":"spicy","q":"Egy közös nyaraláson a párod azt mondja: „Idén legyen valami igazán romantikus.” Melyik ötletet választod?","o":[["Spontán éjszakai kalandot, meglepetés úti céllal.","open"],["Előre lefoglalt, nyugodt kettesben töltött hétvégét.","think"],["Olyan programot, amit mindketten szeretünk és együtt élvezünk.","care"],["Olyat, ahol mindkettőnknek jut külön tér is.","boundary"]],"r":""},
- {"c":"spicy","q":"A párod azt kérdezi: „Mikor érzed magad a legvonzóbbnak?” Mit mondasz?","o":[["Amikor érzem, hogy valaki nyíltan kíváncsi rám.","open"],["Amikor magabiztosnak és összeszedettnek érzem magam.","think"],["Amikor a párom figyelmesen és gyengéden fordul felém.","care"],["Amikor nem kell senkinek megfelelnem.","boundary"]],"r":""},
- {"c":"spicy","q":"Egy felnőtt társasjátékban azt a feladatot kapod, hogy mondj valakinek egy merész, de tiszteletteljes bókot. Mit választasz?","o":[["A szemébe nézek, és kimondom, amit tényleg gondolok.","open"],["Keresek egy frappáns, nem túl direkt mondatot.","think"],["Olyan bókot adok, amitől a másik jól érzi magát.","care"],["Passzolok, ha nem érzem komfortosnak.","boundary"]],"r":""},
- {"c":"spicy","q":"A partnered felajánlja, hogy osszátok meg egymással a legfurcsább romantikus fantáziátokat, de csak beszélgetés szintjén. Mit teszel?","o":[["Kezdem én, és nem kerülgetem a témát.","open"],["Előbb megbeszélem, hogy ítélkezés nélkül hallgatjuk meg egymást.","think"],["Könnyed, vicces hangon kezdem, hogy oldjam a feszültséget.","care"],["Nem szeretnék fantáziákról beszélni, és ezt tisztázom.","boundary"]],"r":""},
- {"c":"spicy","q":"Valaki, aki tetszik, megkérdezi: „Most akkor randizunk, vagy csak kerülgetjük egymást?” Mit válaszolsz?","o":[["„Randizunk. Mikor érsz rá?”","open"],["Kérek egy kis időt, hogy biztosan tudjam, mit szeretnék.","think"],["Megkérdezem, ő hogyan képzeli, és közösen tisztázzuk.","care"],["Kimondom, ha nekem ez csak barátság.","boundary"]],"r":""},
- {"c":"spicy","q":"A párod egy elegáns vacsorán az asztal alatt megfogja a kezed, és rád mosolyog. Mit csinálsz?","o":[["Visszamosolygok, és egyértelműen jelzem, hogy tetszik.","open"],["Megőrzöm a nyugalmam, de későbbre tartogatom a választ.","think"],["Finoman megszorítom a kezét.","care"],["Ha most nem vagyok hangulatban, kedvesen jelzem.","boundary"]],"r":""},
- {"c":"spicy","q":"Egy párkapcsolati beszélgetésben kiderül, hogy mást jelent nektek a hűség egyik határa. Mit teszel?","o":[["Nyíltan elmondom, nálam hol húzódik a határ.","open"],["Példákkal tisztázom, hogy ugyanarról beszélünk-e.","think"],["Keresek olyan közös megállapodást, amely mindkettőnknek biztonságos.","care"],["Nem fogadok el olyan keretet, amely nekem nem fér bele.","boundary"]],"r":""},
- {"c":"spicy","q":"Egy csók után a másik fél megkérdezi: „Na, és milyen volt?” Mit felelsz?","o":[["„Szeretnél még egy tesztet?”","open"],["Adok egy őszinte, de kedves visszajelzést.","think"],["Elmosolyodom, és megkérdezem, neki milyen volt.","care"],["Nem szeretném pontozni az ilyesmit.","boundary"]],"r":""},
- {"c":"spicy","q":"Egy randin a másik fél azt mondja, hogy szereti a merész, spontán döntéseket. Te hogyan reagálsz?","o":[["„Akkor találjunk ki most valamit.”","open"],["Előbb tisztázom, mennyire spontánra gondol.","think"],["Olyan ötletet dobok be, ami mindkettőnknek komfortos.","care"],["Megmondom, hogy én inkább lassabb tempóban ismerkedem.","boundary"]],"r":""},
- {"c":"spicy","q":"A párod szeretné, ha néha te kezdeményeznél romantikus vagy intim programot. Mit teszel?","o":[["Már ma kitalálok valami meglepőt.","open"],["Megkérdezem, milyen kezdeményezésnek örülne.","think"],["Figyelem az apró jelzéseit, és azokhoz igazodom.","care"],["Elmondom, ha nekem más ritmus vagy forma kényelmes.","boundary"]],"r":""},
- {"c":"spicy","q":"Egy felnőtt baráti társaságban szóba kerül a féltékenység. Melyik mondat áll hozzád legközelebb?","o":[["Amit érzek, azt inkább kimondom, mint hogy találgassak.","open"],["Előbb különválasztom a tényeket a feltételezéseimtől.","think"],["A bizalmat közösen kell építeni, nem ellenőrzéssel.","care"],["A saját határaimat akkor is megtartom, ha valaki nem ért velük egyet.","boundary"]],"r":""},
- {"c":"horror","q":"Éjjel 2:47-kor a telefonod a saját számodról csörög. A saját hangod szól bele: „Ne menj ki a szobából.” Ekkor kopognak. Mit teszel?","o":[["Kinyitom az ajtót, és szembenézek azzal, ami ott van.","open"],["Lezárom az ajtót, felhívok valakit, és átgondolom a menekülési útvonalat.","think"],["Előbb ellenőrzöm, hogy mindenki más biztonságban van-e.","care"],["Nem nyitok ajtót. Elbújok, és kivárom a reggelt.","boundary"]],"r":""},
- {"c":"horror","q":"Egy elhagyott hotelben a lift minden emeleten megáll, de senki nem száll be. A kijelző végül ezt írja: „MÁR VÁRTUNK.” Mit választasz?","o":[["Kiszállok, és megnézem, ki üzent.","open"],["Megnyomom a földszintet, és figyelem, mi történik.","think"],["Megpróbálok segítséget hívni, mielőtt bárki eltűnne.","care"],["Nem várok tovább: a lépcsőházat választom.","boundary"]],"r":""},
- {"c":"horror","q":"Éjszaka a sátrad előtt valaki háromszor körbejár, majd a saját hangodon azt suttogja: „Engedj be.” Mit teszel?","o":[["Kiszólok, hogy tudom, hogy nem én vagyok.","open"],["Csendben maradok, és megpróbálom meghatározni, merre van.","think"],["Felébresztem a többieket, és együtt döntünk.","care"],["Nem nyitom ki a sátrat, és elrejtőzöm.","boundary"]],"r":""},
- {"c":"horror","q":"A fürdőszobai tükörben a tükörképed egy másodperccel később mozdul, mint te. Mi az első reakciód?","o":[["Megfordulok, és megkérdezem, mi a franc történik.","open"],["Tesztelem több mozdulattal, hogy tényleg késik-e.","think"],["Szólok valakinek, hogy jöjjön oda velem.","care"],["Letakarom a tükröt, és kimegyek a szobából.","boundary"]],"r":""},
- {"c":"horror","q":"A telefonod egy fotót kap a hálószobádról. A kép most készült, és te is rajta vagy, hátulról. Mit teszel?","o":[["Azonnal körülnézek, és szembesítem a betolakodót.","open"],["Előbb ellenőrzöm az ajtókat, ablakokat és a kamera lehetőségét.","think"],["Felhívok valakit, és nem maradok egyedül.","care"],["Kimegyek a lakásból, és biztonságos helyre megyek.","boundary"]],"r":""},
- {"c":"horror","q":"Egy régi házban találsz egy kulcsot egy cetlivel: „A padlás ajtaját soha ne nyisd ki.” Mit csinálsz?","o":[["Természetesen felmegyek. Most már muszáj tudnom.","open"],["Megkeresem, ki írta a cetlit, és miért.","think"],["Megkérdezem a többieket, ők mit gondolnak.","care"],["A kulcsot leteszem, és elkerülöm a padlást.","boundary"]],"r":""},
- {"c":"horror","q":"Egy alagút közepén kialszik a zseblámpád. A telefonod 1%-on van, mögötted pedig lépések hallatszanak. Mit teszel?","o":[["Megfordulok, és hangosan felszólítom, hogy álljon meg.","open"],["A telefon fényével megkeresem a legközelebbi kijáratot.","think"],["Megpróbálom elérni a velem érkezőket, és együtt mozgunk.","care"],["Elindulok a legközelebbi kijárat felé, nem nézek hátra.","boundary"]],"r":""},
- {"c":"horror","q":"Egy gyerek áll a folyosó végén, háttal neked. A házban rajtad kívül senki sincs. Amikor megszólítod, a hangja a te hangod. Mit teszel?","o":[["Odasétálok, és megkérdezem, ki ő.","open"],["Távolról figyelem, és keresem a kijáratot.","think"],["Segítséget hívok, és nem közelítek egyedül.","care"],["Azonnal elhagyom a házat.","boundary"]],"r":""},
- {"c":"horror","q":"A biztonsági kamera felvételén valaki áll mögötted. Visszanézel, de nincs ott senki. Mit teszel?","o":[["Visszamegyek a kamerához, és ellenőrzöm a felvételt.","open"],["Megnézem az összes kamera időbélyegét és a holttereket.","think"],["Értesítem a többieket, és együtt ellenőrizzük a helyet.","care"],["Nem maradok ott tovább.","boundary"]],"r":""},
- {"c":"horror","q":"Egy rádió hajnali háromkor bemondja a nevedet, majd elmondja, mit csinálsz éppen. Mi a reakciód?","o":[["Válaszolok neki, és megkérdezem, honnan tudja.","open"],["Kihúzom a konnektorból, majd megvizsgálom az eszközt.","think"],["Felébresztek valakit, hogy ne egyedül halljam.","care"],["Kimegyek a szobából, és nem hallgatom tovább.","boundary"]],"r":""},
- {"c":"horror","q":"Egy üres moziteremben a filmvásznon élő képet látsz a nézőtérről. A vásznon valaki a te széked mögött ül. Mit teszel?","o":[["Hátrafordulok, és megnézem, ki van ott.","open"],["Felállok, és a kijárat felé indulva figyelem a képet.","think"],["Megkérem a társamat, hogy maradjon mellettem.","care"],["Azonnal elhagyom a termet.","boundary"]],"r":""},
- {"c":"horror","q":"Egy erdei házban minden éjjel ugyanabban az időben megáll az óra, és valaki a nevedet suttogja. Mit teszel az első éjjel?","o":[["Kimegyek, és megkeresem a hang forrását.","open"],["Felveszem a hangot, és megfigyelem az időpontokat.","think"],["Megkérem a többieket, hogy maradjanak együtt velem.","care"],["Nem alszom ott még egy éjszakát.","boundary"]],"r":""},
- {"c":"horror","q":"Egy ismeretlen számról ezt az üzenetet kapod: „Ne bízz abban, aki most melletted ül.” Mit teszel?","o":[["Rákérdezek az illetőnél, hogy tud-e valamit.","open"],["Megnézem a feladót, az időpontot és az üzenet körülményeit.","think"],["Megmutatom annak, akiben megbízom, és együtt értékeljük.","care"],["Nem reagálok, és megszakítom a helyzetet.","boundary"]],"r":""},
- {"c":"horror","q":"A ház minden ajtaja nyitva van, kivéve egyet. A zárt ajtó mögül valaki halkan a beceneveden szólít. Mit választasz?","o":[["Kinyitom, mert nem bírom a bizonytalanságot.","open"],["Előbb megpróbálom kideríteni, mi van mögötte.","think"],["Megkeresem a többieket, és együtt döntünk.","care"],["Nem nyitom ki, és elhagyom az épületet.","boundary"]],"r":""},
- {"c":"horror","q":"Egy régi családi videón a háttérben valaki integet neked, pedig a felvétel idején még meg sem születtél. Mit teszel?","o":[["Megmutatom mindenkinek, és utánajárok a történetnek.","open"],["Megnézem a felvétel dátumát és a képkockákat.","think"],["Megkérdezem a családtagokat, felismerik-e a helyet.","care"],["Nem nézem meg újra. Nekem ennyi elég volt.","boundary"]],"r":""},
- {"c":"horror","q":"Egy liftben a kijelzőn olyan emelet jelenik meg, amely nem létezik az épületben. Az ajtó kinyílik. Mit teszel?","o":[["Kilépek, és megnézem, mi van ott.","open"],["Megnyomom a bezárás gombot, és megfigyelem a kijelzőt.","think"],["Megvárom, amíg valaki más is odaér.","care"],["Nem lépek ki; megpróbálok visszajutni a földszintre.","boundary"]],"r":""},
- {"c":"horror","q":"A szomszédod kopog, és azt mondja: „Ne engedd be magad.” Majd elsétál. Mit teszel?","o":[["Utána megyek, és magyarázatot kérek.","open"],["Ellenőrzöm a zárakat, és megpróbálom értelmezni a mondatot.","think"],["Felhívok egy közeli embert, hogy legyen velem vonalban.","care"],["Nem nyitok ajtót senkinek.","boundary"]],"r":""},
- {"c":"horror","q":"Egy éjszakai vonaton mindenki ugyanarra az üres ülésre néz, de senki nem beszél róla. Mit teszel?","o":[["Megkérdezem hangosan, mi történik.","open"],["Megfigyelem az utasok reakcióit, mielőtt lépnék.","think"],["Átülök valaki közelébe, aki szintén nyugodtnak tűnik.","care"],["Leszállok a következő állomáson.","boundary"]],"r":""},
- {"c":"horror","q":"A telefonod éjjel magától elkezd lejátszani egy hangfelvételt, amelyen te alszol és valaki a nevedet ismétli. Mit teszel?","o":[["Azonnal felkapcsolom a villanyt, és körülnézek.","open"],["Ellenőrzöm a fájl forrását és az eszköz naplóját.","think"],["Felébresztek valakit, hogy együtt hallgassuk meg.","care"],["Kikapcsolom a készüléket, és máshol alszom.","boundary"]],"r":""},
- {"c":"horror","q":"Egy sötét szobában három ajtó van. Az egyik mögül sírás, a másik mögül nevetés, a harmadik mögül a te hangod hallatszik. Melyik felé indulsz?","o":[["A saját hangom felé. Tudni akarom, mi történik.","open"],["Egyikhez sem nyúlok, előbb keresek másik kijáratot.","think"],["A sírás felé indulok, hátha valakinek segítség kell.","care"],["Visszafordulok, és keresek egy biztonságos utat kifelé.","boundary"]],"r":""},
- {"c":"chaos","q":"Egymilliárd forintot kapsz, de minden hazugságod után valahol a világon valaki elénekli a Himnuszt. Elfogadod?","o":[["Azonnal. A pénz az pénz, vállalom a következményeket.","open"],["Előbb kiszámolom, milyen gyakran hazudom el magam.","think"],["Elfogadom, de megpróbálok másokat nem kellemetlen helyzetbe hozni.","care"],["Nem kérem. Nem akarok globális karaoke-katasztrófát.","boundary"]],"r":""},
- {"c":"chaos","q":"Minden tüsszentésed után két méterrel arrébb teleportálsz. Mit teszel?","o":[["Bevállalom, és felfedezem a várost tüsszentéssel.","open"],["Maszkot, zsebkendőt és útvonaltervet készítek.","think"],["Megkérem a barátaimat, hogy figyeljenek rám.","care"],["Otthon maradok, amíg ez el nem múlik.","boundary"]],"r":""},
- {"c":"chaos","q":"Egy szupererőt választhatsz, de mindegyiknek van egy nevetséges hátránya. Melyik kell?","o":[["Repülés, de csak hátrafelé.","open"],["Gondolatolvasás, de csak akkor, ha matekpéldára gondolnak.","think"],["Gyógyítás, de minden alkalommal te is csuklasz egy órát.","care"],["Láthatatlanság, de a ruhád mindig látható marad.","boundary"]],"r":""},
- {"c":"chaos","q":"Egy hétre te leszel egy kisváros polgármestere, de minden döntésedet népszavazásra kell bocsátani. Mi az első intézkedésed?","o":[["Bevezetem a heti jelmezes pénteket.","open"],["Átnézem a költségvetést, mielőtt bármit ígérek.","think"],["Megkérdezem a lakókat, mire van leginkább szükségük.","care"],["Bejelentem, hogy a városháza ma zárva, és kérek egy nap gondolkodási időt.","boundary"]],"r":""},
- {"c":"chaos","q":"Választhatsz: egy évig nincs interneted, vagy egy évig nem hallgathatsz zenét. Melyiket vállalod?","o":[["Internet nélkül. Majd mindenkivel személyesen beszélek.","open"],["Kiszámolom, melyik hiányozna jobban a mindennapi rutinomból.","think"],["A zenét tartom meg, mert a közös pillanatokhoz kell.","care"],["Egyiket sem vállalom, inkább újratárgyalom az ajánlatot.","boundary"]],"r":""},
- {"c":"chaos","q":"Minden alkalommal, amikor belépsz egy szobába, véletlenszerű taps indul. Hogyan használod ki?","o":[["Úgy lépek be, mintha én lennék a sztár.","open"],["Megtanulom, hogyan lehet a tapsot időzíteni.","think"],["Mindig meghajolok, és megköszönöm mindenkinek.","care"],["Inkább nem megyek be sehova.","boundary"]],"r":""},
- {"c":"chaos","q":"Egy napra cserélhetsz testet egy vadállattal, de nem választhatod ki, melyikkel. Mit teszel?","o":[["Bevállalom. Egy napig bármi lehetek.","open"],["Előbb szeretnék legalább egy biztonsági garanciát.","think"],["Azt remélem, olyan állat leszek, amelynek van falkája.","care"],["Nem kérem. Nem szeretnék egy idegen testben ébredni.","boundary"]],"r":""},
- {"c":"chaos","q":"A gravitáció naponta egy órára megszűnik, de nem tudni, mikor. Hogyan készülsz?","o":[["Kihasználom, és minden nap lebegő bulit szervezek.","open"],["Minden fontos tárgyat rögzítek, és figyelem az előrejelzést.","think"],["Segítek a családnak és a szomszédoknak is felkészülni.","care"],["A lehető legkevesebbet mozgok aznap.","boundary"]],"r":""},
- {"c":"chaos","q":"A jövőbeli éned küld egy üzenetet: „Ne fogadd el a következő ajánlatot.” Nem tudod, mire vonatkozik. Mit teszel?","o":[["Megvárom az ajánlatot, és vállalom a kockázatot.","open"],["Megpróbálom kideríteni, honnan jött az üzenet.","think"],["Megbeszélem valakivel, akiben megbízom.","care"],["Nem fogadok el semmilyen ajánlatot egy hétig.","boundary"]],"r":""},
- {"c":"chaos","q":"Egy varázsló felajánlja, hogy eltüntet egy kínos emlékedet, de cserébe elveszíted az egyik kedvenc emlékedet is. Mit választasz?","o":[["Belevágok. Kíváncsi vagyok, mi marad utána.","open"],["Előbb szeretném tudni, pontosan melyik emlék tűnik el.","think"],["Csak akkor fogadom el, ha valaki, aki ismer, segít választani.","care"],["Nem adok fel egy jó emléket egy rosszért.","boundary"]],"r":""},
- {"c":"chaos","q":"Egy hétig minden étel ugyanazzal az ízzel fog rendelkezni, amit te választasz. Melyik íz legyen?","o":[["Csípős, hogy legalább történjen valami.","open"],["Semleges, hogy ne unjam meg két nap alatt.","think"],["Valami édes, amit a többiek is szeretnek.","care"],["Nem kérek ilyen hatalmat, túl nagy felelősség.","boundary"]],"r":""},
- {"c":"chaos","q":"Egy időgéppel öt percre visszamehetsz egyetlen pillanatba, de nem változtathatsz semmin. Hová mész?","o":[["Egy olyan koncertre vagy eseményre, amit újra átélnék.","open"],["Megnézem egy régi döntésem előtti pillanatot, hogy jobban értsem.","think"],["Visszamegyek egy közös családi vagy baráti emlékhez.","care"],["Nem nyitom újra a múltat.","boundary"]],"r":""},
- {"c":"chaos","q":"Egy napra minden állat ért a beszédedből, de csak a legőszintébb gondolataikat mondják ki. Kit kérdezel meg először?","o":[["A városi galambokat. Biztos sok titkuk van.","open"],["Egy kutyát, hogy mit gondol az emberek szabályairól.","think"],["A saját állatomat, hogy mire lenne szüksége.","care"],["Senkit. Nem biztos, hogy akarom hallani.","boundary"]],"r":""},
- {"c":"chaos","q":"A világon minden embernek kötelező lenne egy új, teljesen értelmetlen szabályt betartania. Mi legyen a tiéd?","o":[["Mindenki naponta egyszer mondjon egy őszinte bókot egy idegennek.","open"],["Mindenki tartson öt perc csendet döntés előtt.","think"],["Mindenki kérdezze meg valakitől, hogy van-e szüksége segítségre.","care"],["Mindenki naponta egyszer mondhassa azt: „Most nem.”","boundary"]],"r":""},
- {"c":"chaos","q":"Egy napig minden gondolatod feliratként jelenik meg a homlokod fölött, de te szabályozhatod a betűtípust. Mit csinálsz?","o":[["Óriási, villogó neonbetűkkel kérem.","open"],["Apró betűvel és gyorsan eltűnő animációval.","think"],["Vicces matricákat teszek mellé, hogy oldjam a helyzetet.","care"],["Kalapot húzok, és nem megyek emberek közé.","boundary"]],"r":""},
- {"c":"chaos","q":"Egy idegen bolygón te vagy az emberiség első nagykövete. Mit viszel ajándékba?","o":[["Egy hangszórót és a kedvenc zenéimet.","open"],["Egy részletes használati útmutatót az emberiséghez.","think"],["Egy közös étkezéshez elegendő ételt.","care"],["Semmit, előbb felmérem, hogy biztonságos-e a találkozó.","boundary"]],"r":""},
- {"c":"chaos","q":"Egy napig az összes közlekedési eszköz csak akkor indul el, ha viccet mondasz a sofőrnek. Hogyan oldod meg?","o":[["Már reggel kész műsorral indulok.","open"],["Előre megtanulok tíz biztos poént.","think"],["A társaságot kérem meg, hogy segítsen a poénokkal.","care"],["Gyalog megyek. Nem vállalok közönség előtti fellépést.","boundary"]],"r":""},
- {"c":"chaos","q":"A személyes időd egy napra megáll, miközben mindenki másé halad. Mire használod?","o":[["Megcsinálok valami merészet, amire eddig nem volt időm.","open"],["Rendszerezem a dolgaimat és előre tervezek.","think"],["Meglepem a szeretteimet valami aprósággal.","care"],["Pihenek, és nem tartozom senkinek magyarázattal.","boundary"]],"r":""},
- {"c":"chaos","q":"Egy kívánságod teljesül, de az eredményt egy egész városnak kell viselnie. Mit kérsz?","o":[["Legyen egy nap, amikor mindenki bátran kipróbál valami újat.","open"],["Mindenki kapjon egy plusz órát a napjához.","think"],["Mindenki találjon egy embert, akivel őszintén beszélhet.","care"],["Mindenki kapjon egy napot, amikor békén hagyják.","boundary"]],"r":""},
- {"c":"chaos","q":"A főnököd bejelenti: holnaptól a munkahelyen mindenki csak rímekben beszélhet. Mi lesz az első mondatod?","o":[["„Én ebbe most teljes szívvel beleállok, jöhet a rímvarázs!”","open"],["Megkeresem a legjobb rímeket a szakmai kifejezésekhez.","think"],["Készítek egy közös rímszótárt, hogy senki ne maradjon ki.","care"],["Kérek egy hét szabadságot.","boundary"]],"r":""},
- {"c":"awkward","q":"Véletlenül belájkolod valakinek a 2017-es fotóját, akivel most ismerkedsz. Mit teszel?","o":[["Írok neki: igen, végignéztem a profilodat.","open"],["Azonnal visszavonom, és ellenőrzöm, kapott-e értesítést.","think"],["Nevetek magamon, és később elmesélem neki.","care"],["Letiltom, törlöm az alkalmazást, új életet kezdek.","boundary"]],"r":""},
- {"c":"awkward","q":"Elköszönsz valakitől, elindultok ugyanabba az irányba, majd háromszor újra elköszöntök. Mi a stratégiád?","o":[["Kimondom: „Ez már nevetséges, sétáljunk együtt.”","open"],["Úgy teszek, mintha direkt így terveztem volna.","think"],["Nevetek, és hagyom, hogy közös poén legyen.","care"],["Átmegyek a másik oldalra, és remélem, nem vesz észre.","boundary"]],"r":""},
- {"c":"awkward","q":"Egy értekezleten azt hiszed, némítva vagy, és hangosan kommentálod a prezentációt. Mit teszel?","o":[["Azonnal vállalom, hogy én voltam, és elmondom, miért.","open"],["Megpróbálom gyorsan technikai hibának beállítani, majd javítok.","think"],["Bocsánatot kérek, és oldom a feszültséget egy önironikus megjegyzéssel.","care"],["Kikapcsolom a kamerát és a mikrofont, és nem szólalok meg többet.","boundary"]],"r":""},
- {"c":"awkward","q":"A pincér azt mondja: „Jó étvágyat!”, te pedig rávágod: „Neked is!” Mit csinálsz utána?","o":[["Ráteszek még egy lapáttal: „Ha maradt időd, ülj le!”","open"],["Úgy teszek, mintha nem hallottam volna magam.","think"],["Elmosolyodom, és mindketten továbblépünk.","care"],["A következő tíz percben kerülöm a szemkontaktust.","boundary"]],"r":""},
- {"c":"awkward","q":"Integetsz valakinek, aki valójában mögötted lévő embernek integetett. Mi a reakciód?","o":[["Átfordítom az integetést egy laza nyújtózásba.","open"],["Gyorsan kitalálok egy indokot, miért emeltem fel a kezem.","think"],["Nevetek rajta, és intek a valódi címzettnek is.","care"],["Azonnal úgy teszek, mintha mást keresnék.","boundary"]],"r":""},
- {"c":"awkward","q":"Egy buliban valakinek rossz nevet mondasz, akivel már háromszor találkoztál. Mit teszel?","o":[["Bevallom, és megkérdezem újra a nevét.","open"],["Próbálok rájönni a nevére a beszélgetésből, mielőtt megszólítom.","think"],["Kérek elnézést, és elmondom, hogy névmemóriában gyenge vagyok.","care"],["Inkább nem szólítom meg többé név szerint.","boundary"]],"r":""},
- {"c":"awkward","q":"Egy fontos bemutatkozás közben megbotlasz, és majdnem az egész asztalt magaddal rántod. Mi a reakciód?","o":[["Felállok, meghajolok, mintha ez lett volna a produkció.","open"],["Gyorsan ellenőrzöm, nem sérült-e meg valami.","think"],["Bocsánatot kérek mindenkitől, és segítek rendet tenni.","care"],["Kimegyek levegőzni, mert kell egy perc.","boundary"]],"r":""},
- {"c":"awkward","q":"Egy randin véletlenül a másiknak küldöd el azt az üzenetet, amelyben róla írsz a barátodnak. Mit teszel?","o":[["Azonnal vállalom, és elmagyarázom a szándékomat.","open"],["Megpróbálom megérteni, pontosan mit látott belőle.","think"],["Bocsánatot kérek, és teret adok neki reagálni.","care"],["Lezárom a randit, ha túl kellemetlennek érzem.","boundary"]],"r":""},
- {"c":"awkward","q":"Egy társaságban elsütsz egy viccet, és teljes csend a válasz. Mit csinálsz?","o":[["Megmagyarázom, miért volt vicces.","open"],["Gyorsan témát váltok, mintha ez csak teszt lett volna.","think"],["Nevetek magamon, és továbbengedem a pillanatot.","care"],["Nem próbálkozom több poénnal az este folyamán.","boundary"]],"r":""},
- {"c":"awkward","q":"A boltban azt hiszed, valaki ismerős, ezért hátba veregeted. Kiderül, hogy vadidegen. Mit mondasz?","o":[["„Elnézést, ön nagyon hasonlít valakire, akit kedvelek.”","open"],["Gyorsan tisztázom a tévedést, és odébbállok.","think"],["Bocsánatot kérek, és megpróbálom elviccelni.","care"],["Kikerülöm az illetőt, és másik kasszát választok.","boundary"]],"r":""},
- {"c":"awkward","q":"Egy esküvőn azt hiszed, neked integetnek, ezért felmész a színpadra, de a ceremóniamester mást keresett. Mi lesz?","o":[["Már ott vagyok, mondok egy rövid beszédet.","open"],["Megkeresem, hol hibáztam, és visszaülök.","think"],["Bocsánatot kérek, és mosolyogva visszamegyek a helyemre.","care"],["Eltűnök a mosdóban a következő számig.","boundary"]],"r":""},
- {"c":"awkward","q":"Egy barátod bemutat valakinek, és véletlenül azt mondod: „Róla már sok rosszat hallottam.” Mit teszel?","o":[["Azonnal hozzáteszem, hogy csak vicc volt, és elmagyarázom.","open"],["Megpróbálom pontosítani, mire gondoltam.","think"],["Bocsánatot kérek mindkettőjüktől.","care"],["Megkérem a barátomat, hogy mentse ki a helyzetet.","boundary"]],"r":""},
- {"c":"awkward","q":"Egy videóhívás alatt észreveszed, hogy a kamera végig bekapcsolva volt, miközben te mást csináltál. Mi a reakciód?","o":[["Rögtön megkérdezem, ki mit látott.","open"],["Ellenőrzöm a hívás résztvevőit és az időtartamot.","think"],["Bocsánatot kérek, és könnyedén kezelem a helyzetet.","care"],["Kilépek a hívásból, és csak később térek vissza.","boundary"]],"r":""},
- {"c":"awkward","q":"Egy idegennek integetve kiderül, hogy ő csak a mögötted álló embernek mutatott valamit. Mi a következő lépésed?","o":[["Rákérdezek, mit mutatott, és beszélgetést indítok.","open"],["Úgy teszek, mintha a hajamat igazítottam volna.","think"],["Nevetek, és elnézést kérek a félreértésért.","care"],["Előveszem a telefonom, és úgy teszek, mintha dolgom lenne.","boundary"]],"r":""},
- {"c":"awkward","q":"A baráti társaságban valaki elmesél egy történetet, amelyben te vagy a kínos főszereplő, de kihagyja a legfontosabb részleteket. Mit teszel?","o":[["Elmesélem a teljes verziót, vállalva a következményeket.","open"],["Kiegészítem a tényekkel, hogy ne torzuljon a sztori.","think"],["Hagyom, hogy együtt nevessünk rajta.","care"],["Megkérem, hogy ezt a történetet most ne folytassa.","boundary"]],"r":""},
- {"c":"awkward","q":"Egy étteremben hangosan köszönsz valakinek, aki nem ismer téged. Mit teszel?","o":[["Bemutatkozom, hátha mégis jó beszélgetés lesz belőle.","open"],["Rögtön tisztázom, hogy összekevertem valakivel.","think"],["Mosolyogva elnézést kérek.","care"],["Azonnal leülök egy másik asztalhoz.","boundary"]],"r":""},
- {"c":"awkward","q":"Egy csoportképnél mindenki mosolyog, de te pont tüsszentesz, és a fotó azonnal felkerül a közös chatbe. Mi a reakciód?","o":[["Kérem, hogy ezt tegyék ki profilképnek.","open"],["Megnézem, van-e jobb kép, és azt választom.","think"],["Elküldöm mindenkinek a tüsszentős verziót is, mert vicces.","care"],["Kérem, hogy ne posztolják ki.","boundary"]],"r":""},
- {"c":"awkward","q":"A fodrász megkérdezi: „Ugye tetszik?”, miközben egyáltalán nem olyan lett a hajad, mint szeretted volna. Mit mondasz?","o":[["Őszintén megmondom, mit szeretnék másként.","open"],["Kérek pár percet, hogy lássam, hogyan áll.","think"],["Megköszönöm, és finoman kérek egy kis igazítást.","care"],["Kifizetem, és később másik fodrászt keresek.","boundary"]],"r":""},
- {"c":"awkward","q":"Egy barátod hangüzenete közben véletlenül a saját nevetésedet küldöd vissza 40 másodpercig. Mit teszel?","o":[["Küldök még egyet: „Ez volt a reakcióm.”","open"],["Ellenőrzöm, tényleg csak a nevetés ment-e el.","think"],["Nevetek, és megkérem, hogy hallgassa meg újra.","care"],["Nem hallgatok meg több hangüzenetet ma.","boundary"]],"r":""},
- {"c":"awkward","q":"Egy üzletben rossz irányba tolod az automata ajtót, miközben mögötted sor áll. Mit teszel?","o":[["Megfordulok, és színpadiasan meghajolok a közönségnek.","open"],["Gyorsan megkeresem a nyitás jelzését.","think"],["Elnevetem magam, és elnézést kérek a mögöttem állóktól.","care"],["Kivárom, míg mindenki elmegy, és újra próbálom.","boundary"]],"r":""},
- {"c":"relationships","q":"A párod azt mondja: „Semmi baj”, de a hangjából tudod, hogy valami nagyon nincs rendben. Mit teszel?","o":[["Megkérdezem egyenesen, mi történt.","open"],["Megpróbálom kitalálni, van-e konkrét oka a feszültségnek.","think"],["Adok neki egy kis időt, és jelzem, hogy itt vagyok.","care"],["Nem kezdek találgatni; megvárom, amíg beszélni akar.","boundary"]],"r":""},
- {"c":"relationships","q":"A párod mindig elviszi a takaró nagy részét éjszaka. Mi a megoldásod?","o":[["Éjszakai takaró-visszafoglaló hadműveletet indítok.","open"],["Veszek két külön takarót, probléma megoldva.","think"],["Megbeszélem vele, hogy mindketten kényelmesen aludjunk.","care"],["Inkább külön takaróval alszom, és nem csinálok belőle ügyet.","boundary"]],"r":""},
- {"c":"relationships","q":"A párod kedveli egy régi randipartnered fotóját a közösségi médiában. Mit teszel?","o":[["Rákérdezek, miért tette.","open"],["Előbb megnézem, van-e bármi más, ami miatt aggódnom kell.","think"],["Megkérdezem, ő mit érezne fordított helyzetben.","care"],["Nem ellenőrzöm tovább a közösségi médiát, és meghúzom a saját határomat.","boundary"]],"r":""},
- {"c":"relationships","q":"Egy közös vacsorán a párod végig a telefonját nézi. Mit teszel?","o":[["Kimondom, hogy szeretnék vele tényleg együtt lenni.","open"],["Javaslok egy telefonmentes időszakot az este hátralévő részére.","think"],["Kitalálok egy közös játékot vagy témát, ami visszahozza a figyelmét.","care"],["Én is a saját dolgommal foglalkozom, és később beszélünk róla.","boundary"]],"r":""},
- {"c":"relationships","q":"A párod megkérdezi: „Mi az az egy dolog, amit megváltoztatnál rajtam?” Mit válaszolsz?","o":[["Őszintén elmondom, de nem bántóan.","open"],["Olyan dolgot választok, amin tényleg lehet közösen dolgozni.","think"],["Előbb elmondom, mit szeretek benne, aztán kérdezek.","care"],["Nem akarom megváltoztatni; ha valami nem fér bele, arról beszélek.","boundary"]],"r":""},
- {"c":"relationships","q":"Közös nyaralást terveztek. Te kalandot szeretnél, a párod pihenést. Mi történik?","o":[["Ragaszkodom ahhoz, hogy legyen legalább egy nagy kalandnap.","open"],["Készítek két-három lehetséges útitervet.","think"],["Olyan programot választunk, amiben mindkettőnk kívánsága helyet kap.","care"],["Külön programot is elfogadok, ha mást szeretnénk.","boundary"]],"r":""},
- {"c":"relationships","q":"A párod egy társaságban sokkal közvetlenebb valakivel, mint amire számítottál. Mit teszel?","o":[["Jelzem, hogy ez bennem kérdéseket vetett fel.","open"],["Figyelem a helyzetet, mielőtt következtetést vonok le.","think"],["Később nyugodtan megkérdezem, ő hogyan élte meg.","care"],["Ha ez átlép egy határt, egyértelművé teszem, mi nem fér bele.","boundary"]],"r":""},
- {"c":"relationships","q":"A párod azt mondja, szüksége lenne egy kis egyedüllétre a hétvégén. Mit érzel?","o":[["Megkérdezem, mire van szüksége, és elmondom a saját érzéseimet is.","open"],["Megpróbálom megérteni, miért pont most kéri.","think"],["Támogatom, és kitalálok magamnak is egy jó programot.","care"],["Örülök a saját időnek, és nem csinálok belőle ügyet.","boundary"]],"r":""},
- {"c":"relationships","q":"Egy barátod rendszeresen késik, és mindig azt mondja: „Már úton vagyok.” Mit teszel?","o":[["Megmondom, hogy ez így nem tiszteli az időmet.","open"],["Adok egy konkrét találkozási szabályt, például 15 perc várakozást.","think"],["Legközelebb úgy szervezek, hogy neki se legyen stresszes.","care"],["Nem várok rá többé; akkor érkezem, amikor nekem jó.","boundary"]],"r":""},
- {"c":"relationships","q":"A párod elfelejti az évfordulótokat, de másnap hatalmas meglepetést szervez. Mit teszel?","o":[["Elmondom, hogy a dátum is fontos volt nekem.","open"],["Megkérdezem, miért alakult így, mielőtt ítélek.","think"],["Értékelem a meglepetést, és megbeszéljük, mit jelent nekünk az évforduló.","care"],["Nem szeretném, ha a nagy gesztus eltüntetné a csalódásomat.","boundary"]],"r":""},
- {"c":"relationships","q":"Egy vita után a párod azonnal beszélni szeretne, te viszont még feszült vagy. Mit teszel?","o":[["Megmondom, hogy most feszült vagyok, de később visszatérek rá.","open"],["Kérek húsz percet, hogy összeszedjem a gondolataimat.","think"],["Megnyugtatom, hogy nem elutasítom, csak le kell higgadnom.","care"],["Lezárom a beszélgetést addig, amíg készen nem állok.","boundary"]],"r":""},
- {"c":"relationships","q":"A párod azt mondja, te mindig mindent túl komolyan veszel. Mit válaszolsz?","o":[["Megkérdezem, melyik konkrét helyzetre gondol.","open"],["Átgondolom, lehet-e benne valami, de nem fogadom el automatikusan.","think"],["Megpróbálom humorral oldani, majd meghallgatom.","care"],["Jelzem, hogy ne általánosítson rólam.","boundary"]],"r":""},
- {"c":"relationships","q":"A partnered szeretné megosztani veled a telefonja jelszavát, és ugyanezt várja tőled. Mit teszel?","o":[["Megbeszélem, miért fontos ez neki, és elmondom a saját álláspontomat.","open"],["Átgondolom a bizalom és a magánszféra határait.","think"],["Közös szabályt keresek, ami egyikünknek sem nyomasztó.","care"],["Nem adom meg a jelszavam, mert a magánszféra nekem fontos.","boundary"]],"r":""},
- {"c":"relationships","q":"Egy közeli barátod és a párod nem kedvelik egymást, és mindketten panaszkodnak neked. Mit teszel?","o":[["Leültetem őket, és kérem, hogy mondják el egymásnak.","open"],["Külön-külön meghallgatom, mi a valódi probléma.","think"],["Megpróbálok közös, semleges programot szervezni.","care"],["Kijelentem, hogy nem vállalom a közvetítő szerepet minden alkalommal.","boundary"]],"r":""},
- {"c":"relationships","q":"A párod azt mondja, „válassz te”, de minden ötletedre azt feleli, hogy „nem úgy gondoltam”. Mit teszel?","o":[["Megkérem, hogy mondja el, mit szeretne valójában.","open"],["Felsorolok három konkrét lehetőséget, és választunk.","think"],["Kitalálok valami olyat, ami mindkettőnknek jó lehet.","care"],["Azt mondom, ma mindenki intézze a saját vacsoráját.","boundary"]],"r":""},
- {"c":"relationships","q":"Egy barátod elárul egy titkot, amelyet csak neked mondott el. Mit teszel?","o":[["Azonnal tisztázom vele, miért történt.","open"],["Előbb megpróbálom kideríteni, szándékos volt-e.","think"],["Elmondom, hogy ez fájt, de meghallgatom a magyarázatát.","care"],["Egy ideig nem osztok meg vele személyes dolgokat.","boundary"]],"r":""},
- {"c":"relationships","q":"A párod minden problémára megoldást ad, miközben te csak azt szeretnéd, hogy meghallgasson. Mit teszel?","o":[["Kimondom: most nem tanácsot kérek, csak figyelmet.","open"],["Megfogalmazom, hogy milyen támogatás segítene.","think"],["Megköszönöm a szándékát, és elmondom, mire van szükségem.","care"],["Egy időre inkább mással beszélem meg a dolgaimat.","boundary"]],"r":""},
- {"c":"relationships","q":"Egy közös döntésnél a párod azt szeretné, hogy te engedj, mert „neked úgyis mindegy”. Mit teszel?","o":[["Elmondom, hogy nekem is vannak szempontjaim.","open"],["Végigvesszük, kinek miért fontos az adott döntés.","think"],["Keresek olyan kompromisszumot, amely mindkettőnknek vállalható.","care"],["Nem fogadom el, hogy helyettem döntsön.","boundary"]],"r":""},
- {"c":"relationships","q":"Egy barátod mindig viccelődik veled mások előtt, de négyszemközt kedves. Mit teszel?","o":[["Megmondom neki társaság előtt vagy utána, hogy ez nekem nem fér bele.","open"],["Megfigyelem, hogy egyszeri vagy visszatérő mintáról van-e szó.","think"],["Négyszemközt elmagyarázom, milyen hatással van rám.","care"],["Kevesebb közös társas programot vállalok vele.","boundary"]],"r":""},
- {"c":"relationships","q":"A párod egy új hobbit talál, és szinte minden szabadidejét annak szenteli. Mit teszel?","o":[["Elmondom, hogy hiányzik a közös időnk.","open"],["Megbeszélek vele egy olyan ritmust, ami mindkettőnknek megfelel.","think"],["Érdeklődöm a hobbija iránt, és néha csatlakozom.","care"],["Én is külön programokat szervezek, és megtartom a saját életemet.","boundary"]],"r":""},
- {"c":"truth","q":"Melyik helyzetben veszel fel leggyakrabban egy szerepet, amely nem teljesen te vagy?","o":[["Amikor azt várom, hogy mások végre észrevegyenek.","open"],["Amikor mindent kontroll alatt akarok tartani.","think"],["Amikor mindenki kedvében próbálok járni.","care"],["Amikor inkább elrejtem, hogy mire lenne szükségem.","boundary"]],"r":""},
- {"c":"truth","q":"Melyik bókot a legnehezebb elhinned magadról?","o":[["Hogy bátor vagyok.","open"],["Hogy okos és hozzáértő vagyok.","think"],["Hogy jó ember vagyok másokhoz.","care"],["Hogy elég vagyok úgy, ahogy vagyok.","boundary"]],"r":""},
- {"c":"truth","q":"Mi az, amit gyakran mondasz, de belül nem mindig gondolsz komolyan?","o":[["„Persze, semmi gond.”","open"],["„Majd átgondolom.”","think"],["„Tényleg örülök neki.”","care"],["„Nekem mindegy.”","boundary"]],"r":""},
- {"c":"truth","q":"Ha a barátaid egy dolgot biztosan félreértenek benned, mi lenne az?","o":[["Azt hiszik, hogy mindig magabiztos vagyok.","open"],["Azt hiszik, hogy mindent előre megtervezek.","think"],["Azt hiszik, hogy soha nem haragszom meg.","care"],["Azt hiszik, hogy nincs szükségem senkire.","boundary"]],"r":""},
- {"c":"truth","q":"Mikor volt legutóbb, hogy csak azért mondtál igent, mert nem akartál csalódást okozni?","o":[["Egy programnál, amire valójában nem vágytam.","open"],["Egy feladatnál, amit előbb át kellett volna gondolnom.","think"],["Amikor valaki segítséget kért, pedig kimerült voltam.","care"],["Amikor átlépték a határaimat, és nem szóltam.","boundary"]],"r":""},
- {"c":"truth","q":"Melyik igazságot lenne a legnehezebb kimondanod egy közeli embernek?","o":[["Hogy valami megváltozott bennem.","open"],["Hogy nem értek egyet egy fontos döntésével.","think"],["Hogy néha túl soknak érzem a felelősséget.","care"],["Hogy szükségem van több távolságra.","boundary"]],"r":""},
- {"c":"truth","q":"Ha egyetlen szokásodat nézhetné végig a társaságod, melyik miatt pirulnál el leginkább?","o":[["Ahogy vitában mindig az utolsó szó az enyém akar lenni.","open"],["Ahogy túl sokáig készülök egy egyszerű döntésre.","think"],["Ahogy automatikusan mindenki problémáját meg akarom oldani.","care"],["Ahogy eltűnök, amikor túl sok lesz minden.","boundary"]],"r":""},
- {"c":"truth","q":"Mitől tartasz jobban egy új kapcsolatban?","o":[["Hogy nem merem megmutatni, mit érzek.","open"],["Hogy rosszul mérem fel a másikat.","think"],["Hogy túl sokat adok, és elfelejtem magam.","care"],["Hogy elveszítem a saját szabadságomat.","boundary"]],"r":""},
- {"c":"truth","q":"Melyik mondatot hallanád a legnehezebben valakitől, akinek fontos a véleménye?","o":[["„Nem vagy őszinte velem.”","open"],["„Nem gondoltad ezt végig.”","think"],["„Nem figyelsz rám.”","care"],["„Nem lehet rád számítani.”","boundary"]],"r":""},
- {"c":"truth","q":"Egy barátod megkérdezi: „Mi az, amit irigyelsz bennem?” Mit teszel?","o":[["Őszintén megnevezem, akár kellemetlen is.","open"],["Előbb átgondolom, hogy irigység-e vagy inspiráció.","think"],["Úgy fogalmazok, hogy ne bántsam meg, de igaz legyen.","care"],["Azt mondom, ezt most nem szeretném megosztani.","boundary"]],"r":""},
- {"c":"truth","q":"Melyik helyzetben vagy hajlamosabb mást mutatni, mint amit valójában érzel?","o":[["Amikor erősnek kellene látszanom.","open"],["Amikor gyors választ várnak tőlem.","think"],["Amikor valakit nem akarok megbántani.","care"],["Amikor attól félek, hogy túl közel kerül hozzám valaki.","boundary"]],"r":""},
- {"c":"truth","q":"Ha a telefonod utolsó öt keresése felkerülne egy kivetítőre, mi lenne az első reakciód?","o":[["Felvállalnám, és még kommentálnám is.","open"],["Megpróbálnám megmagyarázni a keresések logikáját.","think"],["Nevetnék, és megkérdezném másokét is.","care"],["Azonnal lekapcsolnám a kivetítőt.","boundary"]],"r":""},
- {"c":"truth","q":"Mi az, amiről gyakran azt mondod, hogy nem érdekel, pedig mégis számít?","o":[["Hogy mások mit gondolnak rólam.","open"],["Hogy elismerik-e a teljesítményemet.","think"],["Hogy észreveszik-e, mennyit teszek értük.","care"],["Hogy tiszteletben tartják-e a saját időmet.","boundary"]],"r":""},
- {"c":"truth","q":"Ha egy közeli embered most teljesen őszintén megkérdezné, mire vágysz, mit lenne a legnehezebb mondani?","o":[["Hogy több figyelmet és kezdeményezést szeretnék.","open"],["Hogy több kiszámíthatóságra van szükségem.","think"],["Hogy több gyengédségre és támogatásra vágyom.","care"],["Hogy több saját térre és szabadságra van szükségem.","boundary"]],"r":""},
- {"c":"truth","q":"Mi az, amit a leggyakrabban halogatsz, pedig tudod, hogy fontos?","o":[["Egy nehéz beszélgetést.","open"],["Egy döntést, amelyhez még adatokat gyűjtök.","think"],["Segítséget kérni valakitől.","care"],["Nemet mondani egy túl nagy vállalásra.","boundary"]],"r":""},
- {"c":"truth","q":"Ha egyetlen dolgot megmutathatnál magadból, amit általában elrejtesz, mi lenne az?","o":[["A valódi véleményemet.","open"],["A bizonytalanságaimat.","think"],["Azt, mennyire fontosak nekem mások.","care"],["Azt, hogy mennyire szükségem van határokra.","boundary"]],"r":""},
- {"c":"truth","q":"Melyik helyzetben érzed úgy, hogy nem a saját életedet éled?","o":[["Amikor nem mondom ki, amit gondolok.","open"],["Amikor mások terveihez igazítom a döntéseimet.","think"],["Amikor mindenki más igényét előre veszem.","care"],["Amikor nem merek kilépni egy nekem rossz helyzetből.","boundary"]],"r":""},
- {"c":"truth","q":"Ha valaki megkérdezné, mi az a tulajdonságod, amin változtatnál, mi lenne az első gondolatod?","o":[["Túl gyorsan kimondom, amit gondolok.","open"],["Túl sokáig elemzek mindent.","think"],["Túl sok felelősséget vállalok másokért.","care"],["Túl hamar bezárkózom.","boundary"]],"r":""},
- {"c":"truth","q":"Melyik bocsánatkérés lenne számodra a legnehezebb?","o":[["Amikor ki kell mondanom, hogy én bántottam meg valakit.","open"],["Amikor be kell ismernem, hogy rosszul mértem fel a helyzetet.","think"],["Amikor el kell ismernem, hogy nem voltam elég figyelmes.","care"],["Amikor azért kérek bocsánatot, mert határt húztam.","boundary"]],"r":""},
- {"c":"truth","q":"Ha a társaságod egy kérdést tehetne fel neked, amire kötelező őszintén válaszolni, mitől tartanál?","o":[["„Mit gondolsz valójában rólunk?”","open"],["„Melyik döntésedet bánod a legjobban?”","think"],["„Kinek segítesz úgy, hogy közben te merülsz ki?”","care"],["„Kitől távolodtál el szándékosan?”","boundary"]],"r":""}
+ const SOLUTIONS = [
+ ["Készítsetek tervet","A szereplőknek össze kell fogniuk, és tervet kell készíteniük."],
+ ["Használjátok a talált tárgyat","Egy korábban felbukkant tárgy segíthet megoldani a problémát."],
+ ["Kérjetek segítséget","A szereplőknek olyan valakihez kell fordulniuk, akit eddig figyelmen kívül hagytak."],
+ ["Próbáljátok újra","Az első próbálkozás kudarcot vall, de más módszerrel sikerülhet."],
+ ["Fejtsétek meg a jelet","Egy rejtélyes jel vagy üzenet megfejtése vezet a megoldáshoz."],
+ ["Béküljetek ki","A konfliktus csak együttműködéssel oldható meg."],
+ ["Építsetek valamit","A szereplők egy új szerkezetet vagy eszközt készítenek."],
+ ["Válasszatok áldozatot","Valamiről le kell mondaniuk, hogy továbbjuthassanak."],
+ ["Kövessétek a nyomokat","Legalább két korábbi nyomot kell összekapcsolni."],
+ ["Fordítsátok meg a helyzetet","A szereplők a probléma egyik elemét az előnyükre fordítják."],
+ ["Kérjetek bocsánatot","Egy félreértés vagy hiba rendezése oldja meg a helyzetet."],
+ ["Találjatok kerülőutat","A közvetlen út nem járható, más megoldást kell keresni."],
+ ["A legkisebb ötlet segít","Egy apró, korábban jelentéktelennek tűnő részlet lesz a kulcs."],
+ ["Osszátok meg a feladatokat","Minden szereplőnek külön feladata lesz."],
+ ["Derítsétek ki az igazságot","A megoldás előtt ki kell derülnie, mi történt valójában."],
+ ["Javítsátok meg","Valamit helyre kell állítani, hogy a történet továbbmehessen."],
+ ["Cseréljetek szerepet","A szereplők akkor jutnak előre, ha más szemszögből próbálják meg."],
+ ["Alkossatok szövetséget","Két korábban különálló csoport közös célt talál."],
+ ["Használjátok a környezetet","A helyszín egy eleme adja a megoldást."],
+ ["Merjetek dönteni","A főszereplőnek nehéz, de fontos döntést kell hoznia."]
+ ];
+
+const EVENTS = [
+ ["Váratlan áramszünet","A fények egyszerre kialszanak. A szereplőknek el kell dönteniük, mi legyen az első teendőjük."],
+ ["Félreérkezett küldemény","Olyan csomag érkezik, amelyet senki sem vár, a címzett pedig nem található."],
+ ["Hirtelen zápor","Az időjárás percek alatt megváltozik, és mindenki terve borulni kezd."],
+ ["Nyilvános bejelentés","Valaki hangosan bejelent valamit, amit a szereplők egészen másként értelmeznek."],
+ ["Elindul a visszaszámlálás","Egy óra, jelzőfény vagy hangjelzés mutatja, hogy valamire már csak kevés idő maradt."],
+ ["Összekeveredett csomagok","Két vagy több tárgy rossz emberhez kerül, és ebből félreértés támad."],
+ ["Váratlan vendégsereg","Egyszerre sok új szereplő érkezik, akik mind mást szeretnének."],
+ ["Megszólal a riasztó","A riasztó hangja mindenkit cselekvésre késztet, de senki sem tudja pontosan, mi váltotta ki."],
+ ["Eltűnik az árnyék","Egy szereplő vagy tárgy árnyéka furcsán viselkedik, és ez megzavarja a többieket."],
+ ["Megváltozik a menetrend","Egy fontos indulás, találkozó vagy program időpontja váratlanul módosul."],
+ ["Furcsa felvonulás","Zenészek, jelmezesek vagy különös járművek vonulnak át a helyszínen."],
+ ["Mindenki ugyanazt hallja","Egy ismeretlen hang vagy üzenet egyszerre jut el az összes szereplőhöz."],
+ ["Elszabadult szerkezet","Egy gép vagy találmány önálló működésbe kezd, és valakinek meg kell állítania vagy irányítania."],
+ ["Elromlik a kommunikáció","A szereplők nem tudnak rendesen üzenni egymásnak, ezért félreértések keletkeznek."],
+ ["Váratlan vendégjátékos","Egy új szereplő úgy csatlakozik az eseményekhez, hogy senki sem számított rá."],
+ ["A tömeg irányt vált","Az emberek hirtelen mind ugyanabba az irányba indulnak, és ezzel akadályt vagy lehetőséget teremtenek."],
+ ["Különös időjárási jelenség","A szél, a köd, a hó vagy a hőség szokatlan módon megváltoztatja a környezetet."],
+ ["Elmarad a főpróba","Egy fontos bemutató vagy esemény előkészületei félbeszakadnak, és gyors döntésre van szükség."],
+ ["Egy állat közbelép","Egy állat váratlanul beleavatkozik a szereplők dolgába, de nem egyértelmű, hogy segít vagy akadályoz."],
+ ["Két esemény egyszerre","Két fontos dolog történik ugyanabban a pillanatban, ezért a szereplőknek választaniuk kell."],
+ ["Megfordul a szél","A környezet apró változása miatt egy korábban biztosnak hitt terv már nem működik."],
+ ["Váratlan közönség","A szereplők hirtelen mások figyelmének középpontjába kerülnek, és reagálniuk kell."],
+ ["Előkerül egy régi felvétel","Egy hangfelvétel, fénykép vagy rajz olyan részletet mutat, amelyet eddig senki sem vett észre."],
+ ["Mindenki rossz időpontot jegyzett fel","Kiderül, hogy a szereplők különböző időpontokra készültek, és már alig maradt idő egyeztetni."]
 ];
 
-const S={mode:null,soloLength:20,soloDeck:[],soloIndex:0,soloAnswers:[],players:[],groupRound:0,groupDeck:[],groupTotal:8,groupHistory:[],scores:{},target:null,current:null,selected:null,guessQueue:[],guessIndex:0,stage:'',pairAnswers:{},pairGuesses:{},customCardCount:1,invite:null,inviteAnswers:[],inviteIndex:0,returnData:null,returnGuesses:[],returnIndex:0,resultPayload:null};
-let playerDraft=['Anna','Bence'];
-const catName=id=>CATS.find(c=>c.id===id)?.name||'Helyzet';
-function esc(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
-function toast(message){const el=document.createElement('div');el.className='toast';el.textContent=message;document.body.append(el);setTimeout(()=>el.remove(),2600);}
-function shuffled(items){const out=[...items];for(let i=out.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[out[i],out[j]]=[out[j],out[i]];}return out;}
-function mixedDeck(count,includeAdult=false){const cats=CATS.filter(cat=>cat.id!=='spicy'||includeAdult);const pools=new Map(cats.map(cat=>[cat.id,shuffled(BANK.filter(q=>q.c===cat.id))]));const out=[];while(out.length<count){let added=false;for(const cat of shuffled(cats)){const pool=pools.get(cat.id);if(pool&&pool.length&&out.length<count){out.push(pool.shift());added=true;}}if(!added)break;}if(out.length<count)toast(`A kiválasztott témákkal csak ${out.length} kérdés érhető el.`);return shuffled(out);}
-function soloDeck(count,includeAdult=false){return mixedDeck(count,includeAdult);}
-function renderPlayers(){const el=$('playerList');el.innerHTML=playerDraft.map((name,i)=>`<div class="playerrow"><span class="num">${String(i+1).padStart(2,'0')}</span><input aria-label="Játékos ${i+1} neve" maxlength="24" value="${esc(name)}" data-player="${i}"><button class="remove" data-remove="${i}" ${playerDraft.length<=2?'disabled':''} aria-label="Játékos törlése">×</button></div>`).join('');el.querySelectorAll('[data-player]').forEach(input=>input.oninput=()=>playerDraft[+input.dataset.player]=input.value);el.querySelectorAll('[data-remove]').forEach(button=>button.onclick=()=>{if(playerDraft.length>2){playerDraft.splice(+button.dataset.remove,1);renderPlayers();}});$('playerCount').textContent=`${playerDraft.length} / 8 játékos`;$('addPlayer').disabled=playerDraft.length>=8;}
-function drawQuestion(question,prompt,hint){S.current=question;S.selected=null;$('questionText').textContent=question.q;$('categoryLabel').textContent=catName(question.c).toUpperCase();$('gamePrompt').textContent=prompt||'';$('gameHint').textContent=hint||'Válaszd azt, ami a legközelebb áll hozzád. Nincs jó vagy rossz válasz.';$('options').innerHTML=question.o.map((option,index)=>`<button type="button" class="option" data-option="${index}"><span class="letter">${String.fromCharCode(65+index)}</span><span>${esc(option[0])}</span></button>`).join('');$('submitAnswer').disabled=true;$('options').querySelectorAll('[data-option]').forEach(button=>button.onclick=()=>{S.selected=+button.dataset.option;$('options').querySelectorAll('.option').forEach(option=>option.classList.toggle('selected',option===button));$('submitAnswer').disabled=false;});}
-function updateProgress(index,total){$('roundLabel').textContent=`${index+1} / ${total}`;$('progressBar').style.width=`${(index/total)*100}%`;}
-function makeResultCard(title,body){return `<div class="resultcard"><p class="eyebrow">${esc(title)}</p><div class="resulttitle">${body.title}</div><p>${body.text}</p></div>`;}
-function patternSummary(counts){const total=Object.values(counts).reduce((a,b)=>a+b,0);const ordered=Object.entries(counts).sort((a,b)=>b[1]-a[1]);const top=ordered[0];const second=ordered[1];return {total,ordered,top,second};}
-function barsHtml(counts){const total=Object.values(counts).reduce((a,b)=>a+b,0);return `<div class="barlist">${Object.entries(counts).map(([key,value])=>`<div class="barrow"><span class="barlabel">${PATTERNS[key].name}</span><div class="track"><span style="width:${total?Math.round(value/total*100):0}%"></span></div><span class="barvalue">${value}</span></div>`).join('')}</div>`;}
-function countsFor(questions,answers){const counts={open:0,care:0,think:0,boundary:0};answers.forEach((answer,i)=>{if(answer===null||answer===undefined)return;const tag=questions[i]?.o?.[answer]?.[1];if(tag&&counts[tag]!==undefined)counts[tag]++;});return counts;}
-function startSolo(){S.mode='solo';S.soloName=$('soloName').value.trim()||'Játékos';S.soloDeck=soloDeck(S.soloLength,$('soloAdult').checked);S.soloIndex=0;S.soloAnswers=Array(S.soloDeck.length).fill(null);showSoloQuestion();}
-function showSoloQuestion(){if(S.soloIndex>=S.soloDeck.length){finishSolo();return;}const q=S.soloDeck[S.soloIndex];show('game');$('modePill').textContent='MIRROR · SAJÁT TÜKÖR';updateProgress(S.soloIndex,S.soloDeck.length);drawQuestion(q,`${S.soloName}, válaszolj ösztönösen.`, 'A válaszaidból a játék végén személyes, közepesen részletes összegzés készül.');$('submitAnswer').textContent=S.soloIndex===S.soloDeck.length-1?'Válasz rögzítése · Befejezés':'Válasz rögzítése · Következő';$('submitAnswer').onclick=()=>{if(S.selected===null)return;S.soloAnswers[S.soloIndex]=S.selected;S.soloIndex++;showSoloQuestion();};$('skipQuestion').onclick=()=>{S.soloAnswers[S.soloIndex]=null;S.soloIndex++;showSoloQuestion();};}
-function finishSolo(){const total=S.soloAnswers.filter(a=>a!==null).length,minimum=Math.ceil(S.soloDeck.length*.7);if(total<minimum){show('results');$('resultsEyebrow').textContent='Még nincs elég válasz';$('resultsTitle').textContent='Az összegzéshez még néhány döntés kell.';$('resultsLead').textContent=`${total} választ adtál a ${S.soloDeck.length} kérdésből. Legalább ${minimum} válasz szükséges a visszatérő minták bemutatásához.`;$('resultsBody').innerHTML='<div class="notice">A kihagyott kérdéseket most újra megkapod. A már megadott válaszaid megmaradnak.</div><button class="btn" id="retrySolo">Kihagyott kérdések pótlása</button>';$('retrySolo').onclick=()=>retrySoloSkipped();$('playAgain').textContent='Új játék';$('playAgain').onclick=()=>show('soloSetup');$('copyResult').classList.add('hidden');return;}renderSoloResults();}
-function retrySoloSkipped(){S._retry=S.soloAnswers.map((a,i)=>a===null?i:-1).filter(i=>i>=0);S._retryIndex=0;showSoloRetry();}
-function showSoloRetry(){if(S._retryIndex>=S._retry.length){finishSolo();return;}const index=S._retry[S._retryIndex],q=S.soloDeck[index];show('game');$('modePill').textContent='MIRROR · KIHAGYOTT KÉRDÉS';$('roundLabel').textContent=`Pótlás ${S._retryIndex+1} / ${S._retry.length}`;$('progressBar').style.width=`${S._retryIndex/S._retry.length*100}%`;drawQuestion(q,'Próbáld meg ezt a kérdést is megválaszolni.','A korábbi válaszaid nem változnak.');$('submitAnswer').textContent='Válasz rögzítése';$('submitAnswer').onclick=()=>{if(S.selected===null)return;S.soloAnswers[index]=S.selected;S._retryIndex++;showSoloRetry();};$('skipQuestion').onclick=()=>{S._retryIndex++;showSoloRetry();};}
-function renderSoloResults(){const counts=countsFor(S.soloDeck,S.soloAnswers),summary=patternSummary(counts),valid=S.soloAnswers.filter(a=>a!==null).length;const top=summary.top,second=summary.second;show('results');$('resultsEyebrow').textContent='MIRROR · Az én tükröm';$('resultsTitle').textContent=`${S.soloName}, ezt mutatták a döntéseid.`;$('resultsLead').textContent=`${valid} helyzetre válaszoltál a ${S.soloDeck.length} kérdésből. Ezek a megfigyelések erre a játékra vonatkoznak, nem végleges jellemzést adnak rólad.`;let html='';if(top&&top[1]>0){html+=makeResultCard('01 · AZ ÉN TÜKRÖM',{title:esc(PATTERNS[top[0]].name),text:`<strong>${esc(PATTERNS[top[0]].short)}.</strong> ${esc(PATTERNS[top[0]].desc)}`});if(second&&second[1]>0)html+=makeResultCard('Másodikként visszatérő megközelítés',{title:esc(PATTERNS[second[0]].name),text:esc(PATTERNS[second[0]].desc)});html+='<h3>A négy döntési megközelítésed</h3><p class="subtle">A sávok azt mutatják, milyen gyakran választottál az adott válaszmintához tartozó lehetőséget.</p>'+barsHtml(counts);}else html+='<div class="notice">Ebben a menetben kevés értékelhető válasz született ahhoz, hogy visszatérő minta rajzolódjon ki.</div>';
-html+=`<div class="resultcard"><div class="resulttitle">Három kérdés magadhoz</div><p>1. Melyik válaszod lepett meg leginkább?</p><p>2. Melyik helyzetben reagáltál másként, mint ahogy szerettél volna?</p><p>3. Melyik döntésedet lenne érdekes egy közeli emberrel is megbeszélni?</p></div><details class="answer-review"><summary>Válaszaim áttekintése</summary>${S.soloDeck.map((q,i)=>`<div class="review-item"><strong>${esc(q.q)}</strong><span>${S.soloAnswers[i]===null?'Kihagyva':esc(q.o[S.soloAnswers[i]][0])}</span></div>`).join('')}</details>`;
-$('resultsBody').innerHTML=html;$('playAgain').textContent='Új játék';$('playAgain').onclick=()=>show('soloSetup');$('copyResult').classList.remove('hidden');S._copyText=`MIRROR – Saját tükör\n${S.soloName}: ${valid}/${S.soloDeck.length} válasz\n`+(top?`Leggyakoribb megközelítés: ${PATTERNS[top[0]].name}`:'Nem rajzolódott ki domináns válaszminta');}
-function startGroup(){const names=playerDraft.map(n=>n.trim()).filter(Boolean);if(names.length<2){toast('Legalább 2 játékos szükséges.');return;}if(names.length>8){toast('Legfeljebb 8 játékos lehet.');return;}if(new Set(names.map(n=>n.toLocaleLowerCase('hu'))).size!==names.length){toast('A játékosnevek legyenek különbözőek.');return;}S.players=names;S.groupTitle=$('groupTitle').value.trim();$('groupModeDescription').textContent=names.length===2?'Ketten minden kérdésnél válaszoltok és megtippelitek egymás döntését.':'Minden körben más játékos válaszol, a többiek pedig külön-külön tippelnek.';$('groupRuleNotice').textContent=names.length===2?'Minden kérdésnél mindketten válaszoltok, majd egymás válaszára tippeltek.':'A kiemelt játékos személye körönként változik. A válasz csak a tippek után jelenik meg.';show('category');}
-function startGroupGame(){S.mode='group';S.groupTotal=+$('roundCount').value;S.groupDeck=mixedDeck(S.groupTotal,$('groupAdult').checked);S.groupRound=0;S.groupHistory=[];S.scores={};S.players.forEach(n=>S.scores[n]=0);nextGroupRound();}
-function nextGroupRound(){if(S.groupRound>=S.groupDeck.length){finishGroup();return;}S.current=S.groupDeck[S.groupRound];S.pairAnswers={};S.pairGuesses={};S.guessIndex=0;if(S.players.length===2){S.stage='pairAnswer';S.target=S.players[0];showHandoff('answer');}else{S.target=S.players[S.groupRound%S.players.length];S.guessQueue=S.players.filter(n=>n!==S.target);S.guessIndex=0;showHandoff('answer');}}
-function showHandoff(kind){show('handoff');if(kind==='answer'){$('handoffTitle').textContent=`${S.target}, most te következel.`;$('handoffText').textContent='Vedd át a készüléket, és válaszolj úgy, hogy más ne lássa a választásodat.';$('handoffContinue').onclick=()=>showGroupQuestion('answer');}else{const who=S.players.length===2?S.players[S.guessIndex]:S.guessQueue[S.guessIndex];$('handoffTitle').textContent=`${who}, most te tippelsz.`;$('handoffText').textContent=S.players.length===2?`Szerinted mit választott ${S.players.find(n=>n!==who)}?`:`Szerinted mit választott ${S.target}? Ne nézd meg mások tippjeit.`;$('handoffContinue').onclick=()=>showGroupQuestion('guess');}}
-function showGroupQuestion(kind){show('game');$('modePill').textContent=kind==='answer'?'KÖZÖS TÜKÖR · PRIVÁT VÁLASZ':'KÖZÖS TÜKÖR · TIPP';$('roundLabel').textContent=`${S.groupRound+1} / ${S.groupDeck.length}`;$('progressBar').style.width=`${S.groupRound/S.groupDeck.length*100}%`;let who;if(kind==='answer'){who=S.target;drawQuestion(S.current,`${who}, ez a te privát válaszod. A többiek ne nézzenek a képernyőre.`,'A választásod a felfedésig rejtve marad.');}else{who=S.players.length===2?S.players[S.guessIndex]:S.guessQueue[S.guessIndex];const target=S.players.length===2?S.players.find(n=>n!==who):S.target;drawQuestion(S.current,`${who}, ${target} válaszát próbáld megjósolni.`,'A valódi választ még senki nem láthatja.');}
-$('submitAnswer').textContent=kind==='answer'?'Válasz titkosítása':'Tipp rögzítése';$('submitAnswer').onclick=()=>{if(S.selected===null)return;storeGroupChoice(kind,who,S.selected);};$('skipQuestion').onclick=()=>storeGroupChoice(kind,who,null);}
-function storeGroupChoice(kind,who,value){if(S.players.length===2){if(kind==='answer'){S.pairAnswers[who]=value;if(who===S.players[0]){S.target=S.players[1];showHandoff('answer');}else{S.stage='pairGuess';S.guessIndex=0;showHandoff('guess');}}else{S.pairGuesses[who]=value;S.guessIndex++;if(S.guessIndex<S.players.length)showHandoff('guess');else revealPair();}}else{if(kind==='answer'){S.pairAnswers[who]=value;showHandoff('guess');}else{S.pairGuesses[who]=value;S.guessIndex++;if(S.guessIndex<S.guessQueue.length)showHandoff('guess');else revealGroup();}}}
-function revealPair(){show('reveal');const a=S.players[0],b=S.players[1],aa=S.pairAnswers[a],ab=S.pairAnswers[b],ga=S.pairGuesses[a],gb=S.pairGuesses[b];const aCorrect=ab!==null&&ab!==undefined&&ga===ab,bCorrect=aa!==null&&aa!==undefined&&gb===aa;if(aCorrect)S.scores[a]++;if(bCorrect)S.scores[b]++;S.groupHistory.push({round:S.groupRound+1,question:S.current.q,category:catName(S.current.c),answers:{[a]:aa,[b]:ab},guesses:{[a]:{target:b,choice:ga,correct:aCorrect},[b]:{target:a,choice:gb,correct:bCorrect}},questionData:S.current});$('revealTitle').textContent='Mindketten válaszoltatok.';$('revealLead').textContent='Most láthatjátok egymás tényleges választását és azt, mennyire tudtátok megjósolni a másik döntését.';$('revealContent').innerHTML=[{name:a,actual:aa,guess:ga,other:b,correct:aCorrect},{name:b,actual:ab,guess:gb,other:a,correct:bCorrect}].map(x=>`<div class="resultcard"><p class="eyebrow">${esc(x.name)} válasza</p><div class="resulttitle">${x.actual===null?'Kihagyta':esc(S.current.o[x.actual][0])}</div><p><strong>${esc(x.name)} tippje</strong> <span class="subtle">(${esc(x.other)} válaszára):</span> ${x.guess===null||x.guess===undefined?'Kihagyta':esc(S.current.o[x.guess][0])} · ${x.correct?'Talált · +1 pont':'Nem talált'}</p></div>`).join('')+'<p class="notice">Beszéljétek meg, miért ezt a választ vártátok egymástól. Magyarázatot senkinek nem kötelező adnia.</p>';$('nextRound').textContent=S.groupRound+1>=S.groupDeck.length?'Eredmények':'Következő kör';$('nextRound').onclick=()=>{S.groupRound++;nextGroupRound();};}
-function revealGroup(){show('reveal');const actual=S.pairAnswers[S.target];$('revealTitle').textContent=`${S.target} válasza`;$('revealLead').textContent='Most kiderül, ki mennyire tudta megjósolni a választ. A pont csak a játék része, nem mércéje annak, ki ismer kit igazán.';const guesses=S.guessQueue.map(name=>{const guess=S.pairGuesses[name],correct=actual!==null&&actual!==undefined&&guess===actual;if(correct)S.scores[name]++;return {name,guess,correct};});S.groupHistory.push({round:S.groupRound+1,question:S.current.q,category:catName(S.current.c),answers:{[S.target]:actual},guesses:Object.fromEntries(guesses.map(g=>[g.name,{target:S.target,choice:g.guess,correct:g.correct}])),questionData:S.current});$('revealContent').innerHTML=`<div class="resultcard"><div class="resulttitle">${actual===null?'A válasz kimaradt.':esc(S.current.o[actual][0])}</div></div><div class="scorelist">${guesses.map(g=>`<div class="scorerow"><strong>${esc(g.name)}</strong><span>${g.guess===null?'Kihagyta':g.correct?'Talált · +1 pont':'Másra tippelt'}</span></div>`).join('')}</div><p class="notice">A válaszadó döntheti el, szeretne-e magyarázatot adni.</p>`;$('nextRound').textContent=S.groupRound+1>=S.groupDeck.length?'Eredmények':'Következő kör';$('nextRound').onclick=()=>{S.groupRound++;nextGroupRound();};}
-function finishGroup(){const sorted=Object.entries(S.scores).sort((a,b)=>b[1]-a[1]);const winners=sorted.filter(x=>x[1]===sorted[0]?.[1]).map(x=>x[0]);let html=`<div class="scorelist">${sorted.map(([n,score],i)=>`<div class="scorerow"><strong>${i+1}. ${esc(n)}</strong><span>${score} találat</span></div>`).join('')}</div>`;for(const player of S.players){const own=[],received=[],made=[];S.groupHistory.forEach(item=>{if(Object.prototype.hasOwnProperty.call(item.answers,player))own.push({q:item.question,category:item.category,choice:item.answers[player],data:item.questionData});Object.entries(item.guesses).forEach(([guesser,g])=>{if(g.target===player)received.push({guesser,question:item.question,actual:item.answers[player],...g,data:item.questionData});if(guesser===player)made.push({target:g.target,choice:g.choice,correct:g.correct,data:item.questionData});});});const q=own.map(x=>x.data),a=own.map(x=>x.choice),counts=countsFor(q,a),total=a.filter(x=>x!==null&&x!==undefined).length;const receivedValid=received.filter(g=>g.actual!==null&&g.actual!==undefined&&g.choice!==null&&g.choice!==undefined);const receivedCorrect=receivedValid.filter(g=>g.choice===g.actual).length;const receivedTags={open:0,care:0,think:0,boundary:0};received.forEach(g=>{if(g.choice!==null&&g.choice!==undefined){const tag=g.data.o[g.choice][1];if(receivedTags[tag]!==undefined)receivedTags[tag]++;}});const guessTop=patternSummary(receivedTags).top;const misses=receivedValid.filter(g=>g.choice!==g.actual);html+=`<details class="answer-review"><summary>${esc(player)} · személyes tükör és visszajelzés</summary><div class="resultcard"><p class="eyebrow">01 · AZ ÉN TÜKRÖM</p><div class="resulttitle">${total?'A saját válaszaid mintázata':'Kevés saját válasz'}</div><p>${total?`A kiemelt körökben ${total} választ adtál. A legerősebben megjelenő megközelítés: ${esc(PATTERNS[patternSummary(counts).top[0]].name)}.`:'Ebben a játékban nem született elegendő saját válasz a mintázathoz.'}</p>${total?barsHtml(counts):''}</div><div class="resultcard"><p class="eyebrow">02 · AHOGYAN MÁSOK LÁTNAK</p><div class="resulttitle">${receivedValid.length?`${receivedCorrect} / ${receivedValid.length} találat`:'Nem volt értékelhető tipp'}</div><p>${receivedValid.length?`A többiek ${receivedCorrect} alkalommal találták el a válaszaidat.`:'A tippekből nem számítható találati arány.'} ${guessTop&&guessTop[1]>0?`A rólad leadott tippekben leggyakrabban a(z) ${esc(PATTERNS[guessTop[0]].name.toLowerCase())} válaszminta jelent meg.`:''}</p></div><div class="resultcard"><p class="eyebrow">03 · A KÖZÖS TÜKÖR</p><div class="resulttitle">${misses.length?`${misses.length} eltérő tipp`:(receivedValid.length?'A tippek többnyire egyeztek':'Kevés összehasonlítható adat')}</div><p>${receivedValid.length?`A többiek összesen ${receivedCorrect} alkalommal találták el a válaszaidat. Az eltérő tippek olyan helyzeteket mutatnak, ahol a másik mást várt tőled, mint amit végül választottál.`:'A közös értékeléshez ebben a játékban kevés adat áll rendelkezésre.'}</p></div><details class="answer-review"><summary>Hogyan tippeltek rólad?</summary>${received.map(g=>`<div class="review-item"><strong>${esc(g.guesser)} tippje</strong><span>${g.choice===null?'Kihagyta':esc(g.data.o[g.choice][0])} · ${g.actual===null?'A válasz kimaradt':g.choice===g.actual?'Talált':'Eltérés'}</span></div>`).join('')}</details></details>`;}
-const review=S.groupHistory.map(item=>{if(S.players.length===2){const playerBlocks=S.players.map(n=>{const hasAnswer=Object.prototype.hasOwnProperty.call(item.answers,n);const v=item.answers[n];const g=item.guesses[n];const answerBlock=hasAnswer?`<div class="review-item"><strong>${esc(n)} válasza</strong><span>${v===null||v===undefined?'Kihagyta':esc(item.questionData.o[v][0])}</span></div>`:'';const guessBlock=g?`<div class="review-item"><strong>${esc(n)} tippje <span class="subtle">(${esc(g.target)} válaszára)</span></strong><span>${g.choice===null||g.choice===undefined?'Kihagyta':esc(item.questionData.o[g.choice][0])}${g.choice===null||g.choice===undefined?'':g.correct?' · Talált':' · Nem talált'}</span></div>`:'';return answerBlock+guessBlock;}).join('');return `<div class="review-item"><p class="eyebrow">${item.round}. kör · ${esc(item.category)}</p><strong>${esc(item.question)}</strong>${playerBlocks}</div>`;}const answers=Object.entries(item.answers).map(([n,v])=>`<div class="review-item"><strong>${esc(n)} válasza</strong><span>${v===null?'Kihagyta':esc(item.questionData.o[v][0])}</span></div>`).join('');const guesses=Object.entries(item.guesses).map(([n,g])=>`<div class="review-item"><strong>${esc(n)} tippje · ${esc(g.target)} válaszára</strong><span>${g.choice===null?'Kihagyta':esc(item.questionData.o[g.choice][0])}${g.correct?' · Talált':' · Nem talált'}</span></div>`).join('');return `<div class="review-item"><p class="eyebrow">${item.round}. kör · ${esc(item.category)}</p><strong>${esc(item.question)}</strong>${answers}${guesses}</div>`;}).join('');html+=`<div class="notice">${winners.length===1?`A legtöbb találatot ${esc(winners[0])} érte el.`:`Döntetlen: ${winners.map(esc).join(', ')}.`} A pontok a tippjeitek egyezését jelzik, nem azt, hogy ki ismer kit jobban minden helyzetben.</div><details class="answer-review"><summary>Az összes kör válaszainak áttekintése · ${S.groupHistory.length} kör</summary>${review}</details>`;show('results');$('resultsEyebrow').textContent='MIRROR · A közös tükör';$('resultsTitle').textContent='Mennyire látjátok egymást?';$('resultsLead').textContent=`${S.groupTitle?S.groupTitle+' · ':''}Az összegzés a saját válaszokat, a tippeket és az eltéréseket együtt mutatja.`;$('resultsBody').innerHTML=html;$('playAgain').textContent='Új társasjáték';$('playAgain').onclick=()=>show('category');$('copyResult').classList.add('hidden');}
-// -------------------- Megosztott, linkalapú tükör --------------------
-function randomId(){const bytes=new Uint8Array(9);crypto.getRandomValues(bytes);return Array.from(bytes,b=>b.toString(16).padStart(2,'0')).join('');}
-function encodePayload(obj){const bytes=new TextEncoder().encode(JSON.stringify(obj));let binary='';bytes.forEach(b=>binary+=String.fromCharCode(b));return btoa(binary).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');}
-function decodePayload(token){try{let b64=token.replace(/-/g,'+').replace(/_/g,'/');while(b64.length%4)b64+='=';const binary=atob(b64);const bytes=Uint8Array.from(binary,c=>c.charCodeAt(0));return JSON.parse(new TextDecoder().decode(bytes));}catch(e){return null;}}
-function baseForLinks(){let savedBase='';try{savedBase=localStorage.getItem('mirror_public_base')||'';}catch(e){}let custom=$('publicBase')?.value.trim()||savedBase||'';if(custom){try{const u=new URL(custom);if(!['http:','https:'].includes(u.protocol))throw 0;return u.href.split('#')[0].split('?')[0];}catch(e){toast('A nyilvános webcím legyen érvényes https:// vagy http:// cím.');return null;}}if(['http:','https:'].includes(location.protocol))return location.href.split('#')[0].split('?')[0];toast('A linkekhez előbb töltsd fel ezt a HTML-fájlt webtárhelyre, majd add meg a publikus címét.');return null;}
-function makeLink(payload){const base=baseForLinks();if(!base)return null;try{localStorage.setItem('mirror_public_base',base);}catch(e){}return base+'#mirror='+encodePayload(payload);}
-function readPayloadFromLocation(){const raw=location.hash.startsWith('#')?location.hash.slice(1):'';const params=new URLSearchParams(raw);const token=params.get('mirror');return token?decodePayload(token):null;}
-function saveLibrary(item){try{const arr=JSON.parse(localStorage.getItem('mirror_library')||'[]');arr.unshift({...item,savedAt:new Date().toISOString()});localStorage.setItem('mirror_library',JSON.stringify(arr.slice(0,40)));}catch(e){}}
-async function copyText(text){try{await navigator.clipboard.writeText(text);toast('A linket kimásoltam.');}catch(e){const input=document.createElement('textarea');input.value=text;document.body.append(input);input.select();try{document.execCommand('copy');toast('A linket kimásoltam.');}catch(err){toast('A másolás nem sikerült. Jelöld ki a linket kézzel.');}input.remove();}}
-async function shareText(url,title){if(navigator.share){try{await navigator.share({title,text:'Nézz bele a MIRROR tükrébe.',url});return;}catch(e){if(e.name==='AbortError')return;}}await copyText(url);}
-function renderLinkScreen(id,inputId,url,copyId,shareId){$(inputId).value=url;$(copyId).onclick=()=>copyText(url);$(shareId).onclick=()=>shareText(url,'MIRROR');show(id);}
-function createInvite(){const sender=$('senderName').value.trim()||'MIRROR-játékos';const source=$('questionSource').value;let questions;if(source==='custom'){const q=$('customQuestion').value.trim(),opts=[...document.querySelectorAll('.custom-option')].map(x=>x.value.trim()),category=$('customCategory').value;if(category==='spicy'&&!$('sendAdult').checked){toast('A pikáns, 18+ saját kártyához engedélyezd a 18+ kapcsolót.');return;}if(!q||opts.some(x=>!x)){toast('Töltsd ki a saját kérdést és mind a négy választ.');return;}questions=[{c:category,q,o:opts.map((t,i)=>[t,['open','think','care','boundary'][i]])}];}else{const count=S.customCardCount;questions=mixedDeck(count,$('sendAdult').checked);}
-const payload={v:1,type:'invite',id:randomId(),sender,questions,createdAt:Date.now()};const url=makeLink(payload);if(!url)return;saveLibrary({type:'Meghívó',title:`Tükör ${payload.questions.length} kérdéssel`,url});$('inviteLinkNotice').textContent=`${payload.questions.length} kérdés · Küldő: ${sender}. Küldd el a linket a címzettnek.`;renderLinkScreen('shareCreated','inviteLinkOutput',url,'copyInvite','shareInvite');}
-function beginInvite(payload){if(!payload||payload.type!=='invite'||!Array.isArray(payload.questions)||!payload.questions.length){toast('A meghívólink hibás vagy hiányos.');show('home');return;}S.invite=payload;S.inviteAnswers=Array(payload.questions.length).fill(null);S.inviteIndex=0;const needsAdult=payload.questions.some(q=>q.c==='spicy');$('inviteAdultGate').classList.toggle('hidden',!needsAdult);$('inviteAdultConfirm').checked=false;$('inviteTitle').textContent=`${payload.sender||'Valaki'} tükröt küldött neked.`;$('inviteLead').textContent=`${payload.questions.length} kérdés vár rád. Válaszolj a saját nézőpontod szerint, majd küldd vissza a válaszlinket.`;$('recipientName').value='';$('inviteIntro').classList.remove('hidden');$('inviteQuestionArea').classList.add('hidden');show('inviteAnswer');}
-function startInviteQuestions(){if(S.invite.questions.some(q=>q.c==='spicy')&&!$('inviteAdultConfirm').checked){toast('A pikáns kérdésekhez igazold, hogy elmúltál 18 éves.');return;}S.invite.recipient=$('recipientName').value.trim()||'Vendég';$('inviteIntro').classList.add('hidden');$('inviteQuestionArea').classList.remove('hidden');showInviteQuestion();}
-function showInviteQuestion(){const q=S.invite.questions[S.inviteIndex];if(!q){finishInviteAnswers();return;}$('inviteProgress').textContent=`${S.inviteIndex+1} / ${S.invite.questions.length}`;$('inviteProgressBar').style.width=`${S.inviteIndex/S.invite.questions.length*100}%`;$('inviteCategory').textContent=catName(q.c).toUpperCase();$('inviteQuestion').textContent=q.q;$('inviteOptions').innerHTML=q.o.map((o,i)=>`<button class="option" data-invite-option="${i}"><span class="letter">${String.fromCharCode(65+i)}</span><span>${esc(o[0])}</span></button>`).join('');S._inviteSelected=null;$('inviteNext').disabled=true;$('inviteNext').textContent=S.inviteIndex===S.invite.questions.length-1?'Válaszok véglegesítése':'Válasz rögzítése';$('inviteOptions').querySelectorAll('[data-invite-option]').forEach(btn=>btn.onclick=()=>{S._inviteSelected=+btn.dataset.inviteOption;$('inviteOptions').querySelectorAll('.option').forEach(x=>x.classList.toggle('selected',x===btn));$('inviteNext').disabled=false;});$('inviteNext').onclick=()=>{if(S._inviteSelected===null)return;S.inviteAnswers[S.inviteIndex]=S._inviteSelected;S.inviteIndex++;showInviteQuestion();};$('inviteSkip').onclick=()=>{S.inviteAnswers[S.inviteIndex]=null;S.inviteIndex++;showInviteQuestion();};}
-function finishInviteAnswers(){const payload={v:1,type:'return',invite:S.invite,recipient:S.invite.recipient,answers:S.inviteAnswers};const url=makeLink(payload);if(!url)return;saveLibrary({type:'Válaszlink',title:`Válasz: ${S.invite.recipient}`,url});renderLinkScreen('returnReady','returnLinkOutput',url,'copyReturn','shareReturn');}
-function beginReturnGuess(payload){if(!payload||payload.type!=='return'||!payload.invite||!Array.isArray(payload.answers)){toast('A visszaküldött link hibás vagy hiányos.');show('home');return;}S.returnData=payload;S.returnGuesses=Array(payload.answers.length).fill(null);S.returnIndex=0;showReturnQuestion();}
-function showReturnQuestion(){const i=S.returnIndex,q=S.returnData.invite.questions[i];if(!q){finishReturnGuess();return;}show('senderGuess');$('guessProgress').textContent=`${i+1} / ${S.returnData.invite.questions.length}`;$('guessProgressBar').style.width=`${i/S.returnData.invite.questions.length*100}%`;$('guessCategory').textContent=catName(q.c).toUpperCase();$('guessQuestion').textContent=q.q;$('guessLead').textContent=`Mit választott ${S.returnData.recipient}?`;$('guessOptions').innerHTML=q.o.map((o,j)=>`<button class="option" data-guess-option="${j}"><span class="letter">${String.fromCharCode(65+j)}</span><span>${esc(o[0])}</span></button>`).join('');S._guessSelected=null;$('guessNext').disabled=true;$('guessNext').textContent=i===S.returnData.invite.questions.length-1?'Tippek véglegesítése':'Tipp rögzítése';$('guessOptions').querySelectorAll('[data-guess-option]').forEach(btn=>btn.onclick=()=>{S._guessSelected=+btn.dataset.guessOption;$('guessOptions').querySelectorAll('.option').forEach(x=>x.classList.toggle('selected',x===btn));$('guessNext').disabled=false;});$('guessNext').onclick=()=>{if(S._guessSelected===null)return;S.returnGuesses[i]=S._guessSelected;S.returnIndex++;showReturnQuestion();};$('guessSkip').onclick=()=>{S.returnGuesses[i]=null;S.returnIndex++;showReturnQuestion();};}
-function finishReturnGuess(){const p={v:1,type:'result',invite:S.returnData.invite,recipient:S.returnData.recipient,answers:S.returnData.answers,guesses:S.returnGuesses,sender:S.returnData.invite.sender,createdAt:Date.now()};S.resultPayload=p;renderSharedResult(p,true);const url=makeLink(p);if(!url)return;saveLibrary({type:'Eredmény',title:`${p.sender} × ${p.recipient}`,url});$('resultLinkOutput').value=url;}
-function renderSharedResult(p,showSenderLink){const questions=p.invite.questions,answers=p.answers,guesses=p.guesses;const counts=countsFor(questions,answers),summary=patternSummary(counts);let attempted=0,hit=0;guesses.forEach((g,i)=>{if(g!==null&&g!==undefined&&answers[i]!==null&&answers[i]!==undefined){attempted++;if(g===answers[i])hit++;}});const mismatches=questions.map((q,i)=>({q,i,answer:answers[i],guess:guesses[i]})).filter(x=>x.answer!==null&&x.answer!==undefined&&x.guess!==null&&x.guess!==undefined&&x.answer!==x.guess);let html='';const top=summary.top;
-if(questions.length===1){html+=`<div class="resultcard"><p class="eyebrow">A válasz és a tipped</p><div class="resulttitle">${answers[0]===null?'A válasz kimaradt':esc(questions[0].o[answers[0]][0])}</div><p>${guesses[0]===null?'Nem adtál le tippet.':guesses[0]===answers[0]?'Előre eltaláltad a választ.':'Más választ vártál.'}</p></div>`;}
-if(questions.length===1){html+=`<div class="resultcard"><p class="eyebrow">01 · AZ ÉN TÜKRÖM · ${esc(p.recipient)}</p><div class="resulttitle">Egy döntés, egy nézőpont</div><p>${answers[0]===null?'Ezt a helyzetet kihagytad.':`Ebben a helyzetben ezt választottad: ${esc(questions[0].o[answers[0]][0])}`}</p></div>`;}else{html+=`<div class="resultcard"><p class="eyebrow">01 · AZ ÉN TÜKRÖM · ${esc(p.recipient)}</p><div class="resulttitle">${top&&top[1]>0?esc(PATTERNS[top[0]].name):'Még nincs kirajzolódó minta'}</div><p>${top&&top[1]>0?esc(PATTERNS[top[0]].desc):'A válaszok száma nem elegendő visszatérő válaszminta megfigyeléséhez.'}</p>${barsHtml(counts)}</div>`;}
-html+=`<div class="resultcard"><p class="eyebrow">02 · AHOGYAN MÁSOK LÁTNAK · ${esc(p.sender)}</p><div class="resulttitle">${attempted.length?`${hit} / ${attempted.length} találat`:'Nincs értékelhető tipp'}</div><p>${attempted.length?`A ${p.sender} által leadott értékelhető tippek ${Math.round(hit/attempted.length*100)}%-a egyezett a tényleges válaszokkal.`:'A kihagyott válaszok és tippek miatt nem számítható találati arány.'}</p></div>`;
-html+=`<div class="resultcard"><p class="eyebrow">03 · A KÖZÖS TÜKÖR</p><div class="resulttitle">${mismatches.length?`${mismatches.length} eltérő válasz`:'A tippek és válaszok egyeztek'}</div><p>${mismatches.length?'A különbségek nem hibák. Azt mutatják, hol nem ugyanazt várta a másik, mint amit végül választottál. Ezek lehetnek a legjobb beszélgetésindítók.':'Ebben a játékban a leadott tippek megegyeztek a válaszokkal. Érdemes megbeszélni, mi segített jól megérezni a másik döntését.'}</p></div>`;
-html+=`<div class="resultcard"><div class="resulttitle">Beszélgessetek róla</div><p>Melyik válasz lepett meg benneteket? Melyik tipp mutatta meg, hogy máshogy láttok egy helyzetet? A válaszadó maga dönti el, mit szeretne elmagyarázni.</p></div>`;
-html+=`<details class="answer-review"><summary>Kérdésenkénti válaszáttekintés</summary>${questions.map((q,i)=>`<div class="review-item"><strong>${i+1}. ${esc(q.q)}</strong><span>${esc(p.recipient)} válasza: ${answers[i]===null?'Kihagyta':esc(q.o[answers[i]][0])}<br>${esc(p.sender)} tippje: ${guesses[i]===null?'Kihagyta':esc(q.o[guesses[i]][0])} · ${answers[i]===null||guesses[i]===null?'Nem értékelhető':answers[i]===guesses[i]?'Talált':'Eltérés'}</span></div>`).join('')}</details>`;
-if(showSenderLink){$('senderResultSummary').innerHTML=html;show('resultLinkReady');}else{show('results');$('resultsEyebrow').textContent='MIRROR · Közös eredmény';$('resultsTitle').textContent=`${p.sender} és ${p.recipient} tükre`;$('resultsLead').textContent='A három réteg az adott kérdésekre adott válaszokat és tippeket hasonlítja össze. Nem személyiségdiagnózis.';$('resultsBody').innerHTML=html;$('playAgain').textContent='Új tükör készítése';$('playAgain').onclick=()=>show('createSetup');$('copyResult').classList.add('hidden');}}
-function renderLibrary(){let arr=[];try{arr=JSON.parse(localStorage.getItem('mirror_library')||'[]');}catch(e){}$('libraryItems').innerHTML=arr.length?arr.map(item=>`<div class="library-item"><span class="tag">${esc(item.type)}</span><strong>${esc(item.title)}</strong><p>${new Date(item.savedAt).toLocaleString('hu-HU')}</p><input class="input" readonly value="${esc(item.url)}"><div class="inline" style="margin-top:9px"><button class="btn smallbtn secondary" data-copy-library="${esc(item.url)}">Link másolása</button></div></div>`).join(''):'<p class="subtle">Még nincs elmentett MIRROR-link ezen az eszközön.</p>';document.querySelectorAll('[data-copy-library]').forEach(b=>b.onclick=()=>copyText(b.dataset.copyLibrary));show('library');}
-function modal(title,body){$('modalRoot').innerHTML=`<div class="modalback" id="backdrop"><div class="modal"><p class="eyebrow">MIRROR</p><h2 style="font-size:36px">${title}</h2><p>${body}</p><div class="inline"><button class="btn" id="closeModal">Értem</button></div></div></div>`;$('closeModal').onclick=()=>$('modalRoot').innerHTML='';$('backdrop').onclick=e=>{if(e.target.id==='backdrop')$('modalRoot').innerHTML='';};}
+const CONFLICTS = [
+ ["Kétféle cél","Két szereplő ugyanazt a helyzetet szeretné megoldani, de teljesen más eredményt tartana jónak."],
+ ["Kevés az erőforrás","Nincs elég idő, hely, eszköz vagy készlet ahhoz, hogy mindenki megkapja, amit szeretne."],
+ ["Megszegtek egy ígéretet","Valaki nem tartotta be, amit korábban megígért, és most helyre kell hoznia a bizalmat."],
+ ["Kié legyen a döntés?","Többen is vezetni szeretnék a csapatot, de egyikük sem akar engedni."],
+ ["Másképp emlékeznek","A szereplők ugyanarról az eseményről egymásnak ellentmondóan emlékeznek."],
+ ["Valaki kimarad","Egy szereplő úgy érzi, hogy a többiek nélküle döntenek, ezért nem akar együttműködni."],
+ ["Segítség feltételekkel","A felajánlott segítségért cserébe valaki olyasmit kér, amit a többiek nem szívesen vállalnak."],
+ ["Versengő csapatok","Két csoport ugyanazt a célt szeretné elérni, de csak együtt tudnák megoldani a problémát."],
+ ["Nem mindenki mond igazat","Valaki elhallgat egy fontos részletet, mert fél a következményektől."],
+ ["A szabály igazságtalan","Egy új vagy régi szabály valakinek előnyt ad, másnak viszont komoly hátrányt okoz."],
+ ["Eltérő kockázatvállalás","Az egyik szereplő azonnal cselekedne, a másik inkább kivárna és biztosra menne."],
+ ["Két embernek ugyanaz kell","Egyetlen fontos tárgyra vagy lehetőségre két szereplőnek is szüksége van."],
+ ["A felelősség kérdése","Valami félresikerült, de senki sem akarja vállalni a felelősséget."],
+ ["Félreértett szándék","Egy jó szándékú tett fenyegetésnek vagy sértésnek tűnik valaki más szemében."],
+ ["A régi és az új terv","A csapat egyik fele ragaszkodik az eredeti tervhez, a másik teljesen új ötletet próbálna ki."],
+ ["Nem fér bele minden","A szereplőknek választaniuk kell két fontos feladat között, mert mindkettőre nincs kapacitás."],
+ ["Vitatott tulajdon","Két szereplő is azt hiszi, hogy ugyanaz a tárgy vagy hely őt illeti meg."],
+ ["A segítő is bajban van","Az a szereplő, akitől mindenki segítséget vár, maga is megoldásra váró helyzetbe kerül."],
+ ["Különböző titkok","Két szereplő külön-külön őriz valamit, és a titkaik egymás útjába kerülnek."],
+ ["A gyors megoldás ára","Egy egyszerű megoldás működne, de valaki másnak kellemetlen következménye lenne."],
+ ["Nem ugyanazt értik siker alatt","A csapat tagjai csak későn veszik észre, hogy mást tekintenek jó befejezésnek."],
+ ["Valaki nem akar hazamenni","A többiek továbblépnének, de egy szereplőnek fontos oka van maradni."],
+ ["A versenytárs előnyt szerez","Egy rivális váratlanul előrébb jut, és a csapatnak újra kell gondolnia a stratégiáját."],
+ ["A döntés kettészakítja a csapatot","Egy fontos választásban a szereplők két táborra szakadnak."]
+];
 
-// Teljes képernyő / mobil böngészőben biztonságos vizuális fallback.
-function syncFullscreenButton(){const active=!!document.fullscreenElement||document.body.classList.contains('mirror-fullscreen-fallback');const b=$('fullscreenToggle');if(!b)return;b.setAttribute('aria-pressed',String(active));b.setAttribute('aria-label',active?'Teljes képernyő bezárása':'Teljes képernyő');b.title=active?'Kilépés a teljes képernyőből':'Teljes képernyő';b.textContent=active?'⤢':'⛶';}
-$('fullscreenToggle').onclick=async()=>{try{if(document.fullscreenElement){await document.exitFullscreen();document.body.classList.remove('mirror-fullscreen-fallback');}else if(document.documentElement.requestFullscreen){await document.documentElement.requestFullscreen({navigationUI:'hide'});document.body.classList.remove('mirror-fullscreen-fallback');}else{document.body.classList.toggle('mirror-fullscreen-fallback');toast(document.body.classList.contains('mirror-fullscreen-fallback')?'Kibővített nézet bekapcsolva. A böngésző saját sávjai ezen az eszközön nem rejthetők el.':'Visszatértél a normál nézethez.');}syncFullscreenButton();}catch(err){document.body.classList.toggle('mirror-fullscreen-fallback');syncFullscreenButton();toast('A böngésző nem engedélyezte a natív teljes képernyőt; kibővített nézetet kapcsoltam.');}};
-document.addEventListener('fullscreenchange',syncFullscreenButton);document.addEventListener('fullscreenerror',()=>toast('A teljes képernyő nem érhető el ebben a böngészőben.'));
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.body.classList.contains('mirror-fullscreen-fallback')){document.body.classList.remove('mirror-fullscreen-fallback');syncFullscreenButton();}});
-syncFullscreenButton();
+const COMPLICATIONS = [
+ ["A terv első része sikerül, a második nem","A szereplők elérik az első célt, de az eredmény új problémát okoz."],
+ ["Valaki rosszkor érkezik","Egy új szereplő a lehető legrosszabb pillanatban jelenik meg, és megváltoztatja a helyzetet."],
+ ["A segítségnek ára van","A megoldás közelebb kerül, de cserébe valamiről le kell mondani."],
+ ["A nyom félrevezető","Egy fontosnak tűnő jel másra utal, mint amit a szereplők először gondoltak."],
+ ["Elfogy az idő","A szereplőknek gyorsabban kell dönteniük, mint szeretnének."],
+ ["A megoldás új feladatot teremt","A probléma egyik része megszűnik, de egy másik szereplőnek rögtön új gondja támad."],
+ ["Kiesik egy fontos eszköz","A tervhez szükséges tárgy használhatatlanná válik vagy eltűnik."],
+ ["A szövetséges meggondolja magát","Valaki, aki eddig segített, most más feltételeket szab."],
+ ["Mindenki mást lát","Ugyanaz a jelenet többféleképpen értelmezhető, és ez vitát indít."],
+ ["A kerülőút hosszabb","A biztonságosabb megoldás több időt és több együttműködést igényel."],
+ ["Kiderül egy mellékhatás","Egy korábbi döntésnek olyan következménye lesz, amire senki sem számított."],
+ ["A szerep felcserélődik","Annak kell segítséget kérnie, aki eddig mindenkit irányított."],
+ ["A környezet akadályoz","A helyszín egy adottsága megnehezíti a következő lépést, de akár ötletet is adhat."],
+ ["Két feladat ütközik","Két fontos teendőt egyszerre kellene elvégezni, de a csapat nem tud kettéválni."],
+ ["A titok rosszkor derül ki","Egy elhallgatott információ éppen akkor kerül napvilágra, amikor a legnagyobb szükség lenne az összefogásra."],
+ ["A siker túl korainak bizonyul","Mindenki azt hiszi, vége a problémának, de egy apró részlet mást mutat."],
+ ["A szabály megváltozik","Egy addig biztosnak hitt szabály már nem érvényes, ezért új módszer kell."],
+ ["Valaki mást kér segítségül","A szereplő nem a csapattól, hanem egy váratlan személytől kér támogatást."],
+ ["Kettős feladat","A szereplőknek egyszerre kell megőrizniük valamit és eljuttatniuk valahová."],
+ ["A legkisebb részlet számít","Egy jelentéktelennek tűnő apróság miatt újra kell értékelni az eddigieket."]
+];
 
-// UI események
-$('soloStart').onclick=()=>show('soloSetup');$('groupStart').onclick=()=>{renderPlayers();show('groupSetup');};$('sendStart').onclick=()=>{if(['http:','https:'].includes(location.protocol))$('publicBase').value=location.href.split('#')[0].split('?')[0];show('createSetup');};$('libraryStart').onclick=renderLibrary;
-$('beginSolo').onclick=startSolo;$('beginGroup').onclick=startGroup;$('addPlayer').onclick=()=>{if(playerDraft.length<8){playerDraft.push('');renderPlayers();}};$('startGroupGame').onclick=startGroupGame;$('createInvite').onclick=createInvite;$('startInviteAnswers').onclick=startInviteQuestions;
-$('soloLengths').querySelectorAll('[data-length]').forEach(button=>button.onclick=()=>{$('soloLengths').querySelectorAll('.length-choice').forEach(x=>x.classList.toggle('active',x===button));S.soloLength=+button.dataset.length;});$('mirrorLengths').querySelectorAll('[data-count]').forEach(button=>button.onclick=()=>{$('mirrorLengths').querySelectorAll('.length-choice').forEach(x=>x.classList.toggle('active',x===button));S.customCardCount=+button.dataset.count;});$('questionSource').onchange=()=>{$('customQuestionFields').classList.toggle('hidden',$('questionSource').value!=='custom');$('mirrorLengths').classList.toggle('hidden',$('questionSource').value==='custom');};
-$('howBtn').onclick=()=>modal('Hogyan működik?','A Saját tükörben 12, 20 vagy 24 helyzetre válaszolhatsz. A kérdésbank hét hangulatból válogat: humor, pikáns témák, horror, abszurd káosz, kínos pillanatok, kapcsolati helyzetek és őszinte önreflexió. A pikáns, 18+ kérdések külön kapcsolóval engedélyezhetők. A Közös tükör két játékosnál mindkettőtök válaszait és tippjeit összeveti; 3–8 játékosnál körönként egy játékos válaszol, a többiek tippelnek. A Küldött tükörben 1, 5 vagy 10 kérdést küldhetsz el linkkel. Az összegzés játékbeli visszajelzés, nem pszichológiai teszt.');
-$('privacyBtn').onclick=()=>modal('Adatvédelem és megosztás','A Saját és Közös tükör válaszai a böngészőben, a játék ideje alatt maradnak. A linkes Küldött tükör adatai ebben a statikus HTML-prototípusban a hivatkozásba vannak csomagolva, nem szerveroldali adatbázisba kerülnek. A link birtokosa technikailag hozzáférhet a benne tárolt adatokhoz, ezért érzékeny vagy bizalmas információt ne küldj. Valódi privát, lejáratható és visszavonható megosztáshoz később szerveroldali adatbázis, jogosultságkezelés és API szükséges.');
-document.querySelectorAll('[data-home]').forEach(b=>b.onclick=()=>show('home'));document.querySelectorAll('[data-screen]').forEach(b=>b.onclick=()=>show(b.dataset.screen));$('playAgain').onclick=()=>show('soloSetup');$('homeAgain').onclick=()=>show('home');$('copyResult').onclick=async()=>{try{await copyText(S._copyText||'MIRROR – játékösszegzés');}catch(e){toast('A másolás nem sikerült.');}};$('resetGame').onclick=()=>{if(confirm('Biztosan visszatérsz a főoldalra? A folyamatban lévő válaszok elvesznek.')){S.mode=null;show('home');}};$('clearLibrary').onclick=()=>{if(confirm('Törlöd az ezen az eszközön elmentett MIRROR-linkeket?')){try{localStorage.removeItem('mirror_library');}catch(e){}renderLibrary();}};
-$('copyInvite').onclick=()=>copyText($('inviteLinkOutput').value);$('shareInvite').onclick=()=>shareText($('inviteLinkOutput').value,'MIRROR meghívó');$('copyReturn').onclick=()=>copyText($('returnLinkOutput').value);$('shareReturn').onclick=()=>shareText($('returnLinkOutput').value,'MIRROR válasz');$('copyResultLink').onclick=()=>copyText($('resultLinkOutput').value);$('shareResultLink').onclick=()=>shareText($('resultLinkOutput').value,'MIRROR közös eredmény');
-$('resultLinkReady').querySelector('[data-home]')?.addEventListener('click',()=>show('home'));
-// Linkből megnyitott munkamenet kezelése.
-(function routeIncoming(){const p=readPayloadFromLocation();if(!p){show('home');return;}if(p.type==='invite')beginInvite(p);else if(p.type==='return')beginReturnGuess(p);else if(p.type==='result')renderSharedResult(p,false);else{toast('Ismeretlen MIRROR-link.');show('home');}})();
-</script>
-</body>
-</html>
+const CONSEQUENCES = [
+ ["Visszaüt egy korábbi döntés","Egy korábban választott megoldás most váratlan következményt okoz."],
+ ["Valaki máshogy értékeli a sikert","A szereplők elérik a céljukat, de nem mindenki örül az eredménynek."],
+ ["A segítség továbbgyűrűzik","Egy apró jó tett újabb szereplőket ösztönöz cselekvésre."],
+ ["Megváltozik a csapat viszonya","A történtek után két szereplő közelebb kerül egymáshoz, vagy éppen eltávolodik."],
+ ["Valami végleg elveszik","A megoldásnak ára van: egy tárgy, lehetőség vagy korábbi állapot nem állítható helyre."],
+ ["Új felelősség születik","A szereplőknek mostantól gondoskodniuk kell valamiről, amivel korábban nem számoltak."],
+ ["A kívülállók is érintettek","A történet eseményei olyanokra is hatással vannak, akik eddig csak szemlélők voltak."],
+ ["A győzelem megosztó","A csapat eléri a célját, de vita támad arról, ki minek köszönheti a sikert."],
+ ["Visszatér egy régi probléma","Egy korábban megoldottnak hitt ügy új formában bukkan fel."],
+ ["A környezet átalakul","A döntések hatására a helyszín vagy annak lakói tartósan megváltoznak."],
+ ["Valaki tanul a hibájából","Egy szereplő belátja, hogy változtatnia kell a viselkedésén vagy a tervén."],
+ ["A jutalom máshoz kerül","A várt elismerést vagy nyereséget végül valaki egészen más kapja."],
+ ["Egy új szövetség kezdete","A konfliktus után két korábban távoli szereplő közös célt talál."],
+ ["A titok már nem titok","A korábban elrejtett információ mindenki számára ismertté válik, és új helyzetet teremt."],
+ ["A következő generáció folytatja","A történtek hatása később is megmarad, és valaki más viszi tovább az ügyet."],
+ ["A megoldás új kérdést hagy","A fő probléma lezárul, de egy érdekes részlet további gondolkodásra ad okot."],
+ ["Valaki bocsánatot kér","Egy őszinte gesztus helyrehozhat egy korábbi kapcsolatot."],
+ ["A csapat új szabályt alkot","A szereplők tanulnak a történtekből, és közös szabályban állapodnak meg."]
+];
+
+const QUESTIONS = ["Mi volt a történet legelső eseménye?","Ki vagy mi volt az első fontos szereplő?","Milyen probléma nehezítette meg a szereplők dolgát?","Ki segített a többieken, és hogyan?","Melyik tárgy vagy helyszín bizonyult fontosnak?","Milyen váratlan fordulat történt?","Volt olyan szereplő, akiről kiderült valami meglepő?","Hogyan oldódott meg a legnagyobb probléma?","Mi volt a legviccesebb vagy legfurcsább részlet?","Hogyan ért véget a történet?"];
+ const DECKS = {starts:STARTS,story:STORY,tech:TECH,challenge:CHALLENGE,twists:TWISTS,special:SPECIAL,endings:ENDINGS,characters:CHARACTERS,locations:LOCATIONS,solutions:SOLUTIONS,events:EVENTS,conflicts:CONFLICTS,complications:COMPLICATIONS,consequences:CONSEQUENCES};
+ const DECK_LABELS={starts:"Kezdőtörténetek",story:"Történetkártyák",tech:"Rajzeszköz-kártyák",challenge:"Kreatív kihívások",twists:"Fordulatkártyák",special:"Speciális szabályok",endings:"Befejezések",characters:"Karakterkártyák",locations:"Helyszínkártyák",solutions:"Megoldáskártyák",events:"Eseménykártyák",conflicts:"Konfliktuskártyák",complications:"Bonyodalomkártyák",consequences:"Következménykártyák"};
+ const $=id=>document.getElementById(id);
+ let game=null,timerInterval=null,timerLeft=90;
+ function allCards(key){return DECKS[key]||[];}
+ function pick(key,theme="all",used=[]){
+  const deck=allCards(key);
+  if(!Array.isArray(used))used=[];
+  let candidates=deck.map((x,i)=>({x,i})).filter(o=>!used.includes(o.i));
+  if(theme!=="all" && ["starts","story"].includes(key)){
+   const matched=candidates.filter(o=>o.x[2]===theme||o.x[2]==="all");
+   if(matched.length)candidates=matched;
+  }
+  if(!candidates.length){
+   used.length=0;
+   candidates=deck.map((x,i)=>({x,i}));
+   if(theme!=="all" && ["starts","story"].includes(key)){
+    const matched=candidates.filter(o=>o.x[2]===theme||o.x[2]==="all");
+    if(matched.length)candidates=matched;
+   }
+  }
+  if(!candidates.length)return {title:"Szabad történeti ötlet",text:"Találjatok ki közösen egy új eseményt!",category:key,index:-1};
+  const chosen=candidates[Math.floor(Math.random()*candidates.length)];
+  used.push(chosen.i);
+  return {title:chosen.x[0],text:chosen.x[1],category:key,index:chosen.i};
+ }
+ const PLOT_POOLS=["events","conflicts","twists","complications","solutions","consequences","story"];
+ const SUPPORT_POOLS=["characters","locations","story","events","conflicts","complications","consequences"];
+ function getRecentCategories(){
+  if(!game||!Array.isArray(game.history))return [];
+  return game.history.slice(-2).flatMap(entry=>(entry.cards||[]).map(card=>card.category)).filter(Boolean);
+ }
+ function chooseCategory(pool,phase,excluded=[]){
+  let weights;
+  if(phase==="opening")weights={events:3.2,conflicts:2.6,story:2.4,characters:2.5,locations:1.8,twists:0.8,complications:1.0,solutions:0.5,consequences:0.5};
+  else if(phase==="closing")weights={events:1.8,conflicts:1.8,story:1.0,characters:0.6,locations:0.4,twists:2.4,complications:1.8,solutions:3.2,consequences:2.8};
+  else weights={events:2.6,conflicts:3.0,story:1.8,characters:1.1,locations:0.9,twists:2.4,complications:3.0,solutions:1.5,consequences:1.8};
+  let candidates=pool.filter(key=>!excluded.includes(key)&&allCards(key).length);
+  if(!candidates.length)candidates=pool.filter(key=>allCards(key).length);
+  const recent=getRecentCategories();
+  const weighted=candidates.map(key=>({key,weight:(weights[key]||1)*(recent.slice(-3).includes(key)?0.48:1)}));
+  const total=weighted.reduce((sum,item)=>sum+item.weight,0);
+  let roll=Math.random()*total;
+  for(const item of weighted){roll-=item.weight;if(roll<=0)return item.key;}
+  return weighted[weighted.length-1].key;
+ }
+ function currentPhase(){
+  if(game.round<=Math.max(2,Math.ceil(game.rounds*0.25)))return "opening";
+  if(game.round>=Math.ceil(game.rounds*0.75))return "closing";
+  return "middle";
+ }
+ function drawRoundCards(){
+  const phase=currentPhase();
+  const isFinal=game.round===game.rounds;
+  const firstPool=isFinal?["events","conflicts","twists","complications","solutions","consequences"]:PLOT_POOLS;
+  const firstKey=chooseCategory(firstPool,phase,[]);
+  const first=pick(firstKey,game.theme,game.used[firstKey]);
+  const secondKey=isFinal?"endings":chooseCategory(SUPPORT_POOLS,phase,[firstKey]);
+  const second=pick(secondKey,game.theme,game.used[secondKey]);
+  const cards=[first,second];
+  if(!isFinal&&Math.random()<0.22)cards.push(pick("challenge","all",game.used.challenge));
+  if(!isFinal&&Math.random()<0.14)cards.push(pick("special","all",game.used.special));
+  return cards;
+ }
+ function ensureGameState(){
+  if(!game.used)game.used={};
+  Object.keys(DECKS).forEach(key=>{if(!Array.isArray(game.used[key]))game.used[key]=[];});
+  if(!Array.isArray(game.history))game.history=[];
+  if(!Array.isArray(game.players)||!game.players.length)game.players=["Játékos 1","Játékos 2"];
+  if(!Number.isFinite(game.rounds)||game.rounds<1)game.rounds=8;
+  if(!Number.isFinite(game.turn))game.turn=0;
+  if(!Number.isFinite(game.round))game.round=0;
+ }
+ function phaseHint(){
+  const phase=currentPhase();
+  if(phase==="opening")return "Alapozzátok meg a történetet: kapcsoljatok össze egy új eseményt a már ismert szereplőkkel vagy a kezdőhelyzettel.";
+  if(phase==="closing")return "Közeledik a lezárás: a mostani döntéseknek legyen következményük, és kapcsolódjanak a korábbi eseményekhez.";
+  return "Bonyolódik a történet: engedjetek be új konfliktust, váratlan eseményt vagy olyan fordulatot, amely átírja a szereplők terveit.";
+ }
+ function displayCardText(card){
+  if(card.category==="locations")return card.text+" A helyszín csak a jelenet tere: nem kell titkos ajtónak, rejtélynek vagy újabb helyszínhez vezető útnak lennie. A konfliktus itt is kibontakozhat.";
+  return card.text;
+ }
+ function safeElement(tag,className,text){
+  const element=document.createElement(tag);
+  if(className)element.className=className;
+  if(text!==undefined)element.textContent=text;
+  return element;
+ }
+ function renderExtraCards(cards){
+  const target=$("extraArea");
+  target.replaceChildren();
+  cards.forEach(card=>{
+   const style=card.category==="twists"||card.category==="conflicts"?"special":(["solutions","endings","consequences"].includes(card.category)?"end":"extra");
+   const prompt=safeElement("div","prompt "+style);
+   prompt.appendChild(safeElement("div","tag",(DECK_LABELS[card.category]||"Kártya").toUpperCase()));
+   prompt.appendChild(safeElement("h2","",card.title));
+   prompt.appendChild(safeElement("p","",displayCardText(card)));
+   target.appendChild(prompt);
+  });
+ }
+
+ function show(section){
+  ["home","game","recap","done","rules"].forEach(s=>$(s).classList.toggle("hidden",s!==section));
+  requestAnimationFrame(()=>{window.scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0;});
+ }
+ function toast(msg){$("toast").textContent=msg;$("toast").classList.remove("hidden");setTimeout(()=>$("toast").classList.add("hidden"),2200);}
+ function save(){if(game){try{localStorage.setItem("folytasdRajzotSave",JSON.stringify(game));}catch(e){toast("A böngésző nem engedte a mentést ezen az eszközön.");}}}
+ function loadSaved(){try{return JSON.parse(localStorage.getItem("folytasdRajzotSave")||"null")}catch(e){return null}}
+ function updateDeckStats(){
+  $("deckStats").replaceChildren();
+  Object.entries(DECKS).forEach(([key,cards])=>{
+   const row=safeElement("div","deck-row");
+   row.appendChild(safeElement("strong","",DECK_LABELS[key]));
+   row.appendChild(safeElement("span","",cards.length+" kártya"));
+   $("deckStats").appendChild(row);
+  });
+  const total=Object.values(DECKS).reduce((sum,cards)=>sum+cards.length,0);
+  $("deckTotal").textContent=total+" kártya";
+  const saved=loadSaved();
+  $("resumeBtn").classList.toggle("hidden",!saved||saved.status==="done");
+ }
+ function startGame(){
+  const n=Number($("players").value),rounds=Number($("rounds").value);
+  let names=$("names").value.split(",").map(s=>s.trim()).filter(Boolean);
+  while(names.length<n)names.push("Játékos "+(names.length+1));
+  names=names.slice(0,n);
+  const theme=$("theme").value;
+  const used={};Object.keys(DECKS).forEach(key=>used[key]=[]);
+  game={status:"playing",players:names,rounds,theme,turn:0,round:0,start:pick("starts",theme,used.starts),tool:pick("tech","all",used.tech),history:[],used,timer:$("timerToggle").checked,notes:"",created:new Date().toISOString(),version:2};
+  renderTurn();save();show("game");
+ }
+ function currentPlayer(){return game.players[game.turn%game.players.length];}
+ function renderTurn(keepCards=false){
+  ensureGameState();
+  const setup=game.round===0;
+  $("roundLabel").textContent=setup?"0. kör · Közös kezdés":`${game.round}. forduló / ${game.rounds}`;
+  $("playerLabel").textContent=setup?"A történet közös előkészítése":currentPlayer()+" következik";
+  $("progressBar").style.width=(setup?0:(game.round/game.rounds*100))+"%";
+  $("gameHint").textContent=setup?"Olvassátok el a kezdőhelyzetet, és válasszátok ki a rajzeszközt. Ez a beállítás az egész játékra érvényes.":phaseHint();
+  $("startPrompt").classList.toggle("hidden",!setup);
+  $("startTitle").textContent=game.start.title;$("startText").textContent=game.start.text;
+  $("cardsArea").classList.remove("hidden");
+  const techPrompt=$("cardsArea").querySelector(".prompt.tech");
+  const storyPrompt=$("cardsArea").querySelector(".prompt.story");
+  if(setup){
+   storyPrompt.classList.add("hidden");techPrompt.classList.remove("hidden");
+   $("techTitle").textContent=game.tool.title;$("techText").textContent=game.tool.text;
+   $("cardsArea").querySelector(".prompt.tech .tag").textContent="A JÁTÉK TELJES IDŐTARTAMÁRA · RAJZESZKÖZ";
+   $("extraArea").replaceChildren();
+   $("drawCount").textContent="Kezdőhelyzet + 1 állandó rajzeszköz";
+   $("redrawBtn").disabled=true;
+   $("nextBtn").textContent="Kezdő kör lezárása →";
+  }else{
+   storyPrompt.classList.remove("hidden");techPrompt.classList.add("hidden");
+   $("nextBtn").textContent="Elkészültem – következő játékos";
+   if(!keepCards||!game.currentCards)game.currentCards=drawRoundCards();
+   const cards=game.currentCards;
+   const first=cards[0];
+   $("storyTitle").textContent=first.title;$("storyText").textContent=displayCardText(first);
+   storyPrompt.querySelector(".tag").textContent=(DECK_LABELS[first.category]||"Történetkártya").toUpperCase()+" · KÁRTYA";
+   renderExtraCards(cards.slice(1));
+   $("drawCount").textContent=cards.length+" feladatkártya";
+   $("redrawBtn").disabled=!!game.redrawn;
+  }
+  $("timerBox").classList.toggle("hidden",!game.timer||setup);stopTimer();timerLeft=90;updateTimer();
+  save();
+ }
+ function redrawOne(){
+  if(game.redrawn||game.round===0)return;
+  const old=game.currentCards[0];
+  const excluded=game.currentCards.map(card=>card.category);
+  const key=chooseCategory(PLOT_POOLS,currentPhase(),excluded);
+  game.currentCards[0]=pick(key,game.theme,game.used[key]);
+  game.redrawn=true;renderTurn(true);toast("Az első kártyát újrahúztátok.");save();
+ }
+ function addHistory(){
+  if(game.round===0){
+   game.history.push({round:0,player:"Közös kezdés",cards:[game.start,game.tool]});
+   return;
+  }
+  game.history.push({round:game.round,player:currentPlayer(),cards:game.currentCards.map(c=>({...c}))});
+ }
+ function nextTurn(){
+  if(game.round===0){
+   addHistory();game.round=1;game.turn=0;game.redrawn=false;game.currentCards=null;renderTurn();save();return;
+  }
+  addHistory();stopTimer();
+  game.turn++;
+  if(game.turn>=game.players.length*game.rounds){
+   game.status="recap";game.notes="";save();prepareRecap();show("recap");return;
+  }
+  game.round=Math.floor(game.turn/game.players.length)+1;
+  game.redrawn=false;game.currentCards=null;renderTurn();save();
+ }
+ function prepareRecap(){
+  $("recapStart").textContent=game.start.title+": "+game.start.text;
+  $("recapQuestions").innerHTML=QUESTIONS.slice(0,Math.min(8,game.rounds+2)).map((q,i)=>`<div class="step"><span class="num">${i+1}</span><div><strong>${q}</strong></div></div>`).join("");
+  $("storyNotes").value=game.notes||"";
+  renderHistory($("finalHistory"),true);
+ }
+ function renderHistory(target,showAll=false){
+  target.replaceChildren();
+  target.appendChild(safeElement("h2","","Kártyák és fordulók"));
+  game.history.forEach(entry=>{
+   const item=safeElement("div","history-item");
+   item.appendChild(safeElement("strong","",`${entry.round}. forduló · ${entry.player}`));
+   (entry.cards||[]).forEach(card=>{
+    const p=safeElement("p");
+    const label=safeElement("b","",(DECK_LABELS[card.category]||"Kártya")+": ");
+    p.appendChild(label);p.appendChild(document.createTextNode(card.title+" – "+card.text));
+    item.appendChild(p);
+   });
+   target.appendChild(item);
+  });
+ }
+ function finishGame(){
+  game.notes=$("storyNotes").value;game.status="done";save();show("done");
+  $("doneSummary").innerHTML=`<div class="grid"><div class="stat"><b>${game.players.length}</b><span>JÁTÉKOS</span></div><div class="stat"><b>${game.rounds}</b><span>FORDULÓ</span></div></div><p class="section"><strong>Kezdőhelyzet:</strong> ${game.start.title}</p><p><strong>Kártyák:</strong> ${game.history.reduce((a,e)=>a+e.cards.length,0)} húzott kártya</p>`;
+ }
+ function exportText(){
+  const title=$("storyTitleInput").value.trim()||"Cím nélküli történet";
+  let text=`${title}\nFOLYTASD A RAJZOT!\n\nKezdőhelyzet: ${game.start.title} – ${game.start.text}\nJátékosok: ${game.players.join(", ")}\n\n`;
+  game.history.forEach(e=>{text+=`${e.round}. forduló – ${e.player}\n`;e.cards.forEach(c=>text+=`- ${DECK_LABELS[c.category]}: ${c.title}. ${c.text}\n`);text+="\n";});
+  if(game.notes)text+="Közös történet:\n"+game.notes;
+  const blob=new Blob([text],{type:"text/plain;charset=utf-8"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="folytasd-a-rajzot-tortenet.txt";a.click();URL.revokeObjectURL(url);
+ }
+ function stopTimer(){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}}
+ function updateTimer(){$("timerText").textContent=`${String(Math.floor(timerLeft/60)).padStart(2,"0")}:${String(timerLeft%60).padStart(2,"0")}`;$("timerBar").style.width=(timerLeft/90*100)+"%";}
+ function startTimer(){if(timerInterval)return;timerInterval=setInterval(()=>{timerLeft--;updateTimer();if(timerLeft<=0){stopTimer();toast("Lejárt az idő! Fejezzétek be a rajzot.");}},1000);}
+ function resumeGame(){
+  const s=loadSaved();if(!s||s.status==="done")return;game=s;ensureGameState();
+  if(game.status==="recap"){prepareRecap();show("recap")}else{renderTurn(true);show("game")}
+ }
+ $("startBtn").onclick=startGame;$("resumeBtn").onclick=resumeGame;
+ $("nextBtn").onclick=nextTurn;$("redrawBtn").onclick=redrawOne;
+ $("historyBtn").onclick=()=>{$("historyPanel").classList.toggle("hidden");renderHistory($("historyList"));};
+ $("closeHistory").onclick=()=>$("historyPanel").classList.add("hidden");
+ $("quitBtn").onclick=()=>{if(confirm("Biztosan kiléptek? A játék mentve marad.")){stopTimer();save();show("home");updateDeckStats();}};
+ $("rulesTop").onclick=()=>show("rules");$("backHome").onclick=()=>show(game?"home":"home");
+ $("finishBtn").onclick=finishGame;$("showHistoryRecap").onclick=()=>$("finalHistory").classList.toggle("hidden");
+ $("newGameBtn").onclick=()=>{if(confirm("Új játék induljon? A korábbi mentés felülíródik.")){game=null;localStorage.removeItem("folytasdRajzotSave");$("savedMessage").textContent="";updateDeckStats();show("home");}};
+ $("saveStoryBtn").onclick=()=>{$("savedMessage").textContent="A történet címe és a játékmentés elmentve ezen az eszközön. Az összefoglalót a TXT-letöltés gombbal tölthetitek le.";game.title=$("storyTitleInput").value.trim();save();};
+ $("exportBtn").onclick=exportText;
+ $("timerStart").onclick=startTimer;$("timerReset").onclick=()=>{stopTimer();timerLeft=90;updateTimer();};
+ $("storyNotes").addEventListener("input",()=>{if(game){game.notes=$("storyNotes").value;save();}});
+ updateDeckStats();
+ </script>
+ </body>
+ </html>
