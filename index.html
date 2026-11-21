@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0b1017">
-  <meta name="description" content="Helyi, böngészőben futó mélységbecslés és 16 sávos tónusfeldolgozás.">
-  <title>DepthMap Studio 2.0 – intelligens 16 sávos mélységfeldolgozás</title>
+  <meta name="description" content="Helyi mélységbecslés, 16 sávos tónusfeldolgozás NORMAL karakterfókusz és INVERTED háttérfókusz módban.">
+  <title>DepthMap Studio 2.1 – NORMAL és INVERTED mélységi fókusz</title>
   <style>
     :root{color-scheme:dark;--bg:#0b1017;--panel:#151e29;--ink:#edf2f7;--muted:#93a1b0;--line:#2d3a49;--accent:#ee8664;--accent2:#ffad8d;--good:#94c79e;--warn:#e7bd8a;--shadow:0 18px 50px rgba(0,0,0,.28);--radius:18px}
     *{box-sizing:border-box}
@@ -21,6 +21,12 @@
     .toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);background:#17212c}
     .eyebrow{margin-bottom:4px;color:#e99878;font-size:9px;text-transform:uppercase;letter-spacing:1.4px;font-weight:900}
     .toolbar strong{display:block;font-size:13px}.toolbar p{margin:2px 0 0;color:var(--muted);font-size:10px}
+    .mode-control{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:10px}
+    .mode-label{margin-right:3px;color:#94a4b5;font-size:9px;font-weight:850;letter-spacing:1px}
+    .mode-btn{min-height:31px;border:1px solid #354455;border-radius:9px;padding:6px 10px;color:#c3ced9;background:#192532;font-size:10px;font-weight:800;transition:.15s}
+    .mode-btn:hover{border-color:#718398;background:#243343}
+    .mode-btn.active{border-color:var(--accent);color:#20130f;background:var(--accent);box-shadow:0 0 0 1px #ee866433}
+    .mode-help{margin-top:5px;color:#8192a4;font-size:9px;line-height:1.5}
     .actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
     .btn{min-height:38px;border:1px solid #354455;border-radius:10px;padding:8px 13px;color:var(--ink);background:#1b2734;font-size:11px;font-weight:750;transition:.15s}
     .btn:hover:not(:disabled){border-color:#66798d;background:#243343}.btn.primary{color:#1c100c;border-color:var(--accent);background:var(--accent)}.btn.primary:hover:not(:disabled){background:var(--accent2)}
@@ -38,7 +44,7 @@
     .statusline{display:flex;align-items:center;gap:9px;flex-wrap:wrap;min-height:39px;padding:9px 16px;border-top:1px solid #293646;color:#9ba9b8;font-size:10px;background:#111923}
     .dot{width:7px;height:7px;flex:none;border-radius:50%;background:var(--good);box-shadow:0 0 8px #94c79e77}.dot.busy{background:var(--warn);box-shadow:0 0 8px #e7bd8a77}
     .footer{padding:0 8px;color:#778697;font-size:9px;line-height:1.6;text-align:center}.file-input{display:none}
-    @media(max-width:700px){.app{padding:7px;gap:8px}.topbar{min-height:52px;padding:6px 9px}.brand strong{font-size:13px}.brand small{font-size:7px;letter-spacing:1px}.pill{display:none}.workspace{min-height:calc(100vh - 90px)}.toolbar{align-items:flex-start;flex-direction:column;padding:11px}.actions{width:100%}.actions .btn{flex:1}.stage{min-height:410px}#mainCanvas{max-height:calc(100vh - 280px)}}
+    @media(max-width:700px){.app{padding:7px;gap:8px}.topbar{min-height:52px;padding:6px 9px}.brand strong{font-size:13px}.brand small{font-size:7px;letter-spacing:1px}.pill{display:none}.workspace{min-height:calc(100vh - 90px)}.toolbar{align-items:flex-start;flex-direction:column;padding:11px}.mode-control{gap:5px}.mode-btn{flex:1}.actions{width:100%}.actions .btn{flex:1}.stage{min-height:410px}#mainCanvas{max-height:calc(100vh - 280px)}}
     @media(max-width:390px){.stage{min-height:340px}}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
   </style>
@@ -47,7 +53,7 @@
   <div class="app">
     <header class="topbar">
       <div class="logo" aria-hidden="true">◈</div>
-      <div class="brand"><strong>DepthMap Studio 2.0 – intelligens mélységfeldolgozás</strong><small>16 SÁV · SZEMÉLY-, KÉZ-, ARC- ÉS EFFEKTVIZSGÁLAT</small></div>
+      <div class="brand"><strong>DepthMap Studio 2.1 – intelligens mélységfeldolgozás</strong><small>16 SÁV · NORMAL ÉS INVERTED FÓKUSZMÓD</small></div>
       <div class="spacer"></div>
       <div class="pill">● HELYI KÉPFELDOLGOZÁS</div>
     </header>
@@ -58,6 +64,12 @@
           <div class="eyebrow">AUTOMATIKUS MUNKAFOLYAMAT</div>
           <strong>Teljes kép elemzése és 16 sávos tónusfeldolgozása</strong>
           <p id="description">Válassz ki egy képet. A feldolgozás automatikusan elindul.</p>
+          <div class="mode-control" role="group" aria-label="Mélységi fókuszmód kiválasztása">
+            <span class="mode-label">KÉPHANGSÚLY</span>
+            <button class="mode-btn active" id="normalModeBtn" type="button" aria-pressed="true" title="Világos karakter, sötétebb háttér">NORMAL · Karakterfókusz</button>
+            <button class="mode-btn" id="invertedModeBtn" type="button" aria-pressed="false" title="Sötétebb karakter, világosabb háttér">INVERTED · Háttérfókusz</button>
+          </div>
+          <div class="mode-help" id="modeHelp">NORMAL: a mélységben közelebbi karakter kap világosabb tónuskiemelést.</div>
         </div>
         <div class="actions">
           <button class="btn" id="chooseBtn" type="button">＋ Kép kiválasztása</button>
@@ -77,7 +89,7 @@
       <div class="statusline" aria-live="polite"><span class="dot" id="statusDot"></span><span id="statusText">Válassz ki egy képet a kezdéshez.</span><span class="spacer"></span><span id="imageInfo"></span></div>
     </main>
 
-    <div class="footer">A 16 sáv súlyozott tónuskeverést jelent, nem 16 külön szerkeszthető képréteget. A mélység- és effektkorrekció automatikus becslés; az áttetsző objektumok tényleges takarási sorrendje nem garantálható. A fényképfájl a böngészőben marad; az AI-modellek és könyvtárak letöltéséhez internetkapcsolat szükséges. A MediaPipe használati metrikákat küldhet. Kizárólag a kész, színes PNG tölthető le.</div>
+    <div class="footer">A 16 sáv súlyozott tónuskeverést jelent, nem 16 külön szerkeszthető képréteget. NORMAL módban a karakter, INVERTED módban a háttér kap hangsúlyosabb tónuskezelést. A módváltás a már elkészült mélységtérképből újrarajzolja a képet; az AI-modelleket nem futtatja újra. A mélység- és effektkorrekció automatikus becslés; az áttetsző objektumok tényleges takarási sorrendje nem garantálható. A fényképfájl a böngészőben marad; az AI-modellek és könyvtárak letöltéséhez internetkapcsolat szükséges. A MediaPipe használati metrikákat küldhet. Kizárólag a kész, színes PNG tölthető le.</div>
   </div>
 
   <script>
@@ -129,6 +141,7 @@
       faceDetector: null,
       personSegmenter: null,
       generation: 0,
+      mode: 'normal',
       busy: false,
       progressTimer: null,
       loadObjectUrl: null
@@ -1039,7 +1052,7 @@
       return { gainLut, biasLut };
     }
 
-    async function renderSixteenLayerResult(generation) {
+    async function renderSixteenLayerResult(generation, mode = state.mode) {
       const output = document.createElement('canvas');
       output.width = state.w;
       output.height = state.h;
@@ -1061,7 +1074,10 @@
           let p = i * 4;
           const rowEnd = i + state.w;
           for (; i < rowEnd; i++, p += 4) {
-            const d = state.depth[i];
+            // NORMAL: a becsült közeli mélység világosabb tónust kap.
+            // INVERTED: a mélységi érték megfordul, így a távolabbi háttér kerül előtérbe.
+            const rawDepth = state.depth[i];
+            const d = mode === 'inverted' ? 255 - rawDepth : rawDepth;
             const gain = gainLut[d];
             const bias = biasLut[d];
             dst[p] = Math.round(clamp(src[p] * invStrength + (src[p] * gain + bias) * strength, 0, 255));
@@ -1142,9 +1158,16 @@
           visionNotes.push('kiegészítő felismerés nem érhető el');
         }
 
-        if (generation !== state.generation) return;
-        const final = await renderSixteenLayerResult(generation);
-        if (!final || generation !== state.generation) return;
+        if (generation !== state.generation) return null;
+        // Ha a felhasználó a renderelés alatt módot vált, a legutóbb kiválasztott
+        // módot jelenítjük meg. A mélység- és felismerőmodellek nem futnak újra.
+        let final = null;
+        let renderedMode = state.mode;
+        do {
+          renderedMode = state.mode;
+          final = await renderSixteenLayerResult(generation, renderedMode);
+          if (!final || generation !== state.generation) return;
+        } while (renderedMode !== state.mode);
 
         state.outputCanvas = final;
         ui.canvas.width = state.w;
@@ -1152,9 +1175,8 @@
         ui.ctx.clearRect(0, 0, state.w, state.h);
         ui.ctx.drawImage(final, 0, 0);
 
-        $('canvasBadge').textContent = 'KÉSZ KÉP · 16 SÁV';
-        $('stageHint').textContent = 'A végleges, automatikusan korrigált 16 sávos kép elkészült.';
-        $('description').textContent = 'A kész, színes kép letölthető PNG formátumban.';
+        updateRenderedModeLabels(renderedMode);
+        $('description').textContent = 'A kész, színes kép letölthető PNG formátumban. A fókuszmód bármikor átváltható.';
         $('downloadBtn').disabled = false;
         $('retryBtn').hidden = true;
         setProgress(100, 'A kész kép elkészült.');
@@ -1165,12 +1187,13 @@
         if (effects.glow) notes.push('közeli fénylő effekt-korrekció');
         if (visionNotes.length) notes.push(...visionNotes);
 
+        const modeStatus = renderedMode === 'inverted' ? 'INVERTED · háttérfókusz' : 'NORMAL · karakterfókusz';
         if (!visionAvailable) {
-          setStatus('A kép elkészült 16 sávos tónusfeldolgozással. A kiegészítő felismerőmodellek nem voltak elérhetők; csak az alap mélységbecslés készült el.');
+          setStatus(`${modeStatus}. A kép elkészült 16 sávos tónusfeldolgozással. A kiegészítő felismerőmodellek nem voltak elérhetők; csak az alap mélységbecslés készült el.`);
         } else if (notes.length) {
-          setStatus(`Kész: 16 sáv. Automatikus vizsgálatok/javítások: ${notes.join(', ')}.`);
+          setStatus(`${modeStatus}. Kész: 16 sáv. Automatikus vizsgálatok/javítások: ${notes.join(', ')}.`);
         } else {
-          setStatus('Kész: 16 sáv. A személy- és effektvizsgálat lefutott; nem talált megbízhatóan javítható előtér-részletet.');
+          setStatus(`${modeStatus}. Kész: 16 sáv. A személy- és effektvizsgálat lefutott; nem talált megbízhatóan javítható előtér-részletet.`);
         }
 
         $('imageInfo').textContent = `${state.w} × ${state.h} px`;
@@ -1191,6 +1214,84 @@
           $('chooseBtn').disabled = false;
           $('downloadBtn').disabled = !state.outputCanvas;
         }
+      }
+    }
+
+    function updateModeControls() {
+      const normal = state.mode === 'normal';
+      $('normalModeBtn').classList.toggle('active', normal);
+      $('normalModeBtn').setAttribute('aria-pressed', String(normal));
+      $('invertedModeBtn').classList.toggle('active', !normal);
+      $('invertedModeBtn').setAttribute('aria-pressed', String(!normal));
+      $('modeHelp').textContent = normal
+        ? 'NORMAL: a mélységben közelebbi karakter kap világosabb tónuskiemelést.'
+        : 'INVERTED: a távolabbi háttér kap világosabb tónuskiemelést, a karakter visszafogottabb lesz.';
+    }
+
+    function updateRenderedModeLabels(mode) {
+      if (mode === 'inverted') {
+        $('canvasBadge').textContent = 'INVERTED · HÁTTÉRFÓKUSZ';
+        $('stageHint').textContent = 'Háttérfókusz: a mélységi tónusleképezés megfordítva.';
+      } else {
+        $('canvasBadge').textContent = 'NORMAL · KARAKTERFÓKUSZ';
+        $('stageHint').textContent = 'Karakterfókusz: a közelebbi mélységi tartomány világosabb hangsúlyt kap.';
+      }
+    }
+
+    async function rerenderCurrentMode() {
+      if (!state.imageData || !state.depth || !state.outputCanvas || state.busy) return;
+      const generation = state.generation;
+      state.busy = true;
+      $('chooseBtn').disabled = false;
+      $('downloadBtn').disabled = true;
+      $('retryBtn').hidden = true;
+      setStatus('A kiválasztott fókuszmód újrarajzolása folyamatban…', 'busy');
+      setProgress(92, 'A 16 sáv újraszámítása a meglévő mélységtérképből…');
+
+      try {
+        let final = null;
+        let renderedMode = state.mode;
+        do {
+          renderedMode = state.mode;
+          final = await renderSixteenLayerResult(generation, renderedMode);
+          if (!final || generation !== state.generation) return;
+        } while (renderedMode !== state.mode);
+
+        state.outputCanvas = final;
+        ui.canvas.width = state.w;
+        ui.canvas.height = state.h;
+        ui.ctx.clearRect(0, 0, state.w, state.h);
+        ui.ctx.drawImage(final, 0, 0);
+        updateRenderedModeLabels(renderedMode);
+        const modeName = renderedMode === 'inverted' ? 'INVERTED · háttérfókusz' : 'NORMAL · karakterfókusz';
+        setStatus(`${modeName} aktív. A kép újrarajzolása kész; az AI-modellek nem futottak újra.`);
+        setProgress(100, 'A kiválasztott fókuszmód elkészült.');
+      } catch (error) {
+        console.error(error);
+        if (generation === state.generation) setStatus(`A módváltás nem sikerült: ${error?.message || error}`, 'error');
+      } finally {
+        if (generation === state.generation) {
+          state.busy = false;
+          $('chooseBtn').disabled = false;
+          $('downloadBtn').disabled = !state.outputCanvas;
+          state.progressTimer = setTimeout(() => {
+            if (generation === state.generation) hideProgress();
+            state.progressTimer = null;
+          }, 1000);
+        }
+      }
+    }
+
+    function selectMode(mode) {
+      if (mode !== 'normal' && mode !== 'inverted') return;
+      if (state.mode === mode) return;
+      state.mode = mode;
+      updateModeControls();
+      if (state.outputCanvas && state.depth && !state.busy) {
+        rerenderCurrentMode();
+      } else if (state.imageData && state.busy) {
+        // A folyamatban lévő feldolgozás a legutóbb kiválasztott móddal fejeződik be.
+        setStatus('A kiválasztott mód a jelenlegi feldolgozás végén aktiválódik.', 'busy');
       }
     }
 
@@ -1219,8 +1320,9 @@
       $('downloadBtn').disabled = true;
       try {
         const blob = await canvasToBlob(state.outputCanvas);
-        downloadBlob(blob, `${fileBaseName(state.fileName)}-16-layer-depth.png`);
-        setStatus('A kész PNG-kép letöltése elindult.');
+        const modeSuffix = state.mode === 'inverted' ? 'background-focus' : 'character-focus';
+        downloadBlob(blob, `${fileBaseName(state.fileName)}-${modeSuffix}-16-band.png`);
+        setStatus(`A ${state.mode === 'inverted' ? 'háttérfókuszú' : 'karakterfókuszú'} PNG letöltése elindult.`);
       } catch (error) {
         setStatus(error.message, 'error');
       } finally {
@@ -1228,7 +1330,10 @@
       }
     }
 
+    updateModeControls();
     $('chooseBtn').addEventListener('click', () => ui.file.click());
+    $('normalModeBtn').addEventListener('click', () => selectMode('normal'));
+    $('invertedModeBtn').addEventListener('click', () => selectMode('inverted'));
     $('downloadBtn').addEventListener('click', downloadFinalImage);
     $('retryBtn').addEventListener('click', () => runPipeline(state.generation));
     ui.file.addEventListener('change', e => {
