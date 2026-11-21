@@ -4,56 +4,136 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0b1017">
-  <meta name="description" content="Helyi mélységbecslés, 16 sávos tónusfeldolgozás NORMAL karakterfókusz és INVERTED háttérfókusz módban.">
-  <title>DepthMap Studio 2.1 – NORMAL és INVERTED mélységi fókusz</title>
+  <meta name="description" content="Helyi mélységbecslés, 16 sávos tónusfeldolgozás, kézi kijelölés és saját előtér-rétegek.">
+  <title>DepthMap Studio</title>
   <style>
-    :root{color-scheme:dark;--bg:#0b1017;--panel:#151e29;--ink:#edf2f7;--muted:#93a1b0;--line:#2d3a49;--accent:#ee8664;--accent2:#ffad8d;--good:#94c79e;--warn:#e7bd8a;--shadow:0 18px 50px rgba(0,0,0,.28);--radius:18px}
-    *{box-sizing:border-box}
-    html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
-    body{min-height:100vh;background:radial-gradient(ellipse at 50% -12%,#1b2b3c 0%,transparent 48%),var(--bg)}
-    button,input{font:inherit}button{cursor:pointer}button:disabled{opacity:.42;cursor:not-allowed}
-    .app{width:min(1500px,100%);min-height:100vh;margin:auto;padding:14px;display:flex;flex-direction:column;gap:14px}
-    .topbar{display:flex;align-items:center;gap:12px;min-height:62px;padding:9px 15px;border:1px solid var(--line);border-radius:16px;background:#111a25ed;box-shadow:0 8px 28px #0003;backdrop-filter:blur(16px)}
-    .logo{width:40px;height:40px;display:grid;place-items:center;border-radius:12px;flex:none;color:#20130f;font-size:21px;font-weight:900;background:linear-gradient(145deg,#ffad8b,#db6849)}
-    .brand strong{display:block;font-size:15px;letter-spacing:-.3px}.brand small{display:block;color:#e99a7d;font-size:9px;letter-spacing:1.5px;font-weight:850}
-    .spacer{flex:1}.pill{border:1px solid #365044;background:#16261f;color:#a8d4b0;border-radius:20px;padding:6px 10px;font-size:9px;font-weight:800;letter-spacing:.5px;white-space:nowrap}
-    .workspace{flex:1;min-height:650px;display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(180deg,#17212d,#121a24);box-shadow:var(--shadow)}
-    .toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);background:#17212c}
-    .eyebrow{margin-bottom:4px;color:#e99878;font-size:9px;text-transform:uppercase;letter-spacing:1.4px;font-weight:900}
-    .toolbar strong{display:block;font-size:13px}.toolbar p{margin:2px 0 0;color:var(--muted);font-size:10px}
-    .mode-control{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:10px}
-    .mode-label{margin-right:3px;color:#94a4b5;font-size:9px;font-weight:850;letter-spacing:1px}
-    .mode-btn{min-height:31px;border:1px solid #354455;border-radius:9px;padding:6px 10px;color:#c3ced9;background:#192532;font-size:10px;font-weight:800;transition:.15s}
-    .mode-btn:hover{border-color:#718398;background:#243343}
-    .mode-btn.active{border-color:var(--accent);color:#20130f;background:var(--accent);box-shadow:0 0 0 1px #ee866433}
-    .mode-help{margin-top:5px;color:#8192a4;font-size:9px;line-height:1.5}
-    .actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-    .btn{min-height:38px;border:1px solid #354455;border-radius:10px;padding:8px 13px;color:var(--ink);background:#1b2734;font-size:11px;font-weight:750;transition:.15s}
-    .btn:hover:not(:disabled){border-color:#66798d;background:#243343}.btn.primary{color:#1c100c;border-color:var(--accent);background:var(--accent)}.btn.primary:hover:not(:disabled){background:var(--accent2)}
-    .stage{position:relative;flex:1;min-height:490px;display:flex;align-items:center;justify-content:center;overflow:hidden;touch-action:pan-y;background-color:#0e151e;background-image:radial-gradient(#344252 1px,transparent 1px);background-size:19px 19px;box-shadow:inset 0 0 95px #0007}
-    .stage.dragover{outline:2px solid var(--accent);outline-offset:-5px}
-    .empty{width:min(480px,88%);min-height:245px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:28px;border:1px dashed #536274;border-radius:18px;background:#111a24e8;text-align:center;color:#aab6c2}
-    .empty .big{color:#ffad8d;font-size:40px}.empty strong{color:#e8edf3;font-size:14px}.empty span{max-width:360px;font-size:10px;line-height:1.7}
-    .canvas-shell{display:none;width:min(94%,1250px);max-height:86%;filter:drop-shadow(0 24px 30px #0009)}
-    #mainCanvas{display:block;width:100%;height:auto;max-height:calc(100vh - 250px);object-fit:contain;border:1px solid #ffffff22;border-radius:5px;background:#fff}
-    .canvas-badge{position:absolute;left:11px;top:11px;padding:6px 9px;border:1px solid #3b4857;border-radius:8px;background:#111a24dc;color:#d2dbe4;font-size:9px;pointer-events:none}
-    .stage-hint{position:absolute;left:12px;bottom:12px;max-width:calc(100% - 24px);padding:6px 9px;border:1px solid #3b4857;border-radius:9px;background:#111a24dc;color:#aebbc8;font-size:9px;backdrop-filter:blur(8px);pointer-events:none}
-    .progress-area{display:none;padding:12px 16px 14px;border-top:1px solid #293646;background:#141e29}.progress-area.show{display:block}
-    .progress-top{display:flex;justify-content:space-between;gap:10px;margin-bottom:6px;color:#b4c0cc;font-size:10px}
-    .progress{height:7px;overflow:hidden;border-radius:10px;background:#293747}.progress span{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#e97856,#ffb092);transition:width .18s}
-    .statusline{display:flex;align-items:center;gap:9px;flex-wrap:wrap;min-height:39px;padding:9px 16px;border-top:1px solid #293646;color:#9ba9b8;font-size:10px;background:#111923}
-    .dot{width:7px;height:7px;flex:none;border-radius:50%;background:var(--good);box-shadow:0 0 8px #94c79e77}.dot.busy{background:var(--warn);box-shadow:0 0 8px #e7bd8a77}
-    .footer{padding:0 8px;color:#778697;font-size:9px;line-height:1.6;text-align:center}.file-input{display:none}
-    @media(max-width:700px){.app{padding:7px;gap:8px}.topbar{min-height:52px;padding:6px 9px}.brand strong{font-size:13px}.brand small{font-size:7px;letter-spacing:1px}.pill{display:none}.workspace{min-height:calc(100vh - 90px)}.toolbar{align-items:flex-start;flex-direction:column;padding:11px}.mode-control{gap:5px}.mode-btn{flex:1}.actions{width:100%}.actions .btn{flex:1}.stage{min-height:410px}#mainCanvas{max-height:calc(100vh - 280px)}}
-    @media(max-width:390px){.stage{min-height:340px}}
-    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+    :root {
+      color-scheme: dark;
+      --bg: #0b1017;
+      --panel: #151e29;
+      --ink: #edf2f7;
+      --muted: #93a1b0;
+      --line: #2d3a49;
+      --accent: #ee8664;
+      --accent2: #ffad8d;
+      --good: #94c79e;
+      --warn: #e7bd8a;
+      --shadow: 0 18px 50px rgba(0,0,0,.28);
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: var(--bg); color: var(--ink); font: 14px/1.5 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+    body { min-height: 100vh; background: radial-gradient(ellipse at 50% -12%, #1b2b3c 0%, transparent 48%), var(--bg); }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    button:disabled { opacity: .42; cursor: not-allowed; }
+    .app { width: min(1500px, 100%); min-height: 100vh; margin: auto; padding: 14px; display: flex; flex-direction: column; gap: 14px; }
+    .topbar { display: flex; align-items: center; gap: 12px; min-height: 62px; padding: 9px 15px; border: 1px solid var(--line); border-radius: 16px; background: #111a25ed; box-shadow: 0 8px 28px #0003; backdrop-filter: blur(16px); }
+    .logo { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 12px; flex: none; color: #20130f; font-size: 21px; font-weight: 900; background: linear-gradient(145deg, #ffad8b, #db6849); }
+    .brand strong { display: block; font-size: 15px; letter-spacing: -.3px; }
+    .brand small { display: block; color: #e99a7d; font-size: 9px; letter-spacing: 1.5px; font-weight: 850; }
+    .spacer { flex: 1; }
+    .pill { border: 1px solid #365044; background: #16261f; color: #a8d4b0; border-radius: 20px; padding: 6px 10px; font-size: 9px; font-weight: 800; letter-spacing: .5px; white-space: nowrap; }
+    .workspace { flex: 1; min-height: 650px; display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: linear-gradient(180deg, #17212d, #121a24); box-shadow: var(--shadow); }
+    .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--line); background: #17212c; }
+    .eyebrow { margin-bottom: 4px; color: #e99878; font-size: 9px; text-transform: uppercase; letter-spacing: 1.4px; font-weight: 900; }
+    .toolbar strong { display: block; font-size: 13px; }
+    .toolbar p { margin: 2px 0 0; color: var(--muted); font-size: 10px; }
+    .mode-control { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+    .mode-label { margin-right: 3px; color: #94a4b5; font-size: 9px; font-weight: 850; letter-spacing: 1px; }
+    .mode-btn { min-height: 31px; border: 1px solid #354455; border-radius: 9px; padding: 6px 10px; color: #c3ced9; background: #192532; font-size: 10px; font-weight: 800; transition: .15s; }
+    .mode-btn:hover { border-color: #718398; background: #243343; }
+    .mode-btn.active { border-color: var(--accent); color: #20130f; background: var(--accent); box-shadow: 0 0 0 1px #ee866433; }
+    .mode-help { margin-top: 5px; color: #8192a4; font-size: 9px; line-height: 1.5; }
+    .actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .btn { min-height: 36px; border: 1px solid #354455; border-radius: 10px; padding: 7px 12px; color: var(--ink); background: #1b2734; font-size: 10px; font-weight: 750; transition: .15s; }
+    .btn:hover:not(:disabled) { border-color: #66798d; background: #243343; }
+    .btn.primary { color: #1c100c; border-color: var(--accent); background: var(--accent); }
+    .btn.primary:hover:not(:disabled) { background: var(--accent2); }
+    .btn.active { color: #21130f; border-color: var(--accent); background: var(--accent); }
+    .stage { position: relative; flex: 1; min-height: 490px; display: flex; align-items: center; justify-content: center; overflow: hidden; touch-action: pan-y; background-color: #0e151e; background-image: radial-gradient(#344252 1px, transparent 1px); background-size: 19px 19px; box-shadow: inset 0 0 95px #0007; }
+    .stage.dragover { outline: 2px solid var(--accent); outline-offset: -5px; }
+    .empty { width: min(480px, 88%); min-height: 245px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 28px; border: 1px dashed #536274; border-radius: 18px; background: #111a24e8; text-align: center; color: #aab6c2; }
+    .empty .big { color: #ffad8d; font-size: 40px; }
+    .empty strong { color: #e8edf3; font-size: 14px; }
+    .empty span { max-width: 360px; font-size: 10px; line-height: 1.7; }
+    .canvas-shell { position: relative; display: none; width: min(94%, 1250px); max-height: 86%; filter: drop-shadow(0 24px 30px #0009); }
+    #mainCanvas { display: block; width: 100%; height: auto; max-height: calc(100vh - 250px); object-fit: contain; border: 1px solid #ffffff22; border-radius: 5px; background: #fff; }
+    #selectionCanvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; border-radius: 5px; pointer-events: none; touch-action: none; }
+    .canvas-shell.selecting #selectionCanvas { pointer-events: auto; cursor: crosshair; }
+    .canvas-badge { position: absolute; left: 11px; top: 11px; z-index: 2; padding: 6px 9px; border: 1px solid #3b4857; border-radius: 8px; background: #111a24dc; color: #d2dbe4; font-size: 9px; pointer-events: none; }
+    .stage-hint { position: absolute; left: 12px; bottom: 12px; z-index: 2; max-width: calc(100% - 24px); padding: 6px 9px; border: 1px solid #3b4857; border-radius: 9px; background: #111a24dc; color: #aebbc8; font-size: 9px; backdrop-filter: blur(8px); pointer-events: none; }
+    .progress-area { display: none; padding: 12px 16px 14px; border-top: 1px solid #293646; background: #141e29; }
+    .progress-area.show { display: block; }
+    .progress-top { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 6px; color: #b4c0cc; font-size: 10px; }
+    .progress { height: 7px; overflow: hidden; border-radius: 10px; background: #293747; }
+    .progress span { display: block; width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #e97856, #ffb092); transition: width .18s; }
+    .statusline { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; min-height: 39px; padding: 9px 16px; border-top: 1px solid #293646; color: #9ba9b8; font-size: 10px; background: #111923; }
+    .dot { width: 7px; height: 7px; flex: none; border-radius: 50%; background: var(--good); box-shadow: 0 0 8px #94c79e77; }
+    .dot.busy { background: var(--warn); box-shadow: 0 0 8px #e7bd8a77; }
+    .file-input { display: none; }
+    .editor-panel { display: none; padding: 13px 15px 15px; border-top: 1px solid var(--line); background: #121b26; }
+    .editor-panel.show { display: block; }
+    .panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+    .panel-heading strong { font-size: 12px; }
+    .panel-heading small { color: var(--muted); font-size: 9px; }
+    .selection-tools { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; padding: 10px; border: 1px solid #2a3949; border-radius: 12px; background: #172331; }
+    .tool-group { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+    .tool-divider { width: 1px; height: 28px; margin: 0 2px; background: #344456; }
+    .tool-setting { display: flex; align-items: center; gap: 7px; color: #aab8c6; font-size: 9px; }
+    .tool-setting input[type="range"] { width: 94px; accent-color: var(--accent); }
+    .tool-setting output { min-width: 27px; color: #e9b09a; font-variant-numeric: tabular-nums; }
+    .selection-note { margin: 8px 2px 0; color: #8192a4; font-size: 9px; }
+    .layers-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 15px 0 8px; }
+    .layers-header strong { font-size: 11px; }
+    .layer-count { color: #9daebe; font-size: 9px; }
+    .layer-list { display: flex; flex-direction: column; gap: 7px; }
+    .layer-empty { padding: 12px; border: 1px dashed #3b4a5b; border-radius: 10px; color: #8595a6; text-align: center; font-size: 10px; }
+    .layer-row { padding: 9px 10px; border: 1px solid #2d3d4e; border-radius: 11px; background: #172331; }
+    .layer-row.selected { border-color: #d98b6d; box-shadow: inset 0 0 0 1px #d98b6d55; }
+    .layer-main { display: flex; align-items: center; gap: 7px; }
+    .layer-name { min-width: 80px; flex: 1; height: 29px; border: 1px solid #344658; border-radius: 7px; padding: 4px 7px; background: #111b26; color: #e7edf3; font-size: 10px; }
+    .icon-btn { width: 29px; height: 29px; display: grid; place-items: center; border: 1px solid #344658; border-radius: 7px; background: #1c2a38; color: #cbd5df; font-size: 12px; }
+    .icon-btn:hover:not(:disabled) { border-color: #8798a9; background: #263748; }
+    .icon-btn.danger:hover { border-color: #b66b58; color: #ffb09a; }
+    .layer-adjustments { display: flex; gap: 14px; flex-wrap: wrap; padding: 7px 2px 0 35px; }
+    .layer-adjustments label { display: flex; align-items: center; gap: 7px; color: #aab8c6; font-size: 9px; }
+    .layer-adjustments input { width: min(170px, 25vw); accent-color: var(--accent); }
+    .layer-adjustments output { min-width: 33px; color: #e9b09a; font-variant-numeric: tabular-nums; }
+    .footer { padding: 0 8px; color: #778697; font-size: 9px; line-height: 1.6; text-align: center; }
+    @media (max-width: 700px) {
+      .app { padding: 7px; gap: 8px; }
+      .topbar { min-height: 52px; padding: 6px 9px; }
+      .brand strong { font-size: 13px; }
+      .brand small { font-size: 7px; letter-spacing: 1px; }
+      .pill { display: none; }
+      .workspace { min-height: calc(100vh - 90px); }
+      .toolbar { align-items: flex-start; flex-direction: column; padding: 11px; }
+      .mode-control { gap: 5px; }
+      .mode-btn { flex: 1; }
+      .actions { width: 100%; }
+      .actions .btn { flex: 1; }
+      .stage { min-height: 410px; }
+      #mainCanvas { max-height: calc(100vh - 280px); }
+      .selection-tools { align-items: flex-start; }
+      .tool-divider { display: none; }
+      .tool-group { width: 100%; }
+      .tool-setting { flex: 1; }
+      .layer-main { flex-wrap: wrap; }
+      .layer-name { min-width: 120px; }
+      .layer-adjustments { padding-left: 0; }
+      .layer-adjustments label { flex: 1 1 100%; }
+      .layer-adjustments input { flex: 1; width: auto; }
+    }
+    @media (max-width: 390px) { .stage { min-height: 340px; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; } }
   </style>
 </head>
 <body>
   <div class="app">
     <header class="topbar">
       <div class="logo" aria-hidden="true">◈</div>
-      <div class="brand"><strong>DepthMap Studio 2.1 – intelligens mélységfeldolgozás</strong><small>16 SÁV · NORMAL ÉS INVERTED FÓKUSZMÓD</small></div>
+      <div class="brand"><strong>DepthMap Studio</strong><small>16 SÁV · AUTOMATIKUS MÉLYSÉG · KÉZI ELŐTÉR-RÉTEGEK</small></div>
       <div class="spacer"></div>
       <div class="pill">● HELYI KÉPFELDOLGOZÁS</div>
     </header>
@@ -61,35 +141,76 @@
     <main class="workspace">
       <div class="toolbar">
         <div>
-          <div class="eyebrow">AUTOMATIKUS MUNKAFOLYAMAT</div>
-          <strong>Teljes kép elemzése és 16 sávos tónusfeldolgozása</strong>
-          <p id="description">Válassz ki egy képet. A feldolgozás automatikusan elindul.</p>
+          <div class="eyebrow">KÉPFELDOLGOZÁS</div>
+          <strong>Automatikus mélységbecslés és kézi rétegkezelés</strong>
+          <p id="description">Válassz ki egy képet. A mélységbecslés automatikusan elindul.</p>
           <div class="mode-control" role="group" aria-label="Mélységi fókuszmód kiválasztása">
             <span class="mode-label">KÉPHANGSÚLY</span>
-            <button class="mode-btn active" id="normalModeBtn" type="button" aria-pressed="true" title="Világos karakter, sötétebb háttér">NORMAL · Karakterfókusz</button>
-            <button class="mode-btn" id="invertedModeBtn" type="button" aria-pressed="false" title="Sötétebb karakter, világosabb háttér">INVERTED · Háttérfókusz</button>
+            <button class="mode-btn active" id="normalModeBtn" type="button" aria-pressed="true" title="Világosabb előtér, visszafogottabb háttér">NORMAL · Karakterfókusz</button>
+            <button class="mode-btn" id="invertedModeBtn" type="button" aria-pressed="false" title="Világosabb háttér, visszafogottabb előtér">INVERTED · Háttérfókusz</button>
           </div>
-          <div class="mode-help" id="modeHelp">NORMAL: a mélységben közelebbi karakter kap világosabb tónuskiemelést.</div>
+          <div class="mode-help" id="modeHelp">NORMAL: a mélységben közelebbi részek világosabb tónuskiemelést kapnak.</div>
         </div>
         <div class="actions">
           <button class="btn" id="chooseBtn" type="button">＋ Kép kiválasztása</button>
-          <button class="btn primary" id="downloadBtn" type="button" disabled>↓ Kész kép letöltése</button>
           <button class="btn" id="retryBtn" type="button" hidden>Feldolgozás újra</button>
+          <button class="btn primary" id="downloadBtn" type="button" disabled>↓ Kész kép letöltése</button>
         </div>
         <input class="file-input" id="imageFile" type="file" accept="image/png,image/jpeg,image/webp">
       </div>
 
       <div class="stage" id="dropZone" aria-label="Képfeldolgozási terület">
-        <div class="empty" id="emptyState"><div class="big" aria-hidden="true">◈</div><strong>Húzd ide a fényképet</strong><span>JPG, PNG vagy WebP. A program megbecsüli a mélységet, felismerheti a személyt, a kezeket és az arcot, majd képi jelek alapján vizsgálja a buborékszerű kontúrokat és a közeli fénylő effekteket.</span></div>
-        <div class="canvas-shell" id="canvasShell"><canvas id="mainCanvas" width="1200" height="800" aria-label="A feldolgozott kép előnézete"></canvas><div class="canvas-badge" id="canvasBadge">FELDOLGOZÁS ALATT</div></div>
+        <div class="empty" id="emptyState">
+          <div class="big" aria-hidden="true">◈</div>
+          <strong>Húzd ide a fényképet</strong>
+          <span>JPG, PNG vagy WebP. A program megbecsüli a mélységet, és ahol elérhető, személy-, kéz- és arcfelismerést is használ. A képet a böngésző dolgozza fel.</span>
+        </div>
+        <div class="canvas-shell" id="canvasShell">
+          <canvas id="mainCanvas" width="1200" height="800" aria-label="A feldolgozott kép előnézete"></canvas>
+          <canvas id="selectionCanvas" width="1200" height="800" aria-label="Kijelölési réteg"></canvas>
+          <div class="canvas-badge" id="canvasBadge">FELDOLGOZÁS ALATT</div>
+        </div>
         <div class="stage-hint" id="stageHint">A fénykép helyben, a böngészőben kerül feldolgozásra.</div>
       </div>
 
-      <div class="progress-area" id="progressArea" aria-live="polite"><div class="progress-top"><span id="progressLabel">AI-modell betöltése…</span><span id="progressPercent">0%</span></div><div class="progress"><span id="progressBar"></span></div></div>
-      <div class="statusline" aria-live="polite"><span class="dot" id="statusDot"></span><span id="statusText">Válassz ki egy képet a kezdéshez.</span><span class="spacer"></span><span id="imageInfo"></span></div>
+      <section class="editor-panel" id="editorPanel" aria-label="Kézi kijelölés és rétegkezelés">
+        <div class="panel-heading">
+          <div><strong>Kézi kijelölés és saját előtér-rétegek</strong><br><small>A kijelölt területeket a program külön rétegként kezeli és az automatikus mélység elé helyezi.</small></div>
+          <span class="layer-count" id="selectionState">Nincs aktív kijelölés</span>
+        </div>
+        <div class="selection-tools">
+          <div class="tool-group" role="group" aria-label="Kijelölő eszközök">
+            <button class="btn" id="brushToolBtn" type="button" disabled>Ecset</button>
+            <button class="btn" id="polygonToolBtn" type="button" disabled>Sokszög</button>
+            <button class="btn" id="eraserToolBtn" type="button" disabled>Radír</button>
+            <button class="btn" id="finishPolygonBtn" type="button" disabled>Poligon lezárása</button>
+          </div>
+          <div class="tool-divider"></div>
+          <div class="tool-group">
+            <label class="tool-setting" for="brushSize">Ecsetméret <input id="brushSize" type="range" min="4" max="140" value="34" disabled><output id="brushSizeValue">34 px</output></label>
+            <label class="tool-setting" for="featherSize">Peremlágyítás <input id="featherSize" type="range" min="0" max="32" value="5" disabled><output id="featherSizeValue">5 px</output></label>
+          </div>
+          <div class="tool-divider"></div>
+          <div class="tool-group">
+            <button class="btn" id="clearSelectionBtn" type="button" disabled>Kijelölés törlése</button>
+            <button class="btn primary" id="createLayerBtn" type="button" disabled>＋ Réteg létrehozása</button>
+          </div>
+        </div>
+        <div class="selection-note" id="selectionNote">Eszköz kiválasztása után jelöld ki a képen az előtérbe helyezendő területet. Ecsetnél húzd az ujjad vagy az egeret; sokszögnél kattints a kontúrpontokra, majd zárd le a poligont.</div>
+        <div class="layers-header"><strong>Saját rétegek</strong><span class="layer-count" id="layerCount">0 réteg</span></div>
+        <div class="layer-list" id="layerList"><div class="layer-empty">Még nincs saját réteg. Jelölj ki egy képrészt, majd válaszd a „Réteg létrehozása” gombot.</div></div>
+      </section>
+
+      <div class="progress-area" id="progressArea" aria-live="polite">
+        <div class="progress-top"><span id="progressLabel">AI-modell betöltése…</span><span id="progressPercent">0%</span></div>
+        <div class="progress"><span id="progressBar"></span></div>
+      </div>
+      <div class="statusline" aria-live="polite">
+        <span class="dot" id="statusDot"></span><span id="statusText">Válassz ki egy képet a kezdéshez.</span><span class="spacer"></span><span id="imageInfo"></span>
+      </div>
     </main>
 
-    <div class="footer">A 16 sáv súlyozott tónuskeverést jelent, nem 16 külön szerkeszthető képréteget. NORMAL módban a karakter, INVERTED módban a háttér kap hangsúlyosabb tónuskezelést. A módváltás a már elkészült mélységtérképből újrarajzolja a képet; az AI-modelleket nem futtatja újra. A mélység- és effektkorrekció automatikus becslés; az áttetsző objektumok tényleges takarási sorrendje nem garantálható. A fényképfájl a böngészőben marad; az AI-modellek és könyvtárak letöltéséhez internetkapcsolat szükséges. A MediaPipe használati metrikákat küldhet. Kizárólag a kész, színes PNG tölthető le.</div>
+    <div class="footer">A 16 sáv súlyozott tónuskeverést jelent. NORMAL módban a közelebbi, INVERTED módban a távolabbi mélységi tartomány kap világosabb hangsúlyt. A kézzel kijelölt rétegek külön maszkkal, saját előtér-mélységgel, átlátszósággal és sorrenddel kerülnek a kész képre. A rétegkezelés nem rekonstruálja az eredetileg takart háttérrészeket: az ilyen részek eltüntetéséhez külön háttér-helyreállítás szükséges. A képfájl a böngészőben marad; az AI-modellek és könyvtárak letöltéséhez internetkapcsolat szükséges.</div>
   </div>
 
   <script>
@@ -100,8 +221,12 @@
     const ui = {
       file: $('imageFile'),
       canvas: $('mainCanvas'),
+      ctx: $('mainCanvas').getContext('2d', { willReadFrequently: true }),
+      overlay: $('selectionCanvas'),
+      overlayCtx: $('selectionCanvas').getContext('2d', { willReadFrequently: true }),
       stage: $('dropZone'),
-      ctx: $('mainCanvas').getContext('2d', { willReadFrequently: true })
+      shell: $('canvasShell'),
+      maskCanvas: document.createElement('canvas')
     };
 
     const CONFIG = Object.freeze({
@@ -112,11 +237,10 @@
       toneStrength: 0.62,
       depthModel: 'onnx-community/depth-anything-v2-small',
       transformersUrl: 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.3.2',
-      mediaPipeVersion: '1.2.3',
       mediaPipeModuleUrl: 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@1.2.3/vision_bundle.mjs',
       mediaPipeWasmUrl: 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@1.2.3/wasm',
       handModelUrl: 'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task',
-      faceModelUrl: 'https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite',
+      faceModelUrl: 'https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/face_detector.tflite',
       personModelUrl: 'https://storage.googleapis.com/mediapipe-models/image_segmenter/selfie_multiclass_256x256/float32/latest/selfie_multiclass_256x256.tflite',
       effectAnalysisMaxSide: 480,
       maxBubbleCandidates: 5,
@@ -128,6 +252,7 @@
       sourceCanvas: null,
       outputCanvas: null,
       depth: null,
+      personMask: null,
       w: 0,
       h: 0,
       fileName: 'photo',
@@ -144,7 +269,15 @@
       mode: 'normal',
       busy: false,
       progressTimer: null,
-      loadObjectUrl: null
+      loadObjectUrl: null,
+      layers: [],                 // A tömb sorrendje: hátulról előre.
+      selectedLayerId: null,
+      nextLayerId: 1,
+      activeTool: null,
+      drawing: false,
+      lastPoint: null,
+      polygonPoints: [],
+      lastRenderedMode: 'normal'
     };
 
     const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
@@ -156,17 +289,10 @@
     };
 
     function setStatus(message, type = 'normal') {
-      const textEl = $('statusText');
-      const dotEl = $('statusDot');
-      textEl.textContent = message;
-      dotEl.classList.toggle('busy', type === 'busy');
-      if (type === 'error') {
-        dotEl.style.background = '#e7bd8a';
-        textEl.style.color = '#e7bd8a';
-      } else {
-        dotEl.style.background = '';
-        textEl.style.color = '';
-      }
+      $('statusText').textContent = message;
+      $('statusDot').classList.toggle('busy', type === 'busy');
+      $('statusDot').style.background = type === 'error' ? '#e7bd8a' : '';
+      $('statusText').style.color = type === 'error' ? '#e7bd8a' : '';
     }
 
     function setProgress(value, label) {
@@ -192,10 +318,8 @@
       state.busy = busy;
       $('chooseBtn').disabled = false;
       $('downloadBtn').disabled = busy || !state.outputCanvas;
-      if (busy) {
-        $('retryBtn').hidden = true;
-        setStatus('A kép automatikus elemzése és feldolgozása folyamatban…', 'busy');
-      }
+      $('retryBtn').hidden = busy || !!state.outputCanvas;
+      if (busy) setStatus('A kép automatikus elemzése és feldolgozása folyamatban…', 'busy');
     }
 
     function fileBaseName(name) {
@@ -203,13 +327,26 @@
     }
 
     function yieldToUI() {
-      return new Promise(resolve => requestAnimationFrame(() => resolve()));
+      return new Promise(resolve => requestAnimationFrame(resolve));
     }
 
     function isSupportedImage(file) {
-      const mimeOk = /^image\/(png|jpeg|webp)$/i.test(file.type || '');
-      const nameOk = /\.(png|jpe?g|webp)$/i.test(file.name || '');
-      return mimeOk || nameOk;
+      return /^image\/(png|jpeg|webp)$/i.test(file.type || '') || /\.(png|jpe?g|webp)$/i.test(file.name || '');
+    }
+
+    function resetSelection() {
+      state.activeTool = null;
+      state.drawing = false;
+      state.lastPoint = null;
+      state.polygonPoints = [];
+      if (ui.maskCanvas.width !== state.w || ui.maskCanvas.height !== state.h) {
+        ui.maskCanvas.width = state.w;
+        ui.maskCanvas.height = state.h;
+      }
+      const mctx = ui.maskCanvas.getContext('2d');
+      mctx.clearRect(0, 0, ui.maskCanvas.width, ui.maskCanvas.height);
+      clearOverlay();
+      updateToolButtons();
     }
 
     function resetForNewSelection() {
@@ -219,8 +356,12 @@
       state.sourceCanvas = null;
       state.outputCanvas = null;
       state.depth = null;
+      state.personMask = null;
       state.w = 0;
       state.h = 0;
+      state.layers = [];
+      state.selectedLayerId = null;
+      state.nextLayerId = 1;
       if (state.loadObjectUrl) {
         URL.revokeObjectURL(state.loadObjectUrl);
         state.loadObjectUrl = null;
@@ -230,13 +371,14 @@
       $('downloadBtn').disabled = true;
       $('retryBtn').hidden = true;
       $('imageInfo').textContent = '';
+      $('editorPanel').classList.remove('show');
+      renderLayerList();
     }
 
     function loadImageFile(file) {
       if (!file) return;
       resetForNewSelection();
       const requestGeneration = state.generation;
-
       if (!isSupportedImage(file)) {
         setStatus('Nem támogatott fájl. PNG, JPG vagy WebP képet válassz.', 'error');
         $('description').textContent = 'Nem támogatott fájlformátum.';
@@ -253,7 +395,6 @@
       const objectUrl = URL.createObjectURL(file);
       state.loadObjectUrl = objectUrl;
       const img = new Image();
-
       img.onload = () => {
         if (requestGeneration !== state.generation) {
           URL.revokeObjectURL(objectUrl);
@@ -261,7 +402,6 @@
         }
         if (state.loadObjectUrl === objectUrl) state.loadObjectUrl = null;
         URL.revokeObjectURL(objectUrl);
-
         try {
           const originalW = img.naturalWidth;
           const originalH = img.naturalHeight;
@@ -277,28 +417,35 @@
           const sc = source.getContext('2d', { willReadFrequently: true });
           if (!sc) throw new Error('A böngésző nem tudta létrehozni a képfeldolgozó vásznat.');
           sc.drawImage(img, 0, 0, w, h);
-
           state.sourceCanvas = source;
           state.imageData = sc.getImageData(0, 0, w, h);
           state.depth = null;
           state.outputCanvas = null;
+          state.personMask = null;
           state.w = w;
           state.h = h;
           state.fileName = file.name || 'photo';
-
           ui.canvas.width = w;
           ui.canvas.height = h;
+          ui.overlay.width = w;
+          ui.overlay.height = h;
+          ui.maskCanvas.width = w;
+          ui.maskCanvas.height = h;
           ui.ctx.putImageData(state.imageData, 0, 0);
-
+          ui.overlayCtx.clearRect(0, 0, w, h);
           $('emptyState').style.display = 'none';
-          $('canvasShell').style.display = 'block';
+          ui.shell.style.display = 'block';
           $('canvasBadge').textContent = 'AI-FELDOLGOZÁS FOLYAMATBAN';
-          $('stageHint').textContent = 'Mélység, személymaszk, kezek, arc és vizuális effekt-részletek elemzése.';
+          $('stageHint').textContent = 'Mélységbecslés és kiegészítő felismerés folyamatban.';
           $('description').textContent = 'A kép betöltődött. Az automatikus elemzés elindult.';
           $('imageInfo').textContent = `${originalW} × ${originalH} px` + (scale < 1 ? ` · feldolgozási méret: ${w} × ${h}` : '');
           $('downloadBtn').disabled = true;
           $('retryBtn').hidden = true;
-
+          resetSelection();
+          state.layers = [];
+          renderLayerList();
+          $('editorPanel').classList.add('show');
+          setToolControlsEnabled(false);
           runPipeline(requestGeneration);
         } catch (error) {
           console.error(error);
@@ -306,7 +453,6 @@
           $('description').textContent = 'A kép előkészítése sikertelen.';
         }
       };
-
       img.onerror = () => {
         if (requestGeneration !== state.generation) return;
         if (state.loadObjectUrl === objectUrl) state.loadObjectUrl = null;
@@ -319,12 +465,10 @@
 
     async function createDepthEstimator(device) {
       const mod = await import(CONFIG.transformersUrl);
-      if (typeof mod.pipeline !== 'function') {
-        throw new Error('A mélységbecslő könyvtár nem tölthető be.');
-      }
+      if (typeof mod.pipeline !== 'function') throw new Error('A mélységbecslő könyvtár nem tölthető be.');
       const progress_callback = info => {
         if (info && typeof info.progress === 'number') {
-          const pct = Math.min(35, 4 + info.progress * 0.3);
+          const pct = Math.min(35, 4 + info.progress * .3);
           setProgress(pct, info.file ? `Mélységmodell letöltése: ${info.file}` : 'Mélységmodell letöltése…');
         } else if (info && info.status) {
           setProgress(5, `Mélységmodell: ${info.status}`);
@@ -339,7 +483,6 @@
     async function getDepthEstimator(forceWasm = false) {
       if (state.estimator && (!forceWasm || state.estimatorDevice === 'wasm')) return state.estimator;
       if (state.estimatorPromise) return state.estimatorPromise;
-
       state.estimatorPromise = (async () => {
         if (!forceWasm && navigator.gpu) {
           try {
@@ -358,7 +501,6 @@
         state.estimatorDevice = 'wasm';
         return state.estimator;
       })();
-
       try {
         return await state.estimatorPromise;
       } finally {
@@ -375,7 +517,7 @@
           return await estimator(input);
         } catch (error) {
           if (state.estimatorDevice !== 'webgpu') throw error;
-          console.warn('A WebGPU-számítás futás közben hibázott; újrapróbálás WASM módban.', error);
+          console.warn('A WebGPU-számítás hibázott; újrapróbálás WASM módban.', error);
           state.estimator = null;
           state.estimatorDevice = null;
           estimator = await getDepthEstimator(true);
@@ -391,49 +533,37 @@
     async function getVisionTasks() {
       if (state.vision) return state;
       if (state.visionPromise) return state.visionPromise;
-
       state.visionPromise = (async () => {
         setProgress(67, 'Személy-, kéz- és arcfelismerő modellek betöltése…');
         const mp = await import(CONFIG.mediaPipeModuleUrl);
         const vision = await mp.FilesetResolver.forVisionTasks(CONFIG.mediaPipeWasmUrl);
         state.vision = vision;
-        setProgress(72, 'A kéz-, arc- és személymodellek külön előkészítése…');
-
-        const results = await Promise.allSettled([
+        const tasks = await Promise.allSettled([
           mp.HandLandmarker.createFromOptions(vision, {
             baseOptions: { modelAssetPath: CONFIG.handModelUrl },
-            runningMode: 'IMAGE',
-            numHands: 4,
-            minHandDetectionConfidence: 0.35,
-            minHandPresenceConfidence: 0.35
+            runningMode: 'IMAGE', numHands: 4,
+            minHandDetectionConfidence: .35, minHandPresenceConfidence: .35
           }),
           mp.FaceDetector.createFromOptions(vision, {
             baseOptions: { modelAssetPath: CONFIG.faceModelUrl },
-            runningMode: 'IMAGE',
-            minDetectionConfidence: 0.35,
-            minSuppressionThreshold: 0.3
+            runningMode: 'IMAGE', minDetectionConfidence: .35, minSuppressionThreshold: .3
           }),
           mp.ImageSegmenter.createFromOptions(vision, {
             baseOptions: { modelAssetPath: CONFIG.personModelUrl },
-            runningMode: 'IMAGE',
-            outputCategoryMask: true,
-            outputConfidenceMasks: false
+            runningMode: 'IMAGE', outputCategoryMask: true, outputConfidenceMasks: false
           })
         ]);
-
-        if (results[0].status === 'fulfilled') state.handLandmarker = results[0].value;
-        else console.warn('Kézmodell nem elérhető:', results[0].reason);
-        if (results[1].status === 'fulfilled') state.faceDetector = results[1].value;
-        else console.warn('Arcdetektor nem elérhető:', results[1].reason);
-        if (results[2].status === 'fulfilled') state.personSegmenter = results[2].value;
-        else console.warn('Személyszegmentáló nem elérhető:', results[2].reason);
-
+        if (tasks[0].status === 'fulfilled') state.handLandmarker = tasks[0].value;
+        else console.warn('A kézmodell nem érhető el:', tasks[0].reason);
+        if (tasks[1].status === 'fulfilled') state.faceDetector = tasks[1].value;
+        else console.warn('Az arcdetektor nem érhető el:', tasks[1].reason);
+        if (tasks[2].status === 'fulfilled') state.personSegmenter = tasks[2].value;
+        else console.warn('A személyszegmentáló nem érhető el:', tasks[2].reason);
         if (!state.handLandmarker && !state.faceDetector && !state.personSegmenter) {
           throw new Error('Egyik kiegészítő felismerőmodell sem tölthető be.');
         }
         return state;
       })();
-
       try {
         return await state.visionPromise;
       } finally {
@@ -451,9 +581,7 @@
       }
       if (!raw || !w || !h || raw.length !== w * h) {
         const dep = output?.depth;
-        if (!dep?.data || !dep.width || !dep.height) {
-          throw new Error('Az AI nem adott érvényes mélységadatot.');
-        }
+        if (!dep?.data || !dep.width || !dep.height) throw new Error('Az AI nem adott érvényes mélységadatot.');
         w = dep.width;
         h = dep.height;
         const channels = dep.channels || 1;
@@ -461,7 +589,6 @@
         for (let i = 0; i < w * h; i++) arr[i] = dep.data[i * channels];
         raw = arr;
       }
-
       const samples = [];
       const step = Math.max(1, Math.floor(raw.length / 150000));
       for (let i = 0; i < raw.length; i += step) {
@@ -470,10 +597,9 @@
       }
       if (samples.length < 10) throw new Error('A mélységbecslés nem adott használható eredményt.');
       samples.sort((a, b) => a - b);
-      const low = samples[Math.floor((samples.length - 1) * 0.02)];
-      const high = samples[Math.floor((samples.length - 1) * 0.98)];
+      const low = samples[Math.floor((samples.length - 1) * .02)];
+      const high = samples[Math.floor((samples.length - 1) * .98)];
       if (!(high > low)) throw new Error('A mélységtérkép nem tartalmaz értékelhető mélységkülönbséget.');
-
       const gray = new Uint8Array(w * h);
       for (let i = 0; i < gray.length; i++) {
         const v = Number(raw[i]);
@@ -493,7 +619,6 @@
         id.data[j + 3] = 255;
       }
       sctx.putImageData(id, 0, 0);
-
       const dst = document.createElement('canvas');
       dst.width = targetW;
       dst.height = targetH;
@@ -507,60 +632,6 @@
       return result;
     }
 
-    function createInputCanvas() {
-      if (state.sourceCanvas) return state.sourceCanvas;
-      const c = document.createElement('canvas');
-      c.width = state.w;
-      c.height = state.h;
-      c.getContext('2d').putImageData(state.imageData, 0, 0);
-      return c;
-    }
-
-    function clampBox(box) {
-      const x = clamp(Math.floor(box.x), 0, state.w - 1);
-      const y = clamp(Math.floor(box.y), 0, state.h - 1);
-      const right = clamp(Math.ceil(box.x + box.width), x + 1, state.w);
-      const bottom = clamp(Math.ceil(box.y + box.height), y + 1, state.h);
-      return { x, y, width: right - x, height: bottom - y };
-    }
-
-    function boxFromHand(hand) {
-      const xs = hand.map(p => p.x * state.w);
-      const ys = hand.map(p => p.y * state.h);
-      const left = Math.min(...xs);
-      const top = Math.min(...ys);
-      const right = Math.max(...xs);
-      const bottom = Math.max(...ys);
-      return clampBox({ x: left, y: top, width: right - left, height: bottom - top });
-    }
-
-    function boxesOverlapRatio(a, b) {
-      const l = Math.max(a.x, b.x);
-      const t = Math.max(a.y, b.y);
-      const r = Math.min(a.x + a.width, b.x + b.width);
-      const bt = Math.min(a.y + a.height, b.y + b.height);
-      return Math.max(0, r - l) * Math.max(0, bt - t) / Math.max(1, a.width * a.height);
-    }
-
-    function handNearFace(handBox, faceBox) {
-      const zone = {
-        x: faceBox.x - faceBox.width * 0.7,
-        y: faceBox.y - faceBox.height * 0.65,
-        width: faceBox.width * 2.4,
-        height: faceBox.height * 2.25
-      };
-      const overlap = boxesOverlapRatio(handBox, zone);
-      const hx = handBox.x + handBox.width / 2;
-      const hy = handBox.y + handBox.height / 2;
-      const fx = faceBox.x + faceBox.width / 2;
-      const fy = faceBox.y + faceBox.height / 2;
-      const distance = Math.hypot(
-        (hx - fx) / Math.max(1, faceBox.width),
-        (hy - fy) / Math.max(1, faceBox.height)
-      );
-      return overlap > 0.025 || distance < 1.45;
-    }
-
     function getPersonMask(segmentResult) {
       const cm = segmentResult?.categoryMask;
       if (!cm) return null;
@@ -569,7 +640,6 @@
         const mw = cm.width;
         const mh = cm.height;
         if (!data || !mw || !mh || data.length !== mw * mh) return null;
-
         const source = document.createElement('canvas');
         source.width = mw;
         source.height = mh;
@@ -581,7 +651,6 @@
           id.data[j + 3] = 255;
         }
         sc.putImageData(id, 0, 0);
-
         const target = document.createElement('canvas');
         target.width = state.w;
         target.height = state.h;
@@ -594,9 +663,347 @@
         return mask;
       } finally {
         if (typeof cm.close === 'function') {
-          try { cm.close(); } catch (_) {}
+          try { cm.close(); } catch (_) { /* A maszk felszabadítása opcionális. */ }
         }
       }
+    }
+
+    function applyHandCorrection(handResult, faceResult) {
+      const hands = handResult?.landmarks || [];
+      const detections = faceResult?.detections || [];
+      if (!hands.length || !detections.length) return 0;
+      const faces = detections.map(d => {
+        const b = d.boundingBox;
+        if (!b) return null;
+        return { x: clamp(b.originX, 0, state.w - 1), y: clamp(b.originY, 0, state.h - 1), width: Math.max(1, b.width), height: Math.max(1, b.height) };
+      }).filter(Boolean);
+      if (!faces.length) return 0;
+      let corrected = 0;
+      for (const hand of hands) {
+        if (!Array.isArray(hand) || hand.length < 21) continue;
+        const xs = hand.map(p => p.x * state.w);
+        const ys = hand.map(p => p.y * state.h);
+        const x0 = clamp(Math.floor(Math.min(...xs)), 0, state.w - 1);
+        const y0 = clamp(Math.floor(Math.min(...ys)), 0, state.h - 1);
+        const x1 = clamp(Math.ceil(Math.max(...xs)), x0 + 1, state.w);
+        const y1 = clamp(Math.ceil(Math.max(...ys)), y0 + 1, state.h);
+        const cx = (x0 + x1) / 2;
+        const cy = (y0 + y1) / 2;
+        const nearFace = faces.some(f => {
+          const fx = f.x + f.width / 2;
+          const fy = f.y + f.height / 2;
+          const dx = (cx - fx) / Math.max(1, f.width);
+          const dy = (cy - fy) / Math.max(1, f.height);
+          return Math.hypot(dx, dy) < 1.7;
+        });
+        if (!nearFace) continue;
+        const faceDepths = [];
+        const f = faces.reduce((best, item) => {
+          const d = Math.hypot((cx - item.x - item.width / 2) / item.width, (cy - item.y - item.height / 2) / item.height);
+          return !best || d < best.d ? { item, d } : best;
+        }, null)?.item;
+        if (f) {
+          const sx = clamp(Math.floor(f.x + f.width * .2), 0, state.w - 1);
+          const sy = clamp(Math.floor(f.y + f.height * .2), 0, state.h - 1);
+          for (let yy = sy; yy < Math.min(state.h, sy + Math.max(1, Math.floor(f.height * .6))); yy += Math.max(1, Math.floor(f.height / 12))) {
+            for (let xx = sx; xx < Math.min(state.w, sx + Math.max(1, Math.floor(f.width * .6))); xx += Math.max(1, Math.floor(f.width / 12))) {
+              faceDepths.push(state.depth[yy * state.w + xx]);
+            }
+          }
+        }
+        const target = clamp(median(faceDepths) + 30, 0, 255);
+        const padX = Math.max(2, Math.round((x1 - x0) * .12));
+        const padY = Math.max(2, Math.round((y1 - y0) * .12));
+        for (let y = Math.max(0, y0 - padY); y < Math.min(state.h, y1 + padY); y++) {
+          for (let x = Math.max(0, x0 - padX); x < Math.min(state.w, x1 + padX); x++) {
+            const i = y * state.w + x;
+            const dx = x < x0 ? x0 - x : x >= x1 ? x - x1 : 0;
+            const dy = y < y0 ? y0 - y : y >= y1 ? y - y1 : 0;
+            const edge = Math.hypot(dx / Math.max(1, padX), dy / Math.max(1, padY));
+            const a = edge > 1 ? 0 : edge > .6 ? (1 - edge) / .4 : 1;
+            if (a > 0 && state.depth[i] < target) state.depth[i] = Math.round(state.depth[i] + (target - state.depth[i]) * a * .82);
+          }
+        }
+        corrected++;
+      }
+      return corrected;
+    }
+
+    function maxFilter(src, w, h, radius) {
+      if (radius <= 0) return src;
+      const temp = new Uint8Array(src.length);
+      const out = new Uint8Array(src.length);
+      for (let y = 0; y < h; y++) {
+        const row = y * w;
+        for (let x = 0; x < w; x++) {
+          let maximum = 0;
+          for (let k = -radius; k <= radius; k++) maximum = Math.max(maximum, src[row + clamp(x + k, 0, w - 1)]);
+          temp[row + x] = maximum;
+        }
+      }
+      for (let x = 0; x < w; x++) {
+        for (let y = 0; y < h; y++) {
+          let maximum = 0;
+          for (let k = -radius; k <= radius; k++) maximum = Math.max(maximum, temp[clamp(y + k, 0, h - 1) * w + x]);
+          out[y * w + x] = maximum;
+        }
+      }
+      return out;
+    }
+
+    function minFilter(src, w, h, radius) {
+      if (radius <= 0) return src;
+      const temp = new Uint8Array(src.length);
+      const out = new Uint8Array(src.length);
+      for (let y = 0; y < h; y++) {
+        const row = y * w;
+        for (let x = 0; x < w; x++) {
+          let minimum = 255;
+          for (let k = -radius; k <= radius; k++) minimum = Math.min(minimum, src[row + clamp(x + k, 0, w - 1)]);
+          temp[row + x] = minimum;
+        }
+      }
+      for (let x = 0; x < w; x++) {
+        for (let y = 0; y < h; y++) {
+          let minimum = 255;
+          for (let k = -radius; k <= radius; k++) minimum = Math.min(minimum, temp[clamp(y + k, 0, h - 1) * w + x]);
+          out[y * w + x] = minimum;
+        }
+      }
+      return out;
+    }
+
+    function makeSmallAnalysis(personMask) {
+      const scale = Math.min(1, CONFIG.effectAnalysisMaxSide / Math.max(state.w, state.h));
+      const w = Math.max(1, Math.round(state.w * scale));
+      const h = Math.max(1, Math.round(state.h * scale));
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      ctx.drawImage(state.sourceCanvas, 0, 0, w, h);
+      const rgba = ctx.getImageData(0, 0, w, h).data;
+      const lum = new Float32Array(w * h);
+      const sat = new Uint8Array(w * h);
+      const gray = new Uint8Array(w * h);
+      for (let i = 0, p = 0; i < lum.length; i++, p += 4) {
+        const r = rgba[p], g = rgba[p + 1], b = rgba[p + 2];
+        const maximum = Math.max(r, g, b);
+        const minimum = Math.min(r, g, b);
+        lum[i] = .2126 * r + .7152 * g + .0722 * b;
+        sat[i] = maximum ? Math.round((maximum - minimum) / maximum * 255) : 0;
+        gray[i] = Math.round(lum[i]);
+      }
+      let person = null;
+      if (personMask) {
+        const maskSource = document.createElement('canvas');
+        maskSource.width = state.w;
+        maskSource.height = state.h;
+        const maskCtx = maskSource.getContext('2d');
+        const maskImage = maskCtx.createImageData(state.w, state.h);
+        for (let i = 0, p = 0; i < personMask.length; i++, p += 4) {
+          maskImage.data[p] = maskImage.data[p + 1] = maskImage.data[p + 2] = personMask[i];
+          maskImage.data[p + 3] = 255;
+        }
+        maskCtx.putImageData(maskImage, 0, 0);
+        const small = document.createElement('canvas');
+        small.width = w;
+        small.height = h;
+        const smallCtx = small.getContext('2d', { willReadFrequently: true });
+        smallCtx.imageSmoothingEnabled = true;
+        smallCtx.drawImage(maskSource, 0, 0, w, h);
+        const maskPixels = smallCtx.getImageData(0, 0, w, h).data;
+        person = new Uint8Array(w * h);
+        for (let i = 0, p = 0; i < person.length; i++, p += 4) person[i] = maskPixels[p];
+      }
+      return { w, h, lum, sat, gray, person, scale };
+    }
+
+    function detectForegroundBubbles(analysis) {
+      const { w, h, gray, person, scale } = analysis;
+      const gradient = new Uint8Array(w * h);
+      for (let y = 1; y < h - 1; y++) {
+        for (let x = 1; x < w - 1; x++) {
+          const i = y * w + x;
+          const gx = gray[i + 1] - gray[i - 1];
+          const gy = gray[i + w] - gray[i - w];
+          gradient[i] = Math.min(255, Math.round(Math.hypot(gx, gy) * .72));
+        }
+      }
+      const radii = [7, 9, 12, 15, 19, 24, 30, 37, 45].filter(r => r < Math.min(w, h) * .22);
+      const candidates = [];
+      const stride = Math.max(5, Math.round(Math.min(w, h) / 65));
+      const samples = 32;
+      for (let cy = 8; cy < h - 8; cy += stride) {
+        for (let cx = 8; cx < w - 8; cx += stride) {
+          for (const radius of radii) {
+            if (cx - radius < 1 || cy - radius < 1 || cx + radius >= w - 1 || cy + radius >= h - 1) continue;
+            let personHits = 0, personEdges = 0, allEdges = 0, allEnergy = 0, personEnergy = 0;
+            for (let k = 0; k < samples; k++) {
+              const angle = k * Math.PI * 2 / samples;
+              const xx = Math.round(cx + Math.cos(angle) * radius);
+              const yy = Math.round(cy + Math.sin(angle) * radius);
+              const idx = yy * w + xx;
+              const strength = gradient[idx];
+              if (strength > 23) { allEdges++; allEnergy += strength; }
+              if (person && person[idx] > 100) {
+                personHits++;
+                if (strength > 20) { personEdges++; personEnergy += strength; }
+              }
+            }
+            const crossesSubject = personHits >= 5 && personEdges >= 4;
+            const completeRim = allEdges >= 18 && allEnergy / Math.max(1, allEdges) > 34;
+            if (crossesSubject || completeRim) {
+              const edgeCount = crossesSubject ? personEdges : allEdges;
+              const energy = crossesSubject ? personEnergy : allEnergy;
+              const continuity = edgeCount / samples;
+              const score = continuity * Math.min(1, energy / Math.max(1, edgeCount * 78)) * (crossesSubject ? 1 : .68);
+              if (score > (crossesSubject ? .045 : .20)) {
+                candidates.push({ x: cx, y: cy, r: radius, score, frontEvidence: crossesSubject ? 1 : .55 });
+              }
+            }
+          }
+        }
+      }
+      candidates.sort((a, b) => b.score - a.score);
+      const chosen = [];
+      for (const candidate of candidates) {
+        if (chosen.some(other => Math.hypot(other.x - candidate.x, other.y - candidate.y) < Math.min(other.r, candidate.r) * .62 && Math.abs(other.r - candidate.r) < Math.max(other.r, candidate.r) * .48)) continue;
+        chosen.push(candidate);
+        if (chosen.length >= CONFIG.maxBubbleCandidates) break;
+      }
+      return chosen.map(c => ({ ...c, x: c.x / scale, y: c.y / scale, r: c.r / scale }));
+    }
+
+    function applyBubbleDepthLifts(analysis, bubbles) {
+      if (!bubbles.length) return 0;
+      const { w, h, scale, person } = analysis;
+      let applied = 0;
+      for (const bubble of bubbles) {
+        const cx = bubble.x, cy = bubble.y, radius = bubble.r;
+        const x0 = clamp(Math.floor(cx - radius - 7), 0, state.w - 1);
+        const x1 = clamp(Math.ceil(cx + radius + 7), 0, state.w - 1);
+        const y0 = clamp(Math.floor(cy - radius - 7), 0, state.h - 1);
+        const y1 = clamp(Math.ceil(cy + radius + 7), 0, state.h - 1);
+        const samples = [];
+        for (let k = 0; k < 40; k++) {
+          const angle = k * Math.PI * 2 / 40;
+          const xx = Math.round(cx + Math.cos(angle) * radius);
+          const yy = Math.round(cy + Math.sin(angle) * radius);
+          if (xx < 0 || yy < 0 || xx >= state.w || yy >= state.h) continue;
+          const sx = Math.round(xx * scale), sy = Math.round(yy * scale);
+          if (sx >= 0 && sy >= 0 && sx < w && sy < h && (!person || person[sy * w + sx] > 100)) {
+            samples.push(state.depth[yy * state.w + xx]);
+          }
+        }
+        if (samples.length < 4) continue;
+        const target = clamp(median(samples) + (bubble.frontEvidence >= .9 ? 27 : 14), 0, 255);
+        for (let y = y0; y <= y1; y++) {
+          for (let x = x0; x <= x1; x++) {
+            const distance = Math.hypot(x - cx, y - cy);
+            if (distance > radius + 5) continue;
+            let a = distance <= radius - 4 ? 1 : clamp((radius + 5 - distance) / 9, 0, 1);
+            a *= bubble.frontEvidence >= .9 ? .58 : .28;
+            if (a > .01) {
+              const i = y * state.w + x;
+              if (state.depth[i] < target) state.depth[i] = Math.round(state.depth[i] + (target - state.depth[i]) * a);
+            }
+          }
+        }
+        applied++;
+      }
+      return applied;
+    }
+
+    function applyGlowAndAuraCorrection(analysis) {
+      const { w, h, lum, sat } = analysis;
+      const smallPerson = analysis.person;
+      if (!smallPerson) return 0;
+      const dilated = maxFilter(smallPerson, w, h, Math.max(2, Math.round(Math.min(w, h) * .022)));
+      const eroded = minFilter(smallPerson, w, h, Math.max(1, Math.round(Math.min(w, h) * .008)));
+      const boundary = new Uint8Array(w * h);
+      for (let i = 0; i < boundary.length; i++) boundary[i] = dilated[i] > 100 && eroded[i] < 180 ? 255 : 0;
+      const radius = Math.max(2, Math.round(Math.min(w, h) * .012));
+      const integral = new Float64Array((w + 1) * (h + 1));
+      for (let y = 1; y <= h; y++) {
+        let rowSum = 0;
+        for (let x = 1; x <= w; x++) {
+          rowSum += lum[(y - 1) * w + x - 1];
+          integral[y * (w + 1) + x] = integral[(y - 1) * (w + 1) + x] + rowSum;
+        }
+      }
+      const effect = new Uint8Array(w * h);
+      let count = 0;
+      for (let y = 0; y < h; y++) {
+        for (let x = 0; x < w; x++) {
+          const i = y * w + x;
+          if (!boundary[i]) continue;
+          const x0 = Math.max(0, x - radius), x1 = Math.min(w - 1, x + radius);
+          const y0 = Math.max(0, y - radius), y1 = Math.min(h - 1, y + radius);
+          const A = integral[y0 * (w + 1) + x0];
+          const B = integral[y0 * (w + 1) + x1 + 1];
+          const C = integral[(y1 + 1) * (w + 1) + x0];
+          const D = integral[(y1 + 1) * (w + 1) + x1 + 1];
+          const mean = (D - B - C + A) / ((x1 - x0 + 1) * (y1 - y0 + 1));
+          const contrast = lum[i] - mean;
+          const brightGlow = lum[i] > 175 && contrast > 12 && sat[i] > 42;
+          const vividGlow = sat[i] > 105 && lum[i] > 125 && contrast > 18;
+          if (brightGlow || vividGlow) {
+            effect[i] = Math.round(clamp(Math.max(contrast - 6, (lum[i] - 150) * .55) * 2.4, 0, 210));
+            count++;
+          }
+        }
+      }
+      if (!count) return 0;
+      const maskCanvas = document.createElement('canvas');
+      maskCanvas.width = w;
+      maskCanvas.height = h;
+      const mx = maskCanvas.getContext('2d');
+      const md = mx.createImageData(w, h);
+      for (let i = 0, p = 0; i < effect.length; i++, p += 4) {
+        md.data[p] = md.data[p + 1] = md.data[p + 2] = effect[i];
+        md.data[p + 3] = 255;
+      }
+      mx.putImageData(md, 0, 0);
+      const full = document.createElement('canvas');
+      full.width = state.w;
+      full.height = state.h;
+      const fx = full.getContext('2d', { willReadFrequently: true });
+      fx.imageSmoothingEnabled = true;
+      fx.drawImage(maskCanvas, 0, 0, state.w, state.h);
+      const pixels = fx.getImageData(0, 0, state.w, state.h).data;
+      const alpha = new Uint8Array(state.w * state.h);
+      for (let i = 0, p = 0; i < alpha.length; i++, p += 4) alpha[i] = pixels[p];
+      const soft = blurMask(alpha, state.w, state.h, Math.max(2, Math.round(Math.min(state.w, state.h) * .0025)));
+      const subjectDepths = [];
+      for (let y = 0; y < h && subjectDepths.length < 2500; y++) {
+        const sy = Math.min(state.h - 1, Math.floor(y / h * state.h));
+        for (let x = 0; x < w && subjectDepths.length < 2500; x++) {
+          if (smallPerson[y * w + x] > 180) {
+            const sx = Math.min(state.w - 1, Math.floor(x / w * state.w));
+            subjectDepths.push(state.depth[sy * state.w + sx]);
+          }
+        }
+      }
+      if (!subjectDepths.length) return 0;
+      const target = clamp(median(subjectDepths) + 20, 0, 255);
+      let lifted = 0;
+      for (let i = 0; i < state.depth.length; i++) {
+        const a = (soft[i] / 255) * .45;
+        if (a > .025 && state.depth[i] < target) {
+          state.depth[i] = Math.round(state.depth[i] + (target - state.depth[i]) * a);
+          lifted++;
+        }
+      }
+      return lifted > 0 ? 1 : 0;
+    }
+
+    function applyEffectAnalysis(personMask) {
+      const analysis = makeSmallAnalysis(personMask);
+      const bubbles = detectForegroundBubbles(analysis);
+      const bubbleCount = applyBubbleDepthLifts(analysis, bubbles);
+      const glow = personMask ? applyGlowAndAuraCorrection(analysis) : 0;
+      return { bubbles: bubbleCount, glow };
     }
 
     function blurMask(values, width, height, radius) {
@@ -627,383 +1034,6 @@
       return result;
     }
 
-    function medianDepthInBox(box) {
-      const b = clampBox(box);
-      const values = [];
-      const step = Math.max(1, Math.floor(Math.min(b.width, b.height) / 20));
-      for (let y = b.y; y < b.y + b.height; y += step) {
-        for (let x = b.x; x < b.x + b.width; x += step) values.push(state.depth[y * state.w + x]);
-      }
-      return median(values);
-    }
-
-    function drawHandMask(ctx, hand) {
-      const points = hand.map(p => ({ x: p.x * state.w, y: p.y * state.h }));
-      const xs = points.map(p => p.x);
-      const ys = points.map(p => p.y);
-      const box = clampBox({
-        x: Math.min(...xs),
-        y: Math.min(...ys),
-        width: Math.max(...xs) - Math.min(...xs),
-        height: Math.max(...ys) - Math.min(...ys)
-      });
-      const radius = clamp(Math.min(box.width, box.height) * 0.105, 4, 35);
-      ctx.save();
-      ctx.fillStyle = '#fff';
-      ctx.strokeStyle = '#fff';
-      ctx.lineWidth = radius * 1.4;
-      ctx.lineCap = 'round';
-      ctx.lineJoin = 'round';
-      const chains = [[0,1,2,3,4],[0,5,6,7,8],[0,9,10,11,12],[0,13,14,15,16],[0,17,18,19,20],[5,9,13,17]];
-      for (const chain of chains) {
-        ctx.beginPath();
-        chain.forEach((idx, pos) => {
-          const p = points[idx];
-          if (pos === 0) ctx.moveTo(p.x, p.y);
-          else ctx.lineTo(p.x, p.y);
-        });
-        ctx.stroke();
-      }
-      for (const p of points) {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, radius * 0.6, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      ctx.restore();
-      return box;
-    }
-
-    function applyHandCorrection(handResult, faceResult) {
-      const hands = handResult?.landmarks || [];
-      const detections = faceResult?.detections || [];
-      if (!hands.length || !detections.length) return 0;
-      const faces = detections.map(d => {
-        const b = d.boundingBox;
-        if (!b) return null;
-        return clampBox({ x: b.originX, y: b.originY, width: b.width, height: b.height });
-      }).filter(Boolean);
-      if (!faces.length) return 0;
-
-      const maskCanvas = document.createElement('canvas');
-      maskCanvas.width = state.w;
-      maskCanvas.height = state.h;
-      const mc = maskCanvas.getContext('2d', { willReadFrequently: true });
-      let count = 0;
-      const depthSamples = [];
-      for (const hand of hands) {
-        if (!Array.isArray(hand) || hand.length < 21) continue;
-        const hb = boxFromHand(hand);
-        const near = faces.filter(f => handNearFace(hb, f));
-        if (!near.length) continue;
-        drawHandMask(mc, hand);
-        for (const f of near) depthSamples.push(medianDepthInBox(f));
-        count++;
-      }
-      if (!count) return 0;
-
-      const pix = mc.getImageData(0, 0, state.w, state.h).data;
-      const alpha = new Uint8Array(state.w * state.h);
-      for (let i = 0, j = 3; i < alpha.length; i++, j += 4) alpha[i] = pix[j];
-      const feather = blurMask(alpha, state.w, state.h, clamp(Math.round(Math.min(state.w, state.h) * 0.003), 2, 7));
-      const target = clamp(median(depthSamples) + 36, 0, 255);
-      for (let i = 0; i < state.depth.length; i++) {
-        const a = feather[i] / 255;
-        if (a > 0.01 && state.depth[i] < target) {
-          state.depth[i] = Math.round(state.depth[i] + (target - state.depth[i]) * a * 0.88);
-        }
-      }
-      return count;
-    }
-
-    function maxFilter(src, w, h, r) {
-      if (r <= 0) return src;
-      const tmp = new Uint8Array(src.length);
-      const out = new Uint8Array(src.length);
-      for (let y = 0; y < h; y++) {
-        const row = y * w;
-        for (let x = 0; x < w; x++) {
-          let m = 0;
-          for (let k = -r; k <= r; k++) m = Math.max(m, src[row + clamp(x + k, 0, w - 1)]);
-          tmp[row + x] = m;
-        }
-      }
-      for (let x = 0; x < w; x++) {
-        for (let y = 0; y < h; y++) {
-          let m = 0;
-          for (let k = -r; k <= r; k++) m = Math.max(m, tmp[clamp(y + k, 0, h - 1) * w + x]);
-          out[y * w + x] = m;
-        }
-      }
-      return out;
-    }
-
-    function minFilter(src, w, h, r) {
-      if (r <= 0) return src;
-      const tmp = new Uint8Array(src.length);
-      const out = new Uint8Array(src.length);
-      for (let y = 0; y < h; y++) {
-        const row = y * w;
-        for (let x = 0; x < w; x++) {
-          let m = 255;
-          for (let k = -r; k <= r; k++) m = Math.min(m, src[row + clamp(x + k, 0, w - 1)]);
-          tmp[row + x] = m;
-        }
-      }
-      for (let x = 0; x < w; x++) {
-        for (let y = 0; y < h; y++) {
-          let m = 255;
-          for (let k = -r; k <= r; k++) m = Math.min(m, tmp[clamp(y + k, 0, h - 1) * w + x]);
-          out[y * w + x] = m;
-        }
-      }
-      return out;
-    }
-
-    function makeSmallAnalysis(personMask) {
-      const scale = Math.min(1, CONFIG.effectAnalysisMaxSide / Math.max(state.w, state.h));
-      const w = Math.max(1, Math.round(state.w * scale));
-      const h = Math.max(1, Math.round(state.h * scale));
-      const c = document.createElement('canvas');
-      c.width = w;
-      c.height = h;
-      const x = c.getContext('2d', { willReadFrequently: true });
-      x.drawImage(createInputCanvas(), 0, 0, w, h);
-      const rgba = x.getImageData(0, 0, w, h).data;
-      const lum = new Float32Array(w * h);
-      const sat = new Uint8Array(w * h);
-      const gray = new Uint8Array(w * h);
-      for (let i = 0, p = 0; i < lum.length; i++, p += 4) {
-        const r = rgba[p], g = rgba[p + 1], b = rgba[p + 2];
-        const mx = Math.max(r, g, b);
-        const mn = Math.min(r, g, b);
-        lum[i] = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-        sat[i] = mx ? Math.round((mx - mn) / mx * 255) : 0;
-        gray[i] = Math.round(lum[i]);
-      }
-
-      let person = null;
-      if (personMask) {
-        const mc = document.createElement('canvas');
-        mc.width = state.w;
-        mc.height = state.h;
-        const mctx = mc.getContext('2d');
-        const id = mctx.createImageData(state.w, state.h);
-        for (let i = 0, j = 0; i < personMask.length; i++, j += 4) {
-          id.data[j] = id.data[j + 1] = id.data[j + 2] = personMask[i];
-          id.data[j + 3] = 255;
-        }
-        mctx.putImageData(id, 0, 0);
-        const small = document.createElement('canvas');
-        small.width = w;
-        small.height = h;
-        const sx = small.getContext('2d', { willReadFrequently: true });
-        sx.imageSmoothingEnabled = true;
-        sx.drawImage(mc, 0, 0, w, h);
-        const mp = sx.getImageData(0, 0, w, h).data;
-        person = new Uint8Array(w * h);
-        for (let i = 0, j = 0; i < person.length; i++, j += 4) person[i] = mp[j];
-      }
-      return { w, h, rgba, lum, sat, gray, person, scale };
-    }
-
-    function detectForegroundBubbles(analysis) {
-      const { w, h, gray, person, scale } = analysis;
-      const grad = new Uint8Array(w * h);
-      for (let y = 1; y < h - 1; y++) {
-        for (let x = 1; x < w - 1; x++) {
-          const i = y * w + x;
-          const gx = gray[i + 1] - gray[i - 1];
-          const gy = gray[i + w] - gray[i - w];
-          grad[i] = Math.min(255, Math.round(Math.hypot(gx, gy) * 0.72));
-        }
-      }
-
-      const radii = [7,9,12,15,19,24,30,37,45].filter(r => r < Math.min(w, h) * 0.22);
-      const candidates = [];
-      const stride = Math.max(5, Math.round(Math.min(w, h) / 65));
-      const samples = 32;
-      for (let cy = 8; cy < h - 8; cy += stride) {
-        for (let cx = 8; cx < w - 8; cx += stride) {
-          for (const radius of radii) {
-            if (cx - radius < 1 || cy - radius < 1 || cx + radius >= w - 1 || cy + radius >= h - 1) continue;
-            let personHits = 0, personEdges = 0, allEdges = 0, allEnergy = 0, personEnergy = 0;
-            for (let k = 0; k < samples; k++) {
-              const a = k * Math.PI * 2 / samples;
-              const xx = Math.round(cx + Math.cos(a) * radius);
-              const yy = Math.round(cy + Math.sin(a) * radius);
-              const idx = yy * w + xx;
-              const strength = grad[idx];
-              if (strength > 23) { allEdges++; allEnergy += strength; }
-              if (person && person[idx] > 100) {
-                personHits++;
-                if (strength > 20) { personEdges++; personEnergy += strength; }
-              }
-            }
-            const crossesSubject = personHits >= 5 && personEdges >= 4;
-            const completeRim = allEdges >= 18 && allEnergy / Math.max(1, allEdges) > 34;
-            if (crossesSubject || completeRim) {
-              const edgeCount = crossesSubject ? personEdges : allEdges;
-              const energy = crossesSubject ? personEnergy : allEnergy;
-              const continuity = edgeCount / samples;
-              const score = continuity * Math.min(1, energy / Math.max(1, edgeCount * 78)) * (crossesSubject ? 1 : 0.68);
-              if (score > (crossesSubject ? 0.045 : 0.20)) {
-                candidates.push({ x: cx, y: cy, r: radius, score, edgeHits: edgeCount, personHits, frontEvidence: crossesSubject ? 1 : 0.55 });
-              }
-            }
-          }
-        }
-      }
-
-      candidates.sort((a, b) => b.score - a.score);
-      const chosen = [];
-      for (const c of candidates) {
-        if (chosen.some(o => Math.hypot(o.x - c.x, o.y - c.y) < Math.min(o.r, c.r) * 0.62 && Math.abs(o.r - c.r) < Math.max(o.r, c.r) * 0.48)) continue;
-        chosen.push(c);
-        if (chosen.length >= CONFIG.maxBubbleCandidates) break;
-      }
-      return chosen.map(c => ({ ...c, x: c.x / scale, y: c.y / scale, r: c.r / scale }));
-    }
-
-    function applyBubbleDepthLifts(analysis, bubbles) {
-      if (!bubbles.length) return 0;
-      const { w, h, scale } = analysis;
-      let applied = 0;
-      for (const bubble of bubbles) {
-        const cx = bubble.x, cy = bubble.y, r = bubble.r;
-        const x0 = clamp(Math.floor(cx - r - 7), 0, state.w - 1);
-        const x1 = clamp(Math.ceil(cx + r + 7), 0, state.w - 1);
-        const y0 = clamp(Math.floor(cy - r - 7), 0, state.h - 1);
-        const y1 = clamp(Math.ceil(cy + r + 7), 0, state.h - 1);
-        const samples = [];
-        for (let k = 0; k < 40; k++) {
-          const a = k * Math.PI * 2 / 40;
-          const xx = Math.round(cx + Math.cos(a) * r);
-          const yy = Math.round(cy + Math.sin(a) * r);
-          if (xx < 0 || yy < 0 || xx >= state.w || yy >= state.h) continue;
-          const sx = Math.round(xx * scale), sy = Math.round(yy * scale);
-          if (sx >= 0 && sy >= 0 && sx < w && sy < h && (!analysis.person || analysis.person[sy * w + sx] > 100)) {
-            samples.push(state.depth[yy * state.w + xx]);
-          }
-        }
-        if (samples.length < 4) continue;
-        const target = clamp(median(samples) + (bubble.frontEvidence >= 0.9 ? 27 : 14), 0, 255);
-        for (let y = y0; y <= y1; y++) {
-          for (let x = x0; x <= x1; x++) {
-            const d = Math.hypot(x - cx, y - cy);
-            if (d > r + 5) continue;
-            let a = d <= r - 4 ? 1 : clamp((r + 5 - d) / 9, 0, 1);
-            a *= bubble.frontEvidence >= 0.9 ? 0.58 : 0.28;
-            if (a > 0.01) {
-              const i = y * state.w + x;
-              if (state.depth[i] < target) state.depth[i] = Math.round(state.depth[i] + (target - state.depth[i]) * a);
-            }
-          }
-        }
-        applied++;
-      }
-      return applied;
-    }
-
-    function applyGlowAndAuraCorrection(analysis, personMask) {
-      if (!personMask) return 0;
-      const { w, h, lum, sat } = analysis;
-      const smallPerson = analysis.person;
-      if (!smallPerson) return 0;
-
-      const dilated = maxFilter(smallPerson, w, h, Math.max(2, Math.round(Math.min(w, h) * 0.022)));
-      const eroded = minFilter(smallPerson, w, h, Math.max(1, Math.round(Math.min(w, h) * 0.008)));
-      const boundary = new Uint8Array(w * h);
-      for (let i = 0; i < boundary.length; i++) boundary[i] = dilated[i] > 100 && eroded[i] < 180 ? 255 : 0;
-
-      const radius = Math.max(2, Math.round(Math.min(w, h) * 0.012));
-      const integral = new Float64Array((w + 1) * (h + 1));
-      for (let y = 1; y <= h; y++) {
-        let rowSum = 0;
-        for (let x = 1; x <= w; x++) {
-          rowSum += lum[(y - 1) * w + x - 1];
-          integral[y * (w + 1) + x] = integral[(y - 1) * (w + 1) + x] + rowSum;
-        }
-      }
-
-      const effect = new Uint8Array(w * h);
-      let count = 0;
-      for (let y = 0; y < h; y++) {
-        for (let x = 0; x < w; x++) {
-          const i = y * w + x;
-          if (boundary[i] === 0) continue;
-          const x0 = Math.max(0, x - radius), x1 = Math.min(w - 1, x + radius);
-          const y0 = Math.max(0, y - radius), y1 = Math.min(h - 1, y + radius);
-          const A = integral[y0 * (w + 1) + x0];
-          const B = integral[y0 * (w + 1) + x1 + 1];
-          const C = integral[(y1 + 1) * (w + 1) + x0];
-          const D = integral[(y1 + 1) * (w + 1) + x1 + 1];
-          const mean = (D - B - C + A) / ((x1 - x0 + 1) * (y1 - y0 + 1));
-          const contrast = lum[i] - mean;
-          const brightGlow = lum[i] > 175 && contrast > 12 && sat[i] > 42;
-          const vividGlow = sat[i] > 105 && lum[i] > 125 && contrast > 18;
-          if (brightGlow || vividGlow) {
-            effect[i] = Math.round(clamp(Math.max(contrast - 6, (lum[i] - 150) * 0.55) * 2.4, 0, 210));
-            count++;
-          }
-        }
-      }
-      if (!count) return 0;
-
-      const maskCanvas = document.createElement('canvas');
-      maskCanvas.width = w;
-      maskCanvas.height = h;
-      const mx = maskCanvas.getContext('2d');
-      const md = mx.createImageData(w, h);
-      for (let i = 0, j = 0; i < effect.length; i++, j += 4) {
-        md.data[j] = md.data[j + 1] = md.data[j + 2] = effect[i];
-        md.data[j + 3] = 255;
-      }
-      mx.putImageData(md, 0, 0);
-
-      const full = document.createElement('canvas');
-      full.width = state.w;
-      full.height = state.h;
-      const fx = full.getContext('2d', { willReadFrequently: true });
-      fx.imageSmoothingEnabled = true;
-      fx.drawImage(maskCanvas, 0, 0, state.w, state.h);
-      const pix = fx.getImageData(0, 0, state.w, state.h).data;
-      const alpha = new Uint8Array(state.w * state.h);
-      // The effect intensity is stored in the red channel; alpha is 255 for every pixel.
-      for (let i = 0, j = 0; i < alpha.length; i++, j += 4) alpha[i] = pix[j];
-
-      const soft = blurMask(alpha, state.w, state.h, Math.max(2, Math.round(Math.min(state.w, state.h) * 0.0025)));
-      const subjectDepths = [];
-      for (let y = 0; y < h && subjectDepths.length < 2500; y++) {
-        const sy = Math.min(state.h - 1, Math.floor(y / h * state.h));
-        for (let x = 0; x < w && subjectDepths.length < 2500; x++) {
-          if (smallPerson[y * w + x] > 180) {
-            const sx = Math.min(state.w - 1, Math.floor(x / w * state.w));
-            subjectDepths.push(state.depth[sy * state.w + sx]);
-          }
-        }
-      }
-      if (!subjectDepths.length) return 0;
-
-      const target = clamp(median(subjectDepths) + 20, 0, 255);
-      let lifted = 0;
-      for (let i = 0; i < state.depth.length; i++) {
-        const a = (soft[i] / 255) * 0.45;
-        if (a > 0.025 && state.depth[i] < target) {
-          state.depth[i] = Math.round(state.depth[i] + (target - state.depth[i]) * a);
-          lifted++;
-        }
-      }
-      return lifted > 0 ? 1 : 0;
-    }
-
-    function applyEffectAnalysis(personMask) {
-      const analysis = makeSmallAnalysis(personMask);
-      const bubbles = detectForegroundBubbles(analysis);
-      const bubbleCount = applyBubbleDepthLifts(analysis, bubbles);
-      const glow = personMask ? applyGlowAndAuraCorrection(analysis, personMask) : 0;
-      return { bubbles: bubbleCount, glow };
-    }
-
     function smoothstep(a, b, x) {
       const t = clamp((x - a) / (b - a || 1), 0, 1);
       return t * t * (3 - 2 * t);
@@ -1012,22 +1042,21 @@
     function buildToneLookup() {
       const count = CONFIG.layerCount;
       const spacing = 255 / (count - 1);
-      const sigma = spacing * 0.84;
+      const sigma = spacing * .84;
       const gains = new Float32Array(count);
       const biases = new Float32Array(count);
       for (let k = 0; k < count; k++) {
         const p = k / (count - 1);
-        if (p <= 0.5) {
-          const t = smoothstep(0, 0.5, p);
-          gains[k] = 0.24 + (0.49 - 0.24) * t;
+        if (p <= .5) {
+          const t = smoothstep(0, .5, p);
+          gains[k] = .24 + (.49 - .24) * t;
           biases[k] = 8 + (68 - 8) * t;
         } else {
-          const t = smoothstep(0.5, 1, p);
-          gains[k] = 0.49 + (0.79 - 0.49) * t;
+          const t = smoothstep(.5, 1, p);
+          gains[k] = .49 + (.79 - .49) * t;
           biases[k] = 68 + (55 - 68) * t;
         }
       }
-
       const gainLut = new Float32Array(256);
       const biasLut = new Float32Array(256);
       const weights = new Float32Array(count);
@@ -1035,7 +1064,7 @@
         let total = 0;
         for (let k = 0; k < count; k++) {
           const z = (d - k * spacing) / sigma;
-          const weight = Math.exp(-0.5 * z * z);
+          const weight = Math.exp(-.5 * z * z);
           weights[k] = weight;
           total += weight;
         }
@@ -1052,6 +1081,40 @@
       return { gainLut, biasLut };
     }
 
+    function applyManualLayers(outputCanvas, mode) {
+      if (!state.layers.length) return outputCanvas;
+      const ctx = outputCanvas.getContext('2d', { willReadFrequently: true });
+      const out = ctx.getImageData(0, 0, state.w, state.h);
+      const dst = out.data;
+      const src = state.imageData.data;
+      const { gainLut, biasLut } = buildToneLookup();
+      const strength = CONFIG.toneStrength;
+      const invStrength = 1 - strength;
+
+      // A tömb alulról felfelé halad; a későbbi (feljebb lévő) réteg kerül a korábbiak fölé.
+      for (const layer of state.layers) {
+        if (!layer.visible || layer.opacity <= 0) continue;
+        const mask = layer.mask;
+        const d = mode === 'inverted' ? 255 - layer.depth : layer.depth;
+        const gain = gainLut[d];
+        const bias = biasLut[d];
+        const opacity = layer.opacity;
+        for (let i = 0, p = 0; i < mask.length; i++, p += 4) {
+          const a = (mask[i] / 255) * opacity;
+          if (a <= .001) continue;
+          const r = clamp(src[p] * invStrength + (src[p] * gain + bias) * strength, 0, 255);
+          const g = clamp(src[p + 1] * invStrength + (src[p + 1] * gain + bias) * strength, 0, 255);
+          const b = clamp(src[p + 2] * invStrength + (src[p + 2] * gain + bias) * strength, 0, 255);
+          const ia = 1 - a;
+          dst[p] = Math.round(dst[p] * ia + r * a);
+          dst[p + 1] = Math.round(dst[p + 1] * ia + g * a);
+          dst[p + 2] = Math.round(dst[p + 2] * ia + b * a);
+        }
+      }
+      ctx.putImageData(out, 0, 0);
+      return outputCanvas;
+    }
+
     async function renderSixteenLayerResult(generation, mode = state.mode) {
       const output = document.createElement('canvas');
       output.width = state.w;
@@ -1065,7 +1128,6 @@
       const strength = CONFIG.toneStrength;
       const invStrength = 1 - strength;
       const totalRows = state.h;
-
       for (let y0 = 0; y0 < state.h; y0 += CONFIG.renderBatchRows) {
         if (generation !== state.generation) return null;
         const yEnd = Math.min(state.h, y0 + CONFIG.renderBatchRows);
@@ -1074,8 +1136,6 @@
           let p = i * 4;
           const rowEnd = i + state.w;
           for (; i < rowEnd; i++, p += 4) {
-            // NORMAL: a becsült közeli mélység világosabb tónust kap.
-            // INVERTED: a mélységi érték megfordul, így a távolabbi háttér kerül előtérbe.
             const rawDepth = state.depth[i];
             const d = mode === 'inverted' ? 255 - rawDepth : rawDepth;
             const gain = gainLut[d];
@@ -1086,12 +1146,13 @@
             dst[p + 3] = src[p + 3];
           }
         }
-        const pct = 94 + (yEnd / totalRows) * 5;
+        const pct = 91 + (yEnd / totalRows) * 6;
         setProgress(pct, 'A végleges kép összeállítása a 16 mélységi sávból…');
         await yieldToUI();
       }
       if (generation !== state.generation) return null;
       ctx.putImageData(out, 0, 0);
+      applyManualLayers(output, mode);
       return output;
     }
 
@@ -1101,66 +1162,53 @@
       clearProgressTimer();
       state.outputCanvas = null;
       $('downloadBtn').disabled = true;
-
+      setToolControlsEnabled(false);
       try {
         setProgress(3, 'AI-mélységmodell előkészítése…');
-        const input = createInputCanvas();
-        const prediction = await predictDepth(input, generation);
+        const prediction = await predictDepth(state.sourceCanvas, generation);
         if (!prediction || generation !== state.generation) return;
-
         setProgress(63, 'A folytonos mélységtérkép előállítása…');
         const parsed = tensorToGray(prediction);
         state.depth = resizeGrayMap(parsed.gray, parsed.w, parsed.h, state.w, state.h);
-
         let handsFixed = 0;
-        let personMask = null;
+        let personDetected = false;
         let effects = { bubbles: 0, glow: 0 };
-        let visionAvailable = false;
-        let visionNotes = [];
-
+        const visionNotes = [];
         try {
           const tasks = await getVisionTasks();
           if (generation !== state.generation) return;
           setProgress(73, 'Személyszegmentálás, kéz- és arcfelismerés…');
-
           let handResult = null;
           let faceResult = null;
+          const inputCanvas = state.sourceCanvas;
           if (tasks.handLandmarker) {
-            try { handResult = tasks.handLandmarker.detect(input); }
+            try { handResult = tasks.handLandmarker.detect(inputCanvas); }
             catch (error) { console.warn('A kézfelismerés nem sikerült:', error); visionNotes.push('kézfelismerés kihagyva'); }
           }
           if (tasks.faceDetector) {
-            try { faceResult = tasks.faceDetector.detect(input); }
+            try { faceResult = tasks.faceDetector.detect(inputCanvas); }
             catch (error) { console.warn('Az arcfelismerés nem sikerült:', error); visionNotes.push('arcfelismerés kihagyva'); }
           }
           if (handResult && faceResult) handsFixed = applyHandCorrection(handResult, faceResult);
-
           if (tasks.personSegmenter) {
             try {
-              // The synchronous overload returns copied mask data. The callback overload's
-              // mask buffer is only guaranteed to remain valid during the callback.
-              const segmented = tasks.personSegmenter.segment(input);
-              personMask = getPersonMask(segmented);
+              const segmented = tasks.personSegmenter.segment(inputCanvas);
+              state.personMask = getPersonMask(segmented);
+              personDetected = !!state.personMask;
             } catch (error) {
               console.warn('A személyszegmentálás nem sikerült:', error);
               visionNotes.push('személyszegmentálás kihagyva');
             }
           }
-
-          visionAvailable = !!(tasks.handLandmarker || tasks.faceDetector || personMask);
-          if (personMask || visionAvailable) {
-            setProgress(84, 'Buborékkontúrok és közeli fénylő effektek elemzése…');
-            await yieldToUI();
-            effects = applyEffectAnalysis(personMask);
-          }
+          if (generation !== state.generation) return;
+          setProgress(84, 'Buborékkontúrok és közeli fénylő effektek elemzése…');
+          await yieldToUI();
+          effects = applyEffectAnalysis(state.personMask);
         } catch (error) {
-          console.warn('A kiegészítő személy-/effektfelismerés nem teljesen érhető el; az alap mélységbecslés folytatódik.', error);
+          console.warn('A kiegészítő felismerés nem érhető el; az alap mélységbecslés folytatódik.', error);
           visionNotes.push('kiegészítő felismerés nem érhető el');
         }
-
-        if (generation !== state.generation) return null;
-        // Ha a felhasználó a renderelés alatt módot vált, a legutóbb kiválasztott
-        // módot jelenítjük meg. A mélység- és felismerőmodellek nem futnak újra.
+        if (generation !== state.generation) return;
         let final = null;
         let renderedMode = state.mode;
         do {
@@ -1168,35 +1216,27 @@
           final = await renderSixteenLayerResult(generation, renderedMode);
           if (!final || generation !== state.generation) return;
         } while (renderedMode !== state.mode);
-
         state.outputCanvas = final;
         ui.canvas.width = state.w;
         ui.canvas.height = state.h;
         ui.ctx.clearRect(0, 0, state.w, state.h);
         ui.ctx.drawImage(final, 0, 0);
-
+        state.lastRenderedMode = renderedMode;
         updateRenderedModeLabels(renderedMode);
-        $('description').textContent = 'A kész, színes kép letölthető PNG formátumban. A fókuszmód bármikor átváltható.';
+        $('description').textContent = 'A kész kép letölthető PNG formátumban. A kézi kijelöléssel további előtér-rétegek hozhatók létre.';
         $('downloadBtn').disabled = false;
         $('retryBtn').hidden = true;
         setProgress(100, 'A kész kép elkészült.');
-
+        const modeStatus = renderedMode === 'inverted' ? 'INVERTED · háttérfókusz' : 'NORMAL · karakterfókusz';
         const notes = [];
         if (handsFixed) notes.push(`${handsFixed} kéz előtér-korrekciója`);
+        if (personDetected) notes.push('személyszegmentálás');
         if (effects.bubbles) notes.push(`${effects.bubbles} buborékszerű kontúr korrekciója`);
         if (effects.glow) notes.push('közeli fénylő effekt-korrekció');
         if (visionNotes.length) notes.push(...visionNotes);
-
-        const modeStatus = renderedMode === 'inverted' ? 'INVERTED · háttérfókusz' : 'NORMAL · karakterfókusz';
-        if (!visionAvailable) {
-          setStatus(`${modeStatus}. A kép elkészült 16 sávos tónusfeldolgozással. A kiegészítő felismerőmodellek nem voltak elérhetők; csak az alap mélységbecslés készült el.`);
-        } else if (notes.length) {
-          setStatus(`${modeStatus}. Kész: 16 sáv. Automatikus vizsgálatok/javítások: ${notes.join(', ')}.`);
-        } else {
-          setStatus(`${modeStatus}. Kész: 16 sáv. A személy- és effektvizsgálat lefutott; nem talált megbízhatóan javítható előtér-részletet.`);
-        }
-
+        setStatus(`${modeStatus}. Kész: 16 sáv.${notes.length ? ` Kiegészítő elemzések: ${notes.join(', ')}.` : ' Csak az alap mélységbecslés készült el.'}`);
         $('imageInfo').textContent = `${state.w} × ${state.h} px`;
+        setToolControlsEnabled(true);
         state.progressTimer = setTimeout(() => {
           if (generation === state.generation) hideProgress();
           state.progressTimer = null;
@@ -1207,12 +1247,14 @@
           setStatus(`A feldolgozás nem sikerült: ${error?.message || error}. Ellenőrizd az internetkapcsolatot, majd próbáld újra.`, 'error');
           $('description').textContent = 'A feldolgozás megszakadt. Indítsd újra a feldolgozást.';
           $('retryBtn').hidden = false;
+          setToolControlsEnabled(false);
         }
       } finally {
         if (generation === state.generation) {
           state.busy = false;
           $('chooseBtn').disabled = false;
           $('downloadBtn').disabled = !state.outputCanvas;
+          setToolControlsEnabled(!!state.outputCanvas);
         }
       }
     }
@@ -1224,14 +1266,14 @@
       $('invertedModeBtn').classList.toggle('active', !normal);
       $('invertedModeBtn').setAttribute('aria-pressed', String(!normal));
       $('modeHelp').textContent = normal
-        ? 'NORMAL: a mélységben közelebbi karakter kap világosabb tónuskiemelést.'
-        : 'INVERTED: a távolabbi háttér kap világosabb tónuskiemelést, a karakter visszafogottabb lesz.';
+        ? 'NORMAL: a mélységben közelebbi részek világosabb tónuskiemelést kapnak.'
+        : 'INVERTED: a távolabbi háttér kap világosabb tónuskiemelést, az előtér visszafogottabb lesz.';
     }
 
     function updateRenderedModeLabels(mode) {
       if (mode === 'inverted') {
         $('canvasBadge').textContent = 'INVERTED · HÁTTÉRFÓKUSZ';
-        $('stageHint').textContent = 'Háttérfókusz: a mélységi tónusleképezés megfordítva.';
+        $('stageHint').textContent = 'Háttérfókusz: a mélységi tónusleképezés megfordítva. A saját rétegek megtartják a beállított előtér-mélységet.';
       } else {
         $('canvasBadge').textContent = 'NORMAL · KARAKTERFÓKUSZ';
         $('stageHint').textContent = 'Karakterfókusz: a közelebbi mélységi tartomány világosabb hangsúlyt kap.';
@@ -1245,9 +1287,8 @@
       $('chooseBtn').disabled = false;
       $('downloadBtn').disabled = true;
       $('retryBtn').hidden = true;
-      setStatus('A kiválasztott fókuszmód újrarajzolása folyamatban…', 'busy');
-      setProgress(92, 'A 16 sáv újraszámítása a meglévő mélységtérképből…');
-
+      setStatus('A kép és a saját rétegek újrarajzolása folyamatban…', 'busy');
+      setProgress(92, 'A 16 sáv és a saját rétegek újraszámítása…');
       try {
         let final = null;
         let renderedMode = state.mode;
@@ -1256,28 +1297,26 @@
           final = await renderSixteenLayerResult(generation, renderedMode);
           if (!final || generation !== state.generation) return;
         } while (renderedMode !== state.mode);
-
         state.outputCanvas = final;
-        ui.canvas.width = state.w;
-        ui.canvas.height = state.h;
         ui.ctx.clearRect(0, 0, state.w, state.h);
         ui.ctx.drawImage(final, 0, 0);
+        state.lastRenderedMode = renderedMode;
         updateRenderedModeLabels(renderedMode);
-        const modeName = renderedMode === 'inverted' ? 'INVERTED · háttérfókusz' : 'NORMAL · karakterfókusz';
-        setStatus(`${modeName} aktív. A kép újrarajzolása kész; az AI-modellek nem futottak újra.`);
-        setProgress(100, 'A kiválasztott fókuszmód elkészült.');
+        setStatus(`${renderedMode === 'inverted' ? 'INVERTED · háttérfókusz' : 'NORMAL · karakterfókusz'} aktív. A kép és a saját rétegek frissítése kész.`);
+        setProgress(100, 'A módosított kép elkészült.');
       } catch (error) {
         console.error(error);
-        if (generation === state.generation) setStatus(`A módváltás nem sikerült: ${error?.message || error}`, 'error');
+        if (generation === state.generation) setStatus(`Az újrarajzolás nem sikerült: ${error?.message || error}`, 'error');
       } finally {
         if (generation === state.generation) {
           state.busy = false;
           $('chooseBtn').disabled = false;
           $('downloadBtn').disabled = !state.outputCanvas;
+          setToolControlsEnabled(!!state.outputCanvas);
           state.progressTimer = setTimeout(() => {
             if (generation === state.generation) hideProgress();
             state.progressTimer = null;
-          }, 1000);
+          }, 850);
         }
       }
     }
@@ -1287,20 +1326,317 @@
       if (state.mode === mode) return;
       state.mode = mode;
       updateModeControls();
-      if (state.outputCanvas && state.depth && !state.busy) {
-        rerenderCurrentMode();
-      } else if (state.imageData && state.busy) {
-        // A folyamatban lévő feldolgozás a legutóbb kiválasztott móddal fejeződik be.
-        setStatus('A kiválasztott mód a jelenlegi feldolgozás végén aktiválódik.', 'busy');
+      if (state.outputCanvas && state.depth && !state.busy) rerenderCurrentMode();
+      else if (state.imageData && state.busy) setStatus('A kiválasztott mód a jelenlegi feldolgozás végén aktiválódik.', 'busy');
+    }
+
+    function clearOverlay() {
+      if (!state.w || !state.h) return;
+      ui.overlayCtx.clearRect(0, 0, state.w, state.h);
+      drawPolygonGuide();
+    }
+
+    function drawSelectionOverlay() {
+      if (!state.w || !state.h) return;
+      const mctx = ui.maskCanvas.getContext('2d', { willReadFrequently: true });
+      const maskData = mctx.getImageData(0, 0, state.w, state.h).data;
+      const image = ui.overlayCtx.createImageData(state.w, state.h);
+      for (let i = 0, p = 0; i < maskData.length; i += 4, p += 4) {
+        const alpha = maskData[i + 3];
+        if (!alpha) continue;
+        image.data[p] = 255;
+        image.data[p + 1] = 126;
+        image.data[p + 2] = 78;
+        image.data[p + 3] = Math.round(alpha * .43);
       }
+      ui.overlayCtx.clearRect(0, 0, state.w, state.h);
+      ui.overlayCtx.putImageData(image, 0, 0);
+      drawPolygonGuide();
+    }
+
+    function drawPolygonGuide() {
+      if (!state.w || !state.h || state.polygonPoints.length === 0) return;
+      const ctx = ui.overlayCtx;
+      const pts = state.polygonPoints;
+      ctx.save();
+      ctx.strokeStyle = '#ffba98';
+      ctx.fillStyle = '#ffba98';
+      ctx.lineWidth = Math.max(2, Math.min(state.w, state.h) * .002);
+      ctx.setLineDash([7, 5]);
+      ctx.beginPath();
+      pts.forEach((p, i) => i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y));
+      ctx.stroke();
+      ctx.setLineDash([]);
+      for (const p of pts) {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, Math.max(3, Math.min(state.w, state.h) * .004), 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    function setToolControlsEnabled(enabled) {
+      const hasImage = enabled && !!state.imageData && !!state.outputCanvas && !state.busy;
+      ['brushToolBtn', 'polygonToolBtn', 'eraserToolBtn', 'brushSize', 'featherSize', 'clearSelectionBtn', 'createLayerBtn'].forEach(id => $(id).disabled = !hasImage);
+      $('finishPolygonBtn').disabled = !hasImage || state.activeTool !== 'polygon' || state.polygonPoints.length < 3;
+      if (!hasImage) {
+        state.activeTool = null;
+        ui.shell.classList.remove('selecting');
+      }
+      updateToolButtons();
+    }
+
+    function updateToolButtons() {
+      $('brushToolBtn').classList.toggle('active', state.activeTool === 'brush');
+      $('polygonToolBtn').classList.toggle('active', state.activeTool === 'polygon');
+      $('eraserToolBtn').classList.toggle('active', state.activeTool === 'eraser');
+      $('finishPolygonBtn').disabled = !state.outputCanvas || state.activeTool !== 'polygon' || state.polygonPoints.length < 3 || state.busy;
+      ui.shell.classList.toggle('selecting', !!state.activeTool && !!state.outputCanvas && !state.busy);
+      $('selectionState').textContent = state.activeTool
+        ? (state.activeTool === 'brush' ? 'Ecset aktív' : state.activeTool === 'eraser' ? 'Radír aktív' : `Sokszög: ${state.polygonPoints.length} pont`)
+        : 'Nincs aktív eszköz';
+    }
+
+    function setActiveTool(tool) {
+      if (!state.outputCanvas || state.busy) return;
+      if (state.activeTool === tool) {
+        state.activeTool = null;
+        state.polygonPoints = [];
+      } else {
+        state.activeTool = tool;
+        if (tool !== 'polygon') state.polygonPoints = [];
+      }
+      updateToolButtons();
+      drawSelectionOverlay();
+      const messages = {
+        brush: 'Ecset: húzd végig az egérrel vagy az ujjaddal a kijelölendő területen.',
+        polygon: 'Sokszög: kattints a kontúr töréspontjaira, majd válaszd a „Poligon lezárása” gombot.',
+        eraser: 'Radír: húzd végig a korábbi kijelölés eltávolítandó részein.'
+      };
+      $('selectionNote').textContent = state.activeTool ? messages[state.activeTool] : 'Válassz kijelölő eszközt, majd jelöld ki az előtérbe helyezendő képrészt.';
+      if (state.activeTool) setStatus(messages[state.activeTool]);
+    }
+
+    function pointerToImage(event) {
+      const rect = ui.overlay.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width * state.w;
+      const y = (event.clientY - rect.top) / rect.height * state.h;
+      return { x: clamp(x, 0, state.w - 1), y: clamp(y, 0, state.h - 1) };
+    }
+
+    function paintPoint(ctx, point, erase) {
+      const radius = Math.max(1, Number($('brushSize').value) / 2);
+      ctx.save();
+      ctx.globalCompositeOperation = erase ? 'destination-out' : 'source-over';
+      ctx.fillStyle = '#fff';
+      ctx.beginPath();
+      ctx.arc(point.x, point.y, radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function paintLine(ctx, from, to, erase) {
+      const radius = Math.max(1, Number($('brushSize').value) / 2);
+      ctx.save();
+      ctx.globalCompositeOperation = erase ? 'destination-out' : 'source-over';
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = radius * 2;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.beginPath();
+      ctx.moveTo(from.x, from.y);
+      ctx.lineTo(to.x, to.y);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function finishPolygon() {
+      if (state.activeTool !== 'polygon' || state.polygonPoints.length < 3) return;
+      const ctx = ui.maskCanvas.getContext('2d');
+      ctx.save();
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.fillStyle = '#fff';
+      ctx.beginPath();
+      state.polygonPoints.forEach((p, i) => i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y));
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+      state.polygonPoints = [];
+      drawSelectionOverlay();
+      updateToolButtons();
+      setStatus('A sokszög kijelölése elkészült. A kijelölést réteggé alakíthatod, vagy tovább javíthatod.');
+    }
+
+    function clearCurrentSelection() {
+      if (!state.w || !state.h) return;
+      ui.maskCanvas.getContext('2d').clearRect(0, 0, state.w, state.h);
+      state.polygonPoints = [];
+      drawSelectionOverlay();
+      updateToolButtons();
+      setStatus('Az aktuális kijelölés törölve. A már létrehozott rétegek megmaradtak.');
+    }
+
+    function createLayerFromSelection() {
+      if (!state.outputCanvas || state.busy) return;
+      const mctx = ui.maskCanvas.getContext('2d', { willReadFrequently: true });
+      const pixels = mctx.getImageData(0, 0, state.w, state.h).data;
+      const rawMask = new Uint8Array(state.w * state.h);
+      let selectedPixels = 0;
+      for (let i = 0, p = 3; i < rawMask.length; i++, p += 4) {
+        rawMask[i] = pixels[p];
+        if (pixels[p] > 12) selectedPixels++;
+      }
+      if (selectedPixels < 12) {
+        setStatus('Nincs elegendő kijelölt terület. Először jelölj ki egy képrészt.', 'error');
+        return;
+      }
+      const feather = Number($('featherSize').value);
+      const mask = feather > 0 ? blurMask(rawMask, state.w, state.h, feather) : rawMask;
+      const layer = {
+        id: state.nextLayerId++,
+        name: `Saját előtér ${state.layers.length + 1}`,
+        mask,
+        visible: true,
+        opacity: 1,
+        depth: 255
+      };
+      state.layers.push(layer);
+      state.selectedLayerId = layer.id;
+      clearCurrentSelection();
+      state.activeTool = null;
+      updateToolButtons();
+      renderLayerList();
+      setStatus(`A(z) „${layer.name}” réteg létrejött. Az előtér-mélység és a rétegsorrend külön állítható.`);
+      rerenderCurrentMode();
+    }
+
+    function renderLayerList() {
+      const host = $('layerList');
+      host.replaceChildren();
+      $('layerCount').textContent = `${state.layers.length} réteg`;
+      if (!state.layers.length) {
+        const empty = document.createElement('div');
+        empty.className = 'layer-empty';
+        empty.textContent = 'Még nincs saját réteg. Jelölj ki egy képrészt, majd válaszd a „Réteg létrehozása” gombot.';
+        host.appendChild(empty);
+        return;
+      }
+      // A listában felül jelenik meg a legelöl lévő réteg.
+      [...state.layers].reverse().forEach(layer => {
+        const index = state.layers.findIndex(item => item.id === layer.id);
+        const row = document.createElement('div');
+        row.className = `layer-row${state.selectedLayerId === layer.id ? ' selected' : ''}`;
+        row.addEventListener('click', event => {
+          if (event.target.closest('button, input, label')) return;
+          state.selectedLayerId = layer.id;
+          renderLayerList();
+        });
+
+        const main = document.createElement('div');
+        main.className = 'layer-main';
+        const eye = document.createElement('button');
+        eye.type = 'button';
+        eye.className = 'icon-btn';
+        eye.title = layer.visible ? 'Réteg elrejtése' : 'Réteg megjelenítése';
+        eye.setAttribute('aria-label', eye.title);
+        eye.textContent = layer.visible ? '◉' : '○';
+        eye.addEventListener('click', () => {
+          layer.visible = !layer.visible;
+          renderLayerList();
+          rerenderCurrentMode();
+        });
+
+        const name = document.createElement('input');
+        name.type = 'text';
+        name.className = 'layer-name';
+        name.value = layer.name;
+        name.maxLength = 48;
+        name.setAttribute('aria-label', 'Réteg neve');
+        name.addEventListener('focus', () => { state.selectedLayerId = layer.id; row.classList.add('selected'); });
+        name.addEventListener('change', () => {
+          layer.name = name.value.trim() || `Saját előtér ${layer.id}`;
+          name.value = layer.name;
+        });
+
+        const up = document.createElement('button');
+        up.type = 'button';
+        up.className = 'icon-btn';
+        up.textContent = '↑';
+        up.title = 'Réteg előrébb';
+        up.disabled = index === state.layers.length - 1;
+        up.addEventListener('click', () => moveLayer(layer.id, 1));
+
+        const down = document.createElement('button');
+        down.type = 'button';
+        down.className = 'icon-btn';
+        down.textContent = '↓';
+        down.title = 'Réteg hátrébb';
+        down.disabled = index === 0;
+        down.addEventListener('click', () => moveLayer(layer.id, -1));
+
+        const remove = document.createElement('button');
+        remove.type = 'button';
+        remove.className = 'icon-btn danger';
+        remove.textContent = '×';
+        remove.title = 'Réteg törlése';
+        remove.addEventListener('click', () => deleteLayer(layer.id));
+
+        main.append(eye, name, up, down, remove);
+        row.appendChild(main);
+
+        const adjustments = document.createElement('div');
+        adjustments.className = 'layer-adjustments';
+        const opacityLabel = document.createElement('label');
+        opacityLabel.textContent = 'Átlátszóság';
+        const opacity = document.createElement('input');
+        opacity.type = 'range';
+        opacity.min = '0'; opacity.max = '100'; opacity.value = String(Math.round(layer.opacity * 100));
+        const opacityOut = document.createElement('output');
+        opacityOut.textContent = `${opacity.value}%`;
+        opacity.addEventListener('input', () => { opacityOut.textContent = `${opacity.value}%`; layer.opacity = Number(opacity.value) / 100; });
+        opacity.addEventListener('change', () => rerenderCurrentMode());
+        opacityLabel.append(opacity, opacityOut);
+
+        const depthLabel = document.createElement('label');
+        depthLabel.textContent = 'Előtér-erősség';
+        const depth = document.createElement('input');
+        depth.type = 'range';
+        depth.min = '120'; depth.max = '255'; depth.value = String(layer.depth);
+        const depthOut = document.createElement('output');
+        depthOut.textContent = String(layer.depth);
+        depth.addEventListener('input', () => { depthOut.textContent = depth.value; layer.depth = Number(depth.value); });
+        depth.addEventListener('change', () => rerenderCurrentMode());
+        depthLabel.append(depth, depthOut);
+
+        adjustments.append(opacityLabel, depthLabel);
+        row.appendChild(adjustments);
+        host.appendChild(row);
+      });
+    }
+
+    function moveLayer(id, direction) {
+      const index = state.layers.findIndex(layer => layer.id === id);
+      const target = index + direction;
+      if (index < 0 || target < 0 || target >= state.layers.length) return;
+      [state.layers[index], state.layers[target]] = [state.layers[target], state.layers[index]];
+      state.selectedLayerId = id;
+      renderLayerList();
+      rerenderCurrentMode();
+    }
+
+    function deleteLayer(id) {
+      const index = state.layers.findIndex(layer => layer.id === id);
+      if (index < 0) return;
+      const [removed] = state.layers.splice(index, 1);
+      if (state.selectedLayerId === id) state.selectedLayerId = state.layers.at(-1)?.id ?? null;
+      renderLayerList();
+      setStatus(`A(z) „${removed.name}” réteg törölve.`);
+      rerenderCurrentMode();
     }
 
     function canvasToBlob(canvas) {
       return new Promise((resolve, reject) => {
-        canvas.toBlob(
-          blob => blob ? resolve(blob) : reject(new Error('A PNG-fájl létrehozása nem sikerült.')),
-          'image/png'
-        );
+        canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('A PNG-fájl létrehozása nem sikerült.')), 'image/png');
       });
     }
 
@@ -1321,8 +1657,8 @@
       try {
         const blob = await canvasToBlob(state.outputCanvas);
         const modeSuffix = state.mode === 'inverted' ? 'background-focus' : 'character-focus';
-        downloadBlob(blob, `${fileBaseName(state.fileName)}-${modeSuffix}-16-band.png`);
-        setStatus(`A ${state.mode === 'inverted' ? 'háttérfókuszú' : 'karakterfókuszú'} PNG letöltése elindult.`);
+        downloadBlob(blob, `${fileBaseName(state.fileName)}-${modeSuffix}-16-band-layers.png`);
+        setStatus(`A ${state.mode === 'inverted' ? 'háttérfókuszú' : 'karakterfókuszú'} PNG letöltése elindult. A látható saját rétegek belekerültek.`);
       } catch (error) {
         setStatus(error.message, 'error');
       } finally {
@@ -1330,34 +1666,79 @@
       }
     }
 
+    // Kijelöléskezelés: az ecset és a radír a különálló maszkvászonra rajzol.
+    ui.overlay.addEventListener('pointerdown', event => {
+      if (!state.activeTool || !state.outputCanvas || state.busy) return;
+      event.preventDefault();
+      const point = pointerToImage(event);
+      if (state.activeTool === 'polygon') {
+        state.polygonPoints.push(point);
+        drawSelectionOverlay();
+        updateToolButtons();
+        return;
+      }
+      state.drawing = true;
+      state.lastPoint = point;
+      ui.overlay.setPointerCapture?.(event.pointerId);
+      const ctx = ui.maskCanvas.getContext('2d');
+      paintPoint(ctx, point, state.activeTool === 'eraser');
+      drawSelectionOverlay();
+    });
+
+    ui.overlay.addEventListener('pointermove', event => {
+      if (!state.drawing || !state.lastPoint || !['brush', 'eraser'].includes(state.activeTool)) return;
+      event.preventDefault();
+      const point = pointerToImage(event);
+      paintLine(ui.maskCanvas.getContext('2d'), state.lastPoint, point, state.activeTool === 'eraser');
+      state.lastPoint = point;
+      drawSelectionOverlay();
+    });
+
+    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(type => {
+      ui.overlay.addEventListener(type, () => {
+        if (state.drawing) {
+          state.drawing = false;
+          state.lastPoint = null;
+          updateToolButtons();
+        }
+      });
+    });
+
     updateModeControls();
+    renderLayerList();
     $('chooseBtn').addEventListener('click', () => ui.file.click());
     $('normalModeBtn').addEventListener('click', () => selectMode('normal'));
     $('invertedModeBtn').addEventListener('click', () => selectMode('inverted'));
     $('downloadBtn').addEventListener('click', downloadFinalImage);
     $('retryBtn').addEventListener('click', () => runPipeline(state.generation));
-    ui.file.addEventListener('change', e => {
-      const file = e.target.files?.[0];
+    ui.file.addEventListener('change', event => {
+      const file = event.target.files?.[0];
       if (file) loadImageFile(file);
-      e.target.value = '';
+      event.target.value = '';
     });
 
-    ['dragenter', 'dragover'].forEach(name => {
-      ui.stage.addEventListener(name, e => {
-        e.preventDefault();
-        ui.stage.classList.add('dragover');
-      });
-    });
-    ['dragleave', 'drop'].forEach(name => {
-      ui.stage.addEventListener(name, e => {
-        e.preventDefault();
-        ui.stage.classList.remove('dragover');
-      });
-    });
-    ui.stage.addEventListener('drop', e => {
-      const file = e.dataTransfer?.files?.[0];
+    $('brushToolBtn').addEventListener('click', () => setActiveTool('brush'));
+    $('polygonToolBtn').addEventListener('click', () => setActiveTool('polygon'));
+    $('eraserToolBtn').addEventListener('click', () => setActiveTool('eraser'));
+    $('finishPolygonBtn').addEventListener('click', finishPolygon);
+    $('clearSelectionBtn').addEventListener('click', clearCurrentSelection);
+    $('createLayerBtn').addEventListener('click', createLayerFromSelection);
+    $('brushSize').addEventListener('input', () => $('brushSizeValue').textContent = `${$('brushSize').value} px`);
+    $('featherSize').addEventListener('input', () => $('featherSizeValue').textContent = `${$('featherSize').value} px`);
+
+    ['dragenter', 'dragover'].forEach(name => ui.stage.addEventListener(name, event => {
+      event.preventDefault();
+      ui.stage.classList.add('dragover');
+    }));
+    ['dragleave', 'drop'].forEach(name => ui.stage.addEventListener(name, event => {
+      event.preventDefault();
+      ui.stage.classList.remove('dragover');
+    }));
+    ui.stage.addEventListener('drop', event => {
+      const file = event.dataTransfer?.files?.[0];
       if (file) loadImageFile(file);
     });
+
   })();
   </script>
 </body>
